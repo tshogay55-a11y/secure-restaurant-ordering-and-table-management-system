@@ -19,3 +19,16 @@ The system allows customers to scan QR codes to view menus, place orders, and ma
 - Payment Integration: Stripe API
 
 ## Project Structure
+docs/
+ ├── project-overview.md
+ ├── system-architecture.md
+ └── setup-guide.md
+ 
+ ## Team Members
+- Tshojay Lhamo – Documentation
+- Tsendu – Development Environment
+- Abdul Rahman – Version Control
+- Varsha – Initial Implementation
+
+## License
+This project is developed for academic purposes as part of the ICT946 Capstone Project.
