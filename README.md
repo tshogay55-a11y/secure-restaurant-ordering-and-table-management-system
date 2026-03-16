@@ -1,22 +1,64 @@
 # Secure Restaurant Ordering and Table Management System
 
-## Project Overview
-The Secure Restaurant Ordering and Table Management System is a web-based application designed to improve restaurant operations while ensuring strong cybersecurity protection.
+## Project Description
+This project aims to design and develop a secure restaurant ordering and table management system that integrates cybersecurity principles into hospitality management systems.
 
-The system allows customers to scan QR codes to view menus, place orders, and make secure payments. Restaurant staff and managers can monitor orders, manage tables, and track operations in real time.
+The system allows customers to order food through QR codes, manage table reservations, and process secure payments while protecting sensitive customer data.
 
 ## Objectives
-- Develop a secure digital ordering system for restaurants
-- Protect customer data using authentication and encryption
+The main objectives of this project are:
+
+- Develop a secure restaurant management platform
+- Implement authentication and role-based access control
+- Protect customer and payment data
 - Provide real-time table and order management
 - Demonstrate cybersecurity integration in hospitality systems
 
 ## Technologies Used
-- Frontend: React.js, HTML, CSS
-- Backend: Node.js / Express
-- Database: Firebase / MySQL
-- Security: Authentication, Encryption, Role-Based Access Control
-- Payment Integration: Stripe API
+
+Frontend:
+- React.js
+- HTML / CSS / JavaScript
+
+Backend:
+- Node.js
+- Express.js
+
+Database:
+- Firebase / MySQL
+
+Security:
+- JWT Authentication
+- TLS Encryption
+- Role Based Access Control
+
+Payment Integration:
+- Stripe API
+
+Development Tools:
+- GitHub
+- VS Code
+- Firebase Hosting
+
+## Project Features
+
+- QR Code based ordering
+- Real-time table management
+- Secure payment gateway
+- Admin dashboard
+- Role-based authentication
+- Order tracking system
+
+## Setup Instructions
+
+1. Clone the repository
+git clone https://github.com/projectname.git
+2. Install dependencies
+npm install
+3. Run the application
+npm start
+4. Open browser
+http://localhost:3000
 
 ## Project Structure
 docs/
