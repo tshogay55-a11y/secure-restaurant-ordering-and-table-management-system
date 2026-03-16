@@ -52,7 +52,7 @@ Development Tools:
 ## Setup Instructions
 
 1. Clone the repository
-git clone https://github.com/projectname.git
+git clone git clone https://github.com/tshogay55-a11y/secure-restaurant-ordering-and-table-management-system.git
 2. Install dependencies
 npm install
 3. Run the application
