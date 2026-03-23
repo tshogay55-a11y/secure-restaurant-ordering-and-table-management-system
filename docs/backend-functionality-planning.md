@@ -33,11 +33,11 @@ The user login function is responsible for verifying the identity of the user an
 1. Receive login request from the frontend.
 2. Validate that the email/username and password fields are not empty.
 3. Search the database for the matching user account.
-4. Compare the entered password with the securely stored password (hashed).
-5. If the credentials are correct, generate a session or authentication token.
-6. Assign the correct role for the user such as customer, staff, or manager.
-7. Send a success response back to the frontend.
-8. If the login fails, send an error message indicating invalid credentials.
+4. Compare the entered password with the securely stored password.
+7. If the credentials are correct, generate a session or authentication token.
+8. Assign the correct role for the user such as customer, staff, or manager.
+9. Send a success response back to the frontend.
+10. If the login fails, send an error message indicating invalid credentials.
 
 ### Output
 - Login success response
@@ -206,35 +206,6 @@ Book Table
 Make Payment  
 ↓  
 Receive Confirmation  
-
----
-
-## Planned Security Features
-
-The backend system will include the following security features:
-
-- User authentication using login credentials
-- Password protection and secure password handling
-- Role-Based Access Control (Admin, Staff, Customer)
-- Input validation to prevent SQL injection and malicious inputs
-- Secure session or token-based authentication (JWT)
-- Data encryption using HTTPS/TLS
-- Secure payment processing using trusted payment gateway (Stripe)
-- Error handling that does not expose sensitive system information
-
----
-
-## Relationship with Data Entities
-
-The backend functions interact with the following data entities:
-
-- User → used in login and authentication
-- Menu → used in displaying menu items
-- Order → used in order placement and tracking
-- TableBooking → used in reservation system
-- Payment → used in payment processing
-
-Each backend function retrieves or updates data from these entities to ensure system functionality.
 
 ---
 
