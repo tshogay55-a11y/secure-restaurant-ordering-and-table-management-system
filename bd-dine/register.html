@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | BD Dine Restaurant</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .register-container {
+            max-width: 600px;
+            margin: 100px auto;
+            padding: var(--spacing-xl);
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 12px 40px var(--shadow);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">BD DINE</a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="menu.html" class="nav-link">Menu</a></li>
+                <li><a href="login.html" class="nav-link active">Login</a></li>
+            </ul>
+            <button id="theme-toggle" class="theme-toggle"><i class="fas fa-moon"></i></button>
+        </div>
+    </nav>
+
+    <div class="register-container">
+        <div class="text-center mb-4">
+            <h2>Create Account</h2>
+            <p style="color: var(--text-secondary);">Join BD Dine for easy reservations</p>
+        </div>
+
+        <form id="registration-form">
+            <div class="grid grid-2">
+                <div class="form-group">
+                    <label class="form-label">First Name</label>
+                    <input type="text" name="first_name" class="form-input" required>
+                    <span class="form-error"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Last Name</label>
+                    <input type="text" name="last_name" class="form-input" required>
+                    <span class="form-error"></span>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Email Address</label>
+                <input type="email" name="email" class="form-input" placeholder="your@email.com" required>
+                <span class="form-error"></span>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Phone Number (Australian)</label>
+                <input type="tel" name="phone" class="form-input" placeholder="+61 4XX XXX XXX" required>
+                <span class="form-error"></span>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: var(--spacing-xs);">
+                    Required for 2-factor authentication
+                </p>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                <input type="password" name="password" class="form-input" required>
+                <span class="form-error"></span>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: var(--spacing-xs);">
+                    Minimum 8 characters, uppercase, lowercase, number, and special character
+                </p>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Confirm Password</label>
+                <input type="password" name="confirm_password" class="form-input" required>
+                <span class="form-error"></span>
+            </div>
+            
+            <div class="form-group">
+                <label style="display: flex; align-items: center; gap: var(--spacing-xs); cursor: pointer;">
+                    <input type="checkbox" required>
+                    <span style="font-size: 0.9rem; color: var(--text-secondary);">
+                        I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                    </span>
+                </label>
+            </div>
+            
+            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                Create Account <i class="fas fa-user-plus"></i>
+            </button>
+        </form>
+
+        <div class="text-center mt-3" style="padding-top: var(--spacing-md); border-top: 1px solid var(--border-color);">
+            <p style="color: var(--text-secondary);">Already have an account? <a href="login.html" style="font-weight: 600;">Login</a></p>
+        </div>
+
+        <div class="mt-4">
+            <div style="display: flex; gap: var(--spacing-md); justify-content: center; flex-wrap: wrap;">
+                <span style="font-size: 0.85rem; color: var(--text-muted);">
+                    <i class="fas fa-lock"></i> Encrypted Data
+                </span>
+                <span style="font-size: 0.85rem; color: var(--text-muted);">
+                    <i class="fas fa-shield-alt"></i> 2FA Protected
+                </span>
+                <span style="font-size: 0.85rem; color: var(--text-muted);">
+                    <i class="fas fa-user-shield"></i> GDPR Compliant
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | BD Dine Restaurant</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .login-container {
+            max-width: 500px;
+            margin: 100px auto;
+            padding: var(--spacing-xl);
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 12px 40px var(--shadow);
+        }
+        .login-header {
+            text-align: center;
+            margin-bottom: var(--spacing-lg);
+        }
+        .login-step {
+            display: none;
+        }
+        .login-step.active {
+            display: block;
+        }
+        .security-badge {
+            background: var(--success);
+            color: white;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            display: inline-block;
+            margin-top: var(--spacing-sm);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">BD DINE</a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="menu.html" class="nav-link">Menu</a></li>
+                <li><a href="booking.html" class="nav-link">Reservations</a></li>
+                <li><a href="login.html" class="nav-link active">Login</a></li>
+            </ul>
+            <button id="theme-toggle" class="theme-toggle"><i class="fas fa-moon"></i></button>
+        </div>
+    </nav>
+
+    <div class="login-container">
+        <div class="login-header">
+            <h2>Customer Login</h2>
+            <p style="color: var(--text-secondary);">Access your account securely</p>
+            <span class="security-badge">
+                <i class="fas fa-shield-alt"></i> 2-Factor Authentication
+            </span>
+        </div>
+
+        <form id="login-form">
+            <!-- Step 1: Email & Password -->
+            <div id="step-1" class="login-step active">
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" name="email" class="form-input" placeholder="your@email.com" required>
+                    <span class="form-error"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" name="password" class="form-input" placeholder="Enter your password" required>
+                    <span class="form-error"></span>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    Login <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+
+            <!-- Step 2: 2FA Code -->
+            <div id="step-2" class="login-step">
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-mobile-alt"></i> Verification Code
+                    </label>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: var(--spacing-sm);">
+                        We've sent a 6-digit code to your registered phone number
+                    </p>
+                    <input type="text" name="code" class="form-input" placeholder="000000" maxlength="6" pattern="[0-9]{6}" required>
+                    <span class="form-error"></span>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    Verify <i class="fas fa-check"></i>
+                </button>
+                
+                <p class="text-center mt-2">
+                    <a href="#" onclick="alert('Code resent!'); return false;" style="font-size: 0.9rem;">Resend Code</a>
+                </p>
+            </div>
+        </form>
+
+        <div class="text-center mt-3" style="padding-top: var(--spacing-md); border-top: 1px solid var(--border-color);">
+            <p style="color: var(--text-secondary);">Don't have an account? <a href="register.html" style="font-weight: 600;">Register Now</a></p>
+            <p class="mt-2"><a href="admin-login.html" style="font-size: 0.9rem; color: var(--text-muted);">Admin Login</a></p>
+        </div>
+
+        <div class="mt-4 text-center">
+            <p style="font-size: 0.85rem; color: var(--text-muted);">
+                <i class="fas fa-lock"></i> Your session is encrypted and secure
+            </p>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

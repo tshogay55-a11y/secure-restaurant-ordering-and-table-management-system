@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="BD Dine Restaurant - Authentic dining experience in Canberra, Australia">
+    <title>BD Dine Restaurant | Canberra's Finest Dining</title>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="images/icons/favicon.ico">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">BD DINE</a>
+            
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link active">Home</a></li>
+                <li><a href="menu.html" class="nav-link">Menu</a></li>
+                <li><a href="about.html" class="nav-link">About</a></li>
+                <li><a href="booking.html" class="nav-link">Reservations</a></li>
+                <li><a href="contact.html" class="nav-link">Contact</a></li>
+                <li><a href="login.html" class="nav-link">Login</a></li>
+            </ul>
+            
+            <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-background">
+            <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1920&q=80" alt="Restaurant interior">
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Welcome to BD Dine</h1>
+            <p>Experience the finest culinary journey in the heart of Canberra</p>
+            <div class="flex gap-3" style="justify-content: center;">
+                <a href="menu.html" class="btn btn-primary">Explore Menu</a>
+                <a href="booking.html" class="btn btn-ghost">Reserve Table</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Preview -->
+    <section class="section">
+        <div class="container">
+            <div class="grid grid-2" style="align-items: center;">
+                <div class="animate-slide-in-left">
+                    <span class="section-subtitle">Our Story</span>
+                    <h2>Culinary Excellence Since 2020</h2>
+                    <p>At BD Dine, we blend traditional recipes with modern culinary techniques to create an unforgettable dining experience. Our chefs source the finest local ingredients to craft dishes that celebrate the rich flavors of Australian cuisine.</p>
+                    <p>Located in the vibrant heart of Canberra, our restaurant offers an intimate atmosphere perfect for any occasion - from romantic dinners to family celebrations.</p>
+                    <a href="about.html" class="btn btn-secondary mt-3">Learn More</a>
+                </div>
+                <div>
+                    <img src="https://images.unsplash.com/photo-1600565193348-f74bd3c7ccdf?w=800&q=80" alt="Chef preparing food" style="width: 100%; border-radius: var(--radius-lg); box-shadow: 0 12px 40px var(--shadow);">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Dishes -->
+    <section class="section" style="background: var(--bg-secondary);">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">Signature Dishes</span>
+                <h2 class="section-title">Chef's Recommendations</h2>
+                <p class="section-description">Discover our most popular dishes, crafted with passion and served with pride</p>
+            </div>
+            
+            <div class="grid grid-3">
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&q=80" alt="Grilled Salmon" class="card-image">
+                    <div class="card-content">
+                        <h3 class="card-title">Grilled Atlantic Salmon</h3>
+                        <p class="card-text">Fresh Atlantic salmon with roasted vegetables and lemon butter sauce</p>
+                        <div class="flex-between" style="align-items: center;">
+                            <span class="card-price">$42.00</span>
+                            <a href="menu.html" class="btn btn-secondary">View Menu</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1600891964092-4316c288032e?w=600&q=80" alt="Wagyu Steak" class="card-image">
+                    <div class="card-content">
+                        <h3 class="card-title">Premium Wagyu Steak</h3>
+                        <p class="card-text">200g grass-fed wagyu with truffle mash and seasonal greens</p>
+                        <div class="flex-between" style="align-items: center;">
+                            <span class="card-price">$65.00</span>
+                            <a href="menu.html" class="btn btn-secondary">View Menu</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=600&q=80" alt="Seafood Pasta" class="card-image">
+                    <div class="card-content">
+                        <h3 class="card-title">Seafood Linguine</h3>
+                        <p class="card-text">Fresh prawns, scallops, and mussels in white wine sauce</p>
+                        <div class="flex-between" style="align-items: center;">
+                            <span class="card-price">$38.00</span>
+                            <a href="menu.html" class="btn btn-secondary">View Menu</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">Why Choose Us</span>
+                <h2 class="section-title">Exceptional Dining Experience</h2>
+            </div>
+            
+            <div class="grid grid-4">
+                <div class="text-center">
+                    <div style="font-size: 3rem; color: var(--accent-primary); margin-bottom: var(--spacing-sm);">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <h4>Fresh Ingredients</h4>
+                    <p>Locally sourced, organic ingredients for the highest quality</p>
+                </div>
+                
+                <div class="text-center">
+                    <div style="font-size: 3rem; color: var(--accent-primary); margin-bottom: var(--spacing-sm);">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <h4>Award Winning</h4>
+                    <p>Recognized for culinary excellence and outstanding service</p>
+                </div>
+                
+                <div class="text-center">
+                    <div style="font-size: 3rem; color: var(--accent-primary); margin-bottom: var(--spacing-sm);">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h4>Secure Booking</h4>
+                    <p>Advanced security with 2FA and encrypted data protection</p>
+                </div>
+                
+                <div class="text-center">
+                    <div style="font-size: 3rem; color: var(--accent-primary); margin-bottom: var(--spacing-sm);">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h4>Open Daily</h4>
+                    <p>Serving lunch and dinner 7 days a week</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="section" style="background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); color: white; text-align: center;">
+        <div class="container">
+            <h2 style="color: white; font-size: 3rem; margin-bottom: var(--spacing-md);">Ready to Experience BD Dine?</h2>
+            <p style="color: rgba(255, 255, 255, 0.95); font-size: 1.2rem; margin-bottom: var(--spacing-lg); max-width: 600px; margin-left: auto; margin-right: auto;">Reserve your table today and embark on a culinary journey like no other</p>
+            <a href="booking.html" class="btn btn-ghost" style="font-size: 1.1rem; padding: var(--spacing-md) var(--spacing-xl);">Book Now</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>BD Dine Restaurant</h4>
+                <p>Experience the finest culinary journey in Canberra. We bring passion, quality, and excellence to every dish.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="menu.html">Menu</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="booking.html">Reservations</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Opening Hours</h4>
+                <ul class="footer-links">
+                    <li>Monday - Friday: 11:30 AM - 10:00 PM</li>
+                    <li>Saturday: 10:00 AM - 11:00 PM</li>
+                    <li>Sunday: 10:00 AM - 9:00 PM</li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Contact Info</h4>
+                <ul class="footer-links">
+                    <li><i class="fas fa-map-marker-alt"></i> 123 Northbourne Ave, Canberra ACT 2601</li>
+                    <li><i class="fas fa-phone"></i> (02) 6234 5678</li>
+                    <li><i class="fas fa-envelope"></i> info@bddine.com.au</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 BD Dine Restaurant. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
+</body>
+</html>

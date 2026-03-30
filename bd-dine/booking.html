@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservations | BD Dine Restaurant</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .booking-container {
+            max-width: 800px;
+            margin: 100px auto;
+            padding: var(--spacing-xl);
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 12px 40px var(--shadow);
+        }
+        .time-slot {
+            padding: var(--spacing-sm);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            text-align: center;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+        .time-slot:hover, .time-slot.selected {
+            border-color: var(--accent-primary);
+            background: var(--accent-primary);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">BD DINE</a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="menu.html" class="nav-link">Menu</a></li>
+                <li><a href="booking.html" class="nav-link active">Reservations</a></li>
+                <li><a href="login.html" class="nav-link">Login</a></li>
+            </ul>
+            <button id="theme-toggle" class="theme-toggle"><i class="fas fa-moon"></i></button>
+        </div>
+    </nav>
+
+    <div class="booking-container">
+        <div class="text-center mb-4">
+            <h2>Reserve Your Table</h2>
+            <p style="color: var(--text-secondary);">Experience exceptional dining at BD Dine</p>
+            <div class="mt-2">
+                <span style="background: var(--success); color: white; padding: 0.4rem 0.8rem; border-radius: var(--radius-sm); font-size: 0.85rem;">
+                    <i class="fas fa-lock"></i> Secure Booking with 2FA
+                </span>
+            </div>
+        </div>
+
+        <div class="mb-4 p-3" style="background: var(--bg-accent); border-left: 4px solid var(--accent-primary); border-radius: var(--radius-sm);">
+            <p style="margin: 0; color: var(--text-secondary);">
+                <i class="fas fa-info-circle"></i> Please <a href="login.html" style="font-weight: 600;">login</a> to make a reservation. Don't have an account? <a href="register.html" style="font-weight: 600;">Register now</a>.
+            </p>
+        </div>
+
+        <form id="booking-form">
+            <div class="grid grid-2">
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-calendar"></i> Date
+                    </label>
+                    <input type="date" name="booking_date" class="form-input" required>
+                    <span class="form-error"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-users"></i> Number of Guests
+                    </label>
+                    <select name="number_of_guests" class="form-select" required>
+                        <option value="">Select guests</option>
+                        <option value="1">1 Guest</option>
+                        <option value="2">2 Guests</option>
+                        <option value="3">3 Guests</option>
+                        <option value="4">4 Guests</option>
+                        <option value="5">5 Guests</option>
+                        <option value="6">6 Guests</option>
+                        <option value="7">7 Guests</option>
+                        <option value="8">8 Guests</option>
+                        <option value="8+">More than 8 (Call us)</option>
+                    </select>
+                    <span class="form-error"></span>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">
+                    <i class="fas fa-clock"></i> Time Slot
+                </label>
+                <div class="grid grid-4 gap-2">
+                    <div class="time-slot" onclick="selectTime(this, '11:30')">11:30 AM</div>
+                    <div class="time-slot" onclick="selectTime(this, '12:00')">12:00 PM</div>
+                    <div class="time-slot" onclick="selectTime(this, '12:30')">12:30 PM</div>
+                    <div class="time-slot" onclick="selectTime(this, '13:00')">1:00 PM</div>
+                    <div class="time-slot" onclick="selectTime(this, '17:30')">5:30 PM</div>
+                    <div class="time-slot" onclick="selectTime(this, '18:00')">6:00 PM</div>
+                    <div class="time-slot" onclick="selectTime(this, '18:30')">6:30 PM</div>
+                    <div class="time-slot" onclick="selectTime(this, '19:00')">7:00 PM</div>
+                    <div class="time-slot" onclick="selectTime(this, '19:30')">7:30 PM</div>
+                    <div class="time-slot" onclick="selectTime(this, '20:00')">8:00 PM</div>
+                    <div class="time-slot" onclick="selectTime(this, '20:30')">8:30 PM</div>
+                    <div class="time-slot" onclick="selectTime(this, '21:00')">9:00 PM</div>
+                </div>
+                <input type="hidden" name="booking_time" required>
+                <span class="form-error"></span>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">
+                    <i class="fas fa-comment"></i> Special Requests (Optional)
+                </label>
+                <textarea name="special_requests" class="form-textarea" placeholder="Dietary requirements, allergies, special occasions..."></textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 1.1rem;">
+                <i class="fas fa-calendar-check"></i> Reserve Table
+            </button>
+        </form>
+
+        <div class="mt-4" style="background: var(--bg-accent); padding: var(--spacing-md); border-radius: var(--radius-md);">
+            <h4 style="margin-bottom: var(--spacing-sm);">Cancellation Policy</h4>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); margin: 0;">
+                Reservations can be cancelled up to 24 hours before your booking time. Late cancellations may incur a fee.
+            </p>
+        </div>
+
+        <div class="mt-3 text-center">
+            <p style="font-size: 0.85rem; color: var(--text-muted);">
+                Need assistance? Call us at <strong style="color: var(--accent-primary);">(02) 6234 5678</strong>
+            </p>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+        function selectTime(element, time) {
+            document.querySelectorAll('.time-slot').forEach(slot => slot.classList.remove('selected'));
+            element.classList.add('selected');
+            document.querySelector('input[name="booking_time"]').value = time + ':00';
+        }
+    </script>
+</body>
+</html>

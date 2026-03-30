@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Dashboard | BD Dine</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .dashboard-header {
+            background: var(--bg-accent);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--spacing-lg);
+        }
+        .booking-card {
+            background: var(--bg-secondary);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-md);
+            border-left: 4px solid var(--accent-primary);
+            margin-bottom: var(--spacing-md);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">BD DINE</a>
+            <ul class="nav-menu">
+                <li><a href="customer-dashboard.html" class="nav-link active">Dashboard</a></li>
+                <li><a href="booking.html" class="nav-link">New Booking</a></li>
+                <li><a href="menu.html" class="nav-link">Menu</a></li>
+                <li><a href="#" class="nav-link logout-btn">Logout</a></li>
+            </ul>
+            <button id="theme-toggle" class="theme-toggle"><i class="fas fa-moon"></i></button>
+        </div>
+    </nav>
+
+    <div class="container" style="padding-top: 120px;">
+        <div class="dashboard-header">
+            <div class="flex-between" style="align-items: center;">
+                <div>
+                    <h1 style="margin-bottom: var(--spacing-xs);">Welcome Back!</h1>
+                    <p style="color: var(--text-secondary); margin: 0;">Manage your reservations and preferences</p>
+                </div>
+                <div>
+                    <span style="background: var(--success); color: white; padding: 0.5rem 1rem; border-radius: var(--radius-md);">
+                        <i class="fas fa-shield-alt"></i> Verified Account
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-3 mb-4">
+            <div class="card text-center">
+                <div class="card-content">
+                    <div style="font-size: 2.5rem; color: var(--accent-primary); margin-bottom: var(--spacing-sm);">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div style="font-size: 2rem; font-weight: 700; color: var(--accent-primary); font-family: var(--font-heading);">3</div>
+                    <p style="color: var(--text-muted); margin: 0;">Upcoming Bookings</p>
+                </div>
+            </div>
+            <div class="card text-center">
+                <div class="card-content">
+                    <div style="font-size: 2.5rem; color: var(--success); margin-bottom: var(--spacing-sm);">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <div style="font-size: 2rem; font-weight: 700; color: var(--success); font-family: var(--font-heading);">12</div>
+                    <p style="color: var(--text-muted); margin: 0;">Total Visits</p>
+                </div>
+            </div>
+            <div class="card text-center">
+                <div class="card-content">
+                    <div style="font-size: 2.5rem; color: var(--warning); margin-bottom: var(--spacing-sm);">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div style="font-size: 2rem; font-weight: 700; color: var(--warning); font-family: var(--font-heading);">VIP</div>
+                    <p style="color: var(--text-muted); margin: 0;">Member Status</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-2" style="gap: var(--spacing-lg); align-items: start;">
+            <div>
+                <h2 class="mb-3">Upcoming Reservations</h2>
+                
+                <div class="booking-card">
+                    <div class="flex-between mb-2">
+                        <h4 style="margin: 0; color: var(--accent-primary);">Tonight at 7:00 PM</h4>
+                        <span style="background: var(--success); color: white; padding: 0.2rem 0.6rem; border-radius: var(--radius-sm); font-size: 0.8rem;">Confirmed</span>
+                    </div>
+                    <p style="margin: 0.5rem 0; color: var(--text-secondary);">
+                        <i class="fas fa-calendar"></i> March 24, 2026 • <i class="fas fa-users"></i> 4 Guests • <i class="fas fa-chair"></i> Table 7
+                    </p>
+                    <div class="flex gap-2 mt-2">
+                        <button class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.4rem 0.8rem;">View Details</button>
+                        <button class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.4rem 0.8rem;">Modify</button>
+                        <button class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.4rem 0.8rem; color: var(--error);">Cancel</button>
+                    </div>
+                </div>
+
+                <div class="booking-card">
+                    <div class="flex-between mb-2">
+                        <h4 style="margin: 0; color: var(--accent-primary);">March 30 at 6:30 PM</h4>
+                        <span style="background: var(--success); color: white; padding: 0.2rem 0.6rem; border-radius: var(--radius-sm); font-size: 0.8rem;">Confirmed</span>
+                    </div>
+                    <p style="margin: 0.5rem 0; color: var(--text-secondary);">
+                        <i class="fas fa-calendar"></i> March 30, 2026 • <i class="fas fa-users"></i> 2 Guests • <i class="fas fa-chair"></i> Table 2
+                    </p>
+                    <div class="flex gap-2 mt-2">
+                        <button class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.4rem 0.8rem;">View Details</button>
+                        <button class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.4rem 0.8rem;">Modify</button>
+                        <button class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.4rem 0.8rem; color: var(--error);">Cancel</button>
+                    </div>
+                </div>
+
+                <div class="text-center mt-3">
+                    <a href="booking.html" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Make New Reservation
+                    </a>
+                </div>
+            </div>
+
+            <div>
+                <h2 class="mb-3">Account Information</h2>
+                <div class="card">
+                    <div class="card-content">
+                        <div class="mb-3">
+                            <label style="font-weight: 600; color: var(--text-muted); font-size: 0.85rem;">Name</label>
+                            <p style="margin: 0.2rem 0;">John Smith</p>
+                        </div>
+                        <div class="mb-3">
+                            <label style="font-weight: 600; color: var(--text-muted); font-size: 0.85rem;">Email</label>
+                            <p style="margin: 0.2rem 0;">john.smith@email.com</p>
+                        </div>
+                        <div class="mb-3">
+                            <label style="font-weight: 600; color: var(--text-muted); font-size: 0.85rem;">Phone</label>
+                            <p style="margin: 0.2rem 0;">+61 412 345 678</p>
+                        </div>
+                        <div class="mb-3">
+                            <label style="font-weight: 600; color: var(--text-muted); font-size: 0.85rem;">Member Since</label>
+                            <p style="margin: 0.2rem 0;">January 2024</p>
+                        </div>
+                        <div class="mb-3">
+                            <label style="font-weight: 600; color: var(--text-muted); font-size: 0.85rem;">Security</label>
+                            <p style="margin: 0.2rem 0;">
+                                <span style="color: var(--success);"><i class="fas fa-check-circle"></i> 2FA Enabled</span><br>
+                                <span style="color: var(--success);"><i class="fas fa-check-circle"></i> Email Verified</span>
+                            </p>
+                        </div>
+                        <button class="btn btn-secondary" style="width: 100%;">
+                            <i class="fas fa-edit"></i> Edit Profile
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card mt-3">
+                    <div class="card-content">
+                        <h4 class="mb-2">Recent Activity</h4>
+                        <div style="font-size: 0.9rem; color: var(--text-secondary);">
+                            <p style="margin: 0.5rem 0; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border-color);">
+                                <i class="fas fa-calendar-check" style="color: var(--accent-primary);"></i> Booked table for 4 - Today
+                            </p>
+                            <p style="margin: 0.5rem 0; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border-color);">
+                                <i class="fas fa-user-check" style="color: var(--success);"></i> Profile updated - 2 days ago
+                            </p>
+                            <p style="margin: 0.5rem 0;">
+                                <i class="fas fa-utensils" style="color: var(--warning);"></i> Visited restaurant - 1 week ago
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer mt-5">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>BD Dine Restaurant</h4>
+                <p>Experience the finest culinary journey in Canberra.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="customer-dashboard.html">Dashboard</a></li>
+                    <li><a href="booking.html">New Booking</a></li>
+                    <li><a href="menu.html">Menu</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact Info</h4>
+                <ul class="footer-links">
+                    <li><i class="fas fa-phone"></i> (02) 6234 5678</li>
+                    <li><i class="fas fa-envelope"></i> info@bddine.com.au</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 BD Dine Restaurant. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

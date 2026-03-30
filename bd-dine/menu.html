@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu | BD Dine Restaurant</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">BD DINE</a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="menu.html" class="nav-link active">Menu</a></li>
+                <li><a href="about.html" class="nav-link">About</a></li>
+                <li><a href="booking.html" class="nav-link">Reservations</a></li>
+                <li><a href="contact.html" class="nav-link">Contact</a></li>
+                <li><a href="login.html" class="nav-link">Login</a></li>
+            </ul>
+            <button id="theme-toggle" class="theme-toggle"><i class="fas fa-moon"></i></button>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero" style="min-height: 50vh;">
+        <div class="hero-background">
+            <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1920&q=80" alt="Food menu">
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Our Menu</h1>
+            <p>Discover our exquisite selection of dishes</p>
+        </div>
+    </section>
+
+    <!-- Menu Categories -->
+    <section class="section">
+        <div class="container">
+            <!-- Appetizers -->
+            <div class="section-header">
+                <span class="section-subtitle">Starters</span>
+                <h2 class="section-title">Appetizers</h2>
+            </div>
+            <div class="grid grid-3 mb-5">
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=600&q=80" alt="Bruschetta" class="card-image">
+                    <div class="card-content">
+                        <h3 class="card-title">Classic Bruschetta</h3>
+                        <p class="card-text">Toasted bread with fresh tomatoes, basil, and balsamic glaze</p>
+                        <div class="flex-between"><span class="card-price">$14.00</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1559847844-5315695dadae?w=600&q=80" alt="Calamari" class="card-image">
+                    <div class="card-content">
+                        <h3 class="card-title">Crispy Calamari</h3>
+                        <p class="card-text">Lightly fried with aioli and lemon wedge</p>
+                        <div class="flex-between"><span class="card-price">$18.00</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1625943555376-1b7ba65ae3eb?w=600&q=80" alt="Oysters" class="card-image">
+                    <div class="card-content">
+                        <h3 class="card-title">Fresh Oysters</h3>
+                        <p class="card-text">Half dozen with mignonette sauce (6pcs)</p>
+                        <div class="flex-between"><span class="card-price">$22.00</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Course -->
+            <div class="section-header mt-5">
+                <span class="section-subtitle">Mains</span>
+                <h2 class="section-title">Main Course</h2>
+            </div>
+            <div class="grid grid-3 mb-5">
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&q=80" alt="Salmon" class="card-image">
+                    <div class="card-content">
+                        <h3 class="card-title">Grilled Atlantic Salmon</h3>
+                        <p class="card-text">Fresh salmon with roasted vegetables and lemon butter sauce</p>
+                        <div class="flex-between"><span class="card-price">$42.00</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1600891964092-4316c288032e?w=600&q=80" alt="Wagyu" class="card-image">
+                    <div class="card-content">
+                        <h3 class="card-title">Premium Wagyu Steak (200g)</h3>
+                        <p class="card-text">Grass-fed wagyu with truffle mash and seasonal greens</p>
+                        <div class="flex-between"><span class="card-price">$65.00</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=600&q=80" alt="Pasta" class="card-image">
+                    <div class="card-content">
+                        <h3 class="card-title">Seafood Linguine</h3>
+                        <p class="card-text">Fresh prawns, scallops, and mussels in white wine sauce</p>
+                        <div class="flex-between"><span class="card-price">$38.00</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=600&q=80" alt="Duck" class="card-image">
+                    <div class="card-content">
+                        <h3 class="card-title">Pan-Seared Duck Breast</h3>
+                        <p class="card-text">With orange glaze, roasted root vegetables</p>
+                        <div class="flex-between"><span class="card-price">$48.00</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1632778149955-e80f8ceca2e8?w=600&q=80" alt="Lamb" class="card-image">
+                    <div class="card-content">
+                        <h3 class="card-title">Herb-Crusted Lamb Rack</h3>
+                        <p class="card-text">With rosemary jus and garlic mash</p>
+                        <div class="flex-between"><span class="card-price">$52.00</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?w=600&q=80" alt="Vegetarian" class="card-image">
+                    <div class="card-content">
+                        <h3 class="card-title">Mushroom Risotto</h3>
+                        <p class="card-text">Creamy arborio rice with mixed mushrooms and truffle oil</p>
+                        <div class="flex-between"><span class="card-price">$32.00</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Desserts -->
+            <div class="section-header mt-5">
+                <span class="section-subtitle">Sweet Endings</span>
+                <h2 class="section-title">Desserts</h2>
+            </div>
+            <div class="grid grid-3 mb-5">
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1587314168485-3236d6710814?w=600&q=80" alt="Tiramisu" class="card-image">
+                    <div class="card-content">
+                        <h3 class="card-title">Classic Tiramisu</h3>
+                        <p class="card-text">Italian dessert with espresso and mascarpone</p>
+                        <div class="flex-between"><span class="card-price">$15.00</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1624353365286-3f8d62daad51?w=600&q=80" alt="Chocolate Fondant" class="card-image">
+                    <div class="card-content">
+                        <h3 class="card-title">Chocolate Lava Cake</h3>
+                        <p class="card-text">Warm chocolate cake with vanilla ice cream</p>
+                        <div class="flex-between"><span class="card-price">$16.00</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=600&q=80" alt="Panna Cotta" class="card-image">
+                    <div class="card-content">
+                        <h3 class="card-title">Berry Panna Cotta</h3>
+                        <p class="card-text">Creamy vanilla panna cotta with mixed berries</p>
+                        <div class="flex-between"><span class="card-price">$14.00</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Beverages -->
+            <div class="section-header mt-5">
+                <span class="section-subtitle">Drinks</span>
+                <h2 class="section-title">Beverages</h2>
+            </div>
+            <div class="grid grid-4 mb-5">
+                <div style="text-align: center; padding: var(--spacing-md); background: var(--bg-secondary); border-radius: var(--radius-md);">
+                    <h4>Red Wine</h4>
+                    <p style="color: var(--text-muted);">Glass</p>
+                    <span class="card-price">$12-$18</span>
+                </div>
+                <div style="text-align: center; padding: var(--spacing-md); background: var(--bg-secondary); border-radius: var(--radius-md);">
+                    <h4>White Wine</h4>
+                    <p style="color: var(--text-muted);">Glass</p>
+                    <span class="card-price">$12-$16</span>
+                </div>
+                <div style="text-align: center; padding: var(--spacing-md); background: var(--bg-secondary); border-radius: var(--radius-md);">
+                    <h4>Craft Beer</h4>
+                    <p style="color: var(--text-muted);">Bottle</p>
+                    <span class="card-price">$10-$14</span>
+                </div>
+                <div style="text-align: center; padding: var(--spacing-md); background: var(--bg-secondary); border-radius: var(--radius-md);">
+                    <h4>Cocktails</h4>
+                    <p style="color: var(--text-muted);">Signature</p>
+                    <span class="card-price">$16-$22</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>BD Dine Restaurant</h4>
+                <p>Experience the finest culinary journey in Canberra.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="menu.html">Menu</a></li>
+                    <li><a href="booking.html">Reservations</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact Info</h4>
+                <ul class="footer-links">
+                    <li><i class="fas fa-phone"></i> (02) 6234 5678</li>
+                    <li><i class="fas fa-envelope"></i> info@bddine.com.au</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 BD Dine Restaurant. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

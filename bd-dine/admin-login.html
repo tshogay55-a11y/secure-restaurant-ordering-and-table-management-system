@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | BD Dine Restaurant</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .admin-login {
+            max-width: 500px;
+            margin: 120px auto;
+            padding: var(--spacing-xl);
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 12px 40px var(--shadow);
+            border-top: 4px solid var(--accent-primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-login">
+        <div class="text-center mb-4">
+            <div style="font-size: 3rem; color: var(--accent-primary); margin-bottom: var(--spacing-sm);">
+                <i class="fas fa-user-shield"></i>
+            </div>
+            <h2>Admin Access</h2>
+            <p style="color: var(--text-secondary);">Secure authentication required</p>
+        </div>
+
+        <form id="login-form">
+            <div id="step-1" class="login-step active">
+                <div class="form-group">
+                    <label class="form-label">Username</label>
+                    <input type="text" name="username" class="form-input" placeholder="admin" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" name="password" class="form-input" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    <i class="fas fa-lock"></i> Secure Login
+                </button>
+            </div>
+
+            <div id="step-2" class="login-step" style="display: none;">
+                <div class="form-group">
+                    <label class="form-label">2FA Verification Code</label>
+                    <input type="text" name="code" class="form-input" placeholder="000000" maxlength="6" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Verify</button>
+            </div>
+        </form>
+
+        <div class="mt-4 text-center">
+            <p style="font-size: 0.85rem; color: var(--text-muted);">
+                <i class="fas fa-info-circle"></i> Default credentials: admin / Admin@123
+            </p>
+            <p class="mt-2">
+                <a href="index.html" style="font-size: 0.9rem;">← Back to Website</a>
+            </p>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
