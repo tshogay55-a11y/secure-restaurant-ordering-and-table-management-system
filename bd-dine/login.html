@@ -40,13 +40,19 @@
     <nav class="navbar">
         <div class="nav-container">
             <a href="index.html" class="nav-logo">BD DINE</a>
+            
             <ul class="nav-menu">
                 <li><a href="index.html" class="nav-link">Home</a></li>
                 <li><a href="menu.html" class="nav-link">Menu</a></li>
+                <li><a href="about.html" class="nav-link">About</a></li>
                 <li><a href="booking.html" class="nav-link">Reservations</a></li>
+                <li><a href="contact.html" class="nav-link">Contact</a></li>
                 <li><a href="login.html" class="nav-link active">Login</a></li>
             </ul>
-            <button id="theme-toggle" class="theme-toggle"><i class="fas fa-moon"></i></button>
+            
+            <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+                <i class="fas fa-moon"></i>
+            </button>
         </div>
     </nav>
 
@@ -88,7 +94,7 @@
                     <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: var(--spacing-sm);">
                         We've sent a 6-digit code to your registered phone number
                     </p>
-                    <input type="text" name="code" class="form-input" placeholder="000000" maxlength="6" pattern="[0-9]{6}" required>
+                    <input type="text" name="code" class="form-input" placeholder="000000" maxlength="6">
                     <span class="form-error"></span>
                 </div>
                 

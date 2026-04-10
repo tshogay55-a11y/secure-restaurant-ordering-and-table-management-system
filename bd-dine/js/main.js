@@ -125,8 +125,8 @@ const FormValidator = {
 const Registration = {
     async submit(formData) {
         try {
-            const response = await API.post('register.php', formData);
-            return response;
+            localStorage.setItem('demoUser', JSON.stringify(formData));
+            return { success: true, message: 'Registration successful!' };
         } catch (error) {
             return { success: false, message: 'Registration failed. Please try again.' };
         }
@@ -199,15 +199,26 @@ const Login = {
     adminId: null,
     
     async authenticateStep1(credentials) {
-        try {
-            const isAdmin = window.location.pathname.includes('admin-login');
-            const endpoint = isAdmin ? 'admin-login.php' : 'login.php';
-            const response = await API.post(endpoint, credentials);
-            return response;
-        } catch (error) {
-            return { success: false, message: 'Authentication failed. Please try again.' };
+    try {
+        const savedUser = JSON.parse(localStorage.getItem('demoUser'));
+
+        if (!savedUser) {
+            return { success: false, message: 'No registered user found. Please register first.' };
         }
-    },
+
+        if (
+            credentials.email === savedUser.email &&
+            credentials.password === savedUser.password
+        ) {
+            this.userId = 1;
+            return { success: true, requires_2fa: false, message: 'Login successful!' };
+        } else {
+            return { success: false, message: 'Invalid email or password.' };
+        }
+    } catch (error) {
+        return { success: false, message: 'Authentication failed. Please try again.' };
+    }
+},
     
     async authenticateStep2(code) {
         try {
@@ -256,12 +267,9 @@ const Login = {
                 
                 const result = await this.authenticateStep1(credentials);
                 
-                if (result.success && result.requires_2fa) {
-                    this.userId = result.user_id || null;
-                    this.adminId = result.admin_id || null;
-                    this.showStep2();
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'Login';
+                if (result.success) {
+                    alert('Login successful!');
+                    window.location.href = 'index.html';
                 } else {
                     alert(result.message || 'Login failed. Please try again.');
                     submitBtn.disabled = false;
