@@ -11,13 +11,11 @@ CREATE TABLE users (
     password_hash VARCHAR(255) NOT NULL,
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
-    phone VARCHAR(20) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     last_login TIMESTAMP NULL,
     is_active BOOLEAN DEFAULT TRUE,
     encryption_key VARCHAR(255) NOT NULL,
     INDEX idx_email (email),
-    INDEX idx_phone (phone)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Admin users table
@@ -41,7 +39,6 @@ CREATE TABLE two_factor_codes (
     user_id INT,
     admin_id INT,
     code VARCHAR(6) NOT NULL,
-    phone VARCHAR(20) NOT NULL,
     expires_at TIMESTAMP NOT NULL,
     verified BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

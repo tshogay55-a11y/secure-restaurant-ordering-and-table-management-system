@@ -147,6 +147,7 @@ return data;
         
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
+            alert('REGISTER JS RUNNING');
             
             const formData = {
                 email: form.email.value,
