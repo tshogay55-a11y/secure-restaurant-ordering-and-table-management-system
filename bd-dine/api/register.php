@@ -21,7 +21,7 @@ try {
     $json = file_get_contents('php://input');
     $data = json_decode($json, true);
     
-    $required = ['email', 'password', 'first_name', 'last_name', 'phone'];
+    $required = ['email', 'password', 'first_name', 'last_name'];
     foreach ($required as $field) {
         if (!isset($data[$field]) || empty($data[$field])) {
             echo json_encode(['success' => false, 'message' => "Field $field is required"]);

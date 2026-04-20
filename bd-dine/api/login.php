@@ -1,7 +1,7 @@
 <?php
 /**
  * BD Dine Restaurant - User Login API
- * Step 1: Authenticate with email and password
+ * Authenticate with email and password
  */
 
 define('BD_DINE_SECURE', true);
@@ -40,11 +40,11 @@ try {
     $email = Encryption::sanitizeInput($data['email']);
     $password = $data['password']; // Don't sanitize passwords
     
-    // Initialize database and auth
+    // Initialize database and auth 
     $database = new Database();
     $auth = new Auth($database);
     
-    // Authenticate user
+    // Authenticate user with email and password
     $result = $auth->authenticateUser($email, $password);
     
     // Return result

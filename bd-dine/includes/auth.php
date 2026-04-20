@@ -33,11 +33,7 @@ class Auth {
             if (!Encryption::validateEmail($userData['email'])) {
                 return ['success' => false, 'message' => 'Invalid email address'];
             }
-            
-            if (!Encryption::validatePhone($userData['phone'])) {
-                return ['success' => false, 'message' => 'Invalid phone number (Australian format required)'];
-            }
-            
+    
             $passwordValidation = Encryption::validatePassword($userData['password']);
             if (!$passwordValidation['valid']) {
                 return ['success' => false, 'message' => $passwordValidation['message']];
@@ -60,27 +56,30 @@ class Auth {
             $encryptionKey = Encryption::generateToken(32);
             
             // Insert user
-            $query = "INSERT INTO users (email, password_hash, first_name, last_name, phone, encryption_key) 
-                      VALUES (:email, :password_hash, :first_name, :last_name, :phone, :encryption_key)";
+            $query = "INSERT INTO users (email, password_hash, first_name, last_name, encryption_key) 
+                      VALUES (:email, :password_hash, :first_name, :last_name, :encryption_key)";
             
             $stmt = $this->db->prepare($query);
             $stmt->bindParam(':email', $userData['email']);
             $stmt->bindParam(':password_hash', $passwordHash);
             $stmt->bindParam(':first_name', $userData['first_name']);
             $stmt->bindParam(':last_name', $userData['last_name']);
-            $stmt->bindParam(':phone', $userData['phone']);
             $stmt->bindParam(':encryption_key', $encryptionKey);
             
             if ($stmt->execute()) {
                 $userId = $this->db->lastInsertId();
                 
                 // Log registration
-                $this->security->logAudit($userId, null, 'user_registered', 'users', $userId);
-                
+                try {
+                    $this->security->logAudit($userId, null, 'user_registered', 'users', $userId);
+                } catch (Exception $e) {
+                    error_log("Audit log error: " . $e->getMessage());
+                }
                 return [
                     'success' => true,
                     'message' => 'Registration successful',
                     'user_id' => $userId
+                    
                 ];
             }
             
@@ -101,7 +100,11 @@ class Auth {
     public function authenticateUser($email, $password) {
         try {
             // Get user
+<<<<<<< HEAD
             $query = "SELECT user_id, email, password_hash, first_name, last_name, phone, is_active FROM users WHERE email = :email";
+=======
+            $query = "SELECT user_id, email, password_hash, first_name, last_name, is_active FROM users WHERE email = :email";
+>>>>>>> 2d91085cde171df1ccba5bebba9d3e9130724b11
             $stmt = $this->db->prepare($query);
             $stmt->bindParam(':email', $email);
             $stmt->execute();

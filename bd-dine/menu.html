@@ -27,8 +27,13 @@
         </button>
         
         <div id="cart-menu-dropdown" class="cart-menu-dropdown" style="display: none;">
+<<<<<<< HEAD
             <a href="cart.html">View Cart</a>
             <a href="payment.html">Payment</a>
+=======
+            <a href="#" id="open-cart-link">Cart</a>
+            <a href="#">Payment</a>
+>>>>>>> 2d91085cde171df1ccba5bebba9d3e9130724b11
         </div>
         </div>
     </nav>
@@ -255,6 +260,7 @@
 
     <script src="js/main.js"></script>
 <script>
+<<<<<<< HEAD
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
 function addToCart(name, price) {
@@ -263,5 +269,31 @@ function addToCart(name, price) {
     alert(name + " added!");
 }
 </script>
+=======
+let cart = [];
+
+function addToCart(name, price) {
+    cart.push({ name, price });
+
+    let total = cart.reduce((sum, item) => sum + item.price, 0).toFixed(2);
+
+    const cartItems = document.getElementById("cartItems");
+    const cartTotal = document.getElementById("cartTotal");
+
+    let li = document.createElement("li");
+    li.textContent = name + " - $" + price;
+    cartItems.appendChild(li);
+
+    cartTotal.textContent = total.toFixed(2);
+
+    alert(name + " added!");
+}
+</script>
+<div id="cartBox" style="position:fixed; bottom:20px; right:20px; background:white; padding:10px; border:1px solid #ccc;">
+    <h4>Cart</h4>
+    <ul id="cartItems"></ul>
+    <p><strong>Total: $<span id="cartTotal">0</span></strong></p>
+</div>
+>>>>>>> 2d91085cde171df1ccba5bebba9d3e9130724b11
 </body>
 </html>

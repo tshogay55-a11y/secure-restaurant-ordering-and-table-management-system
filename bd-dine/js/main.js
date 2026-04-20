@@ -76,13 +76,6 @@ const FormValidator = {
         return re.test(email);
     },
     
-    validatePhone(phone) {
-        // Australian phone format
-        const re = /^(\+61|0)[4-5][0-9]{8}$/;
-        const cleaned = phone.replace(/[^0-9+]/g, '');
-        return re.test(cleaned);
-    },
-    
     validatePassword(password) {
         if (password.length < 8) {
             return { valid: false, message: 'Password must be at least 8 characters long' };
@@ -125,12 +118,37 @@ const FormValidator = {
 const Registration = {
     async submit(formData) {
     try {
+<<<<<<< HEAD
         const response = await API.post('register.php', formData);
         return response;
     } catch (error) {
         return { success: false, message: 'Registration failed. Please try again.' };
     }
     },
+=======
+        const response = await fetch('http://localhost/secure-restaurant-ordering-and-table-management-system/bd-dine/api/register.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        });
+
+       const data = await response.json();
+
+if (data.success) {
+    alert("Registration successful!");
+    window.location.href = "login.html";
+} else {
+    alert(data.message);
+}
+
+return data;
+    } catch (error) {
+        return { success: false, message: error.message };
+    }
+},
+>>>>>>> 2d91085cde171df1ccba5bebba9d3e9130724b11
     
     init() {
         const form = document.getElementById('registration-form');
@@ -144,7 +162,6 @@ const Registration = {
                 password: form.password.value,
                 first_name: form.first_name.value,
                 last_name: form.last_name.value,
-                phone: form.phone.value
             };
             
             // Validate
@@ -152,11 +169,6 @@ const Registration = {
             
             if (!FormValidator.validateEmail(formData.email)) {
                 FormValidator.showError(form.email, 'Invalid email address');
-                isValid = false;
-            }
-            
-            if (!FormValidator.validatePhone(formData.phone)) {
-                FormValidator.showError(form.phone, 'Invalid phone number (Australian format)');
                 isValid = false;
             }
             
@@ -178,16 +190,10 @@ const Registration = {
             submitBtn.disabled = true;
             submitBtn.textContent = 'Creating Account...';
             
-            const result = await this.submit(formData);
+            await this.submit(formData);
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Create Account';
             
-            if (result.success) {
-                alert('Registration successful! Please login.');
-                window.location.href = 'login.html';
-            } else {
-                alert(result.message || 'Registration failed. Please try again.');
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Create Account';
-            }
         });
     }
 };
@@ -227,27 +233,6 @@ const Login = {
     }
 },
     
-    async authenticateStep2(code) {
-        try {
-            const isAdmin = this.adminId !== null;
-            const endpoint = isAdmin ? 'admin-verify-2fa.php' : 'verify-2fa.php';
-            const response = await API.post(endpoint, {
-                user_id: this.userId,
-                admin_id: this.adminId,
-                code: code
-            });
-            return response;
-        } catch (error) {
-            return { success: false, message: 'Verification failed. Please try again.' };
-        }
-    },
-    
-    showStep2() {
-        document.getElementById('step-1').style.display = 'none';
-        document.getElementById('step-2').style.display = 'block';
-        this.currentStep = 2;
-    },
-    
     init() {
         const form = document.getElementById('login-form');
         if (!form) return;
@@ -257,7 +242,7 @@ const Login = {
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            if (this.currentStep === 1) {
+            if (true) {
                 // Step 1: Username/Email + Password
                 const isAdmin = window.location.pathname.includes('admin-login');
                 const credentials = isAdmin
@@ -283,6 +268,7 @@ const Login = {
                     alert(result.message || 'Login failed. Please try again.');
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = 'Login <i class="fas fa-arrow-right"></i>';
+<<<<<<< HEAD
                 }
                 
             } else if (this.currentStep === 2) {
@@ -308,10 +294,12 @@ const Login = {
                     alert(result.message || 'Verification failed. Please try again.');
                     submitBtn.disabled = false;
                     submitBtn.textContent = 'Verify';
+=======
+>>>>>>> 2d91085cde171df1ccba5bebba9d3e9130724b11
                 }
             }
         });
-    }
+        }
 };
 
 // Booking Handler
