@@ -39,4 +39,3 @@ try {
     error_log("Session Check API Error: " . $e->getMessage());
     echo json_encode(['valid' => false, 'message' => 'System error']);
 }
-?>

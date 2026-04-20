@@ -96,7 +96,7 @@ define('LOGIN_LOCKOUT_TIME', 900); // 15 minutes
 
 // Application
 define('SITE_NAME', 'BD Dine Restaurant');
-define('SITE_URL', 'http://localhost/bd-dine-restaurant');
+define('SITE_URL', 'http://localhost/secure-restaurant-ordering-and-table-management-system/bd-dine/');
 define('CURRENCY', 'AUD');
 define('TIMEZONE', 'Australia/Canberra');
 
@@ -134,7 +134,6 @@ ini_set('error_log', LOG_PATH . 'php_errors.log');
 // Session configuration
 ini_set('session.cookie_httponly', 1);
 ini_set('session.use_only_cookies', 1);
-ini_set('session.cookie_secure', 1); // Enable in production with HTTPS
+ini_set('session.cookie_secure', 0); // Enable in production with HTTPS
 ini_set('session.cookie_samesite', 'Strict');
 
-?>

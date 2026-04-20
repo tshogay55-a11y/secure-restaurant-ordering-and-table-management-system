@@ -232,3 +232,13 @@ class Encryption {
 }
 
 ?>
+// ===== CART MENU TOGGLE =====
+const menuToggle = document.getElementById("cart-menu-toggle");
+const dropdown = document.getElementById("cart-menu-dropdown");
+
+if (menuToggle && dropdown) {
+    menuToggle.addEventListener("click", () => {
+        dropdown.style.display =
+            dropdown.style.display === "none" ? "block" : "none";
+    });
+}

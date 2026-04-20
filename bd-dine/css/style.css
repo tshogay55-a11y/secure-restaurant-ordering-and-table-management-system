@@ -15,7 +15,7 @@
     --text-primary: #2C1810;
     --text-secondary: #5C4033;
     --text-muted: #8B7355;
-    --accent-primary: #D4731 8;
+    --accent-primary: #D47318;
     --accent-secondary: #B85C0F;
     --accent-tertiary: #E8A871;
     --success: #4A7C59;
@@ -548,6 +548,70 @@ a:hover {
     animation: slideInLeft 0.8s ease-out;
 }
 
+/* Cart Page */
+.cart-section {
+    padding-top: 120px;
+    min-height: 70vh;
+}
+
+.cart-heading {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-lg);
+    color: var(--text-primary);
+}
+
+.cart-empty-box {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    text-align: center;
+    color: var(--text-secondary);
+    box-shadow: 0 12px 40px var(--shadow);
+}
+
+.cart-layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--spacing-lg);
+    align-items: start;
+}
+
+.cart-items-box,
+.cart-summary-box {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    box-shadow: 0 12px 40px var(--shadow);
+}
+
+.cart-items-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.cart-item-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-sm) 0;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+.cart-item-row:last-child {
+    border-bottom: none;
+}
+
+.cart-total-text {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--accent-primary);
+    margin: var(--spacing-md) 0;
+}
+
 /* Responsive Design */
 @media (max-width: 1024px) {
     h1 { font-size: 3rem; }
@@ -589,6 +653,17 @@ a:hover {
     }
 }
 
+@media (max-width: 768px) {
+    .cart-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .cart-summary {
+        position: static;
+        top: auto;
+    }
+}
+
 /* Utility Classes */
 .text-center { text-align: center; }
 .text-left { text-align: left; }
@@ -620,3 +695,17 @@ a:hover {
 .gap-2 { gap: var(--spacing-sm); }
 .gap-3 { gap: var(--spacing-md); }
 .gap-4 { gap: var(--spacing-lg); }
+
+.login-status-box {
+    text-align: center;
+    padding: var(--spacing-xl);
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 12px 40px var(--shadow);
+    margin-bottom: var(--spacing-lg);
+}
+
+.login-status-box h3 {
+    margin-bottom: var(--spacing-sm);
+    color: var(--text-primary);
+}

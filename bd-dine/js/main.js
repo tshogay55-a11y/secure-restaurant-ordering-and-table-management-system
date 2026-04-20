@@ -35,7 +35,7 @@ const themeToggle = {
 
 // API Helper
 const API = {
-    baseURL: '/bd-dine-restaurant/api',
+    baseURL: '/secure-restaurant-ordering-and-table-management-system/bd-dine/api',
     
     async request(endpoint, options = {}) {
         const url = `${this.baseURL}/${endpoint}`;
@@ -124,12 +124,12 @@ const FormValidator = {
 // Registration Handler
 const Registration = {
     async submit(formData) {
-        try {
-            localStorage.setItem('demoUser', JSON.stringify(formData));
-            return { success: true, message: 'Registration successful!' };
-        } catch (error) {
-            return { success: false, message: 'Registration failed. Please try again.' };
-        }
+    try {
+        const response = await API.post('register.php', formData);
+        return response;
+    } catch (error) {
+        return { success: false, message: 'Registration failed. Please try again.' };
+    }
     },
     
     init() {
@@ -198,25 +198,32 @@ const Login = {
     userId: null,
     adminId: null,
     
+    async checkIfAlreadyLoggedIn() {
+        try {
+            const result = await API.get('check-session.php');
+            if (result.valid) {
+                const statusBox = document.getElementById('already-logged-in-box');
+                const form = document.getElementById('login-form');
+
+                if (statusBox) {
+                    statusBox.style.display = 'block';
+                }
+
+                if (form) {
+                    form.style.display = 'none';
+                }
+            }
+        } catch (error) {
+            console.error('Session check failed:', error);
+        }
+    },
+
     async authenticateStep1(credentials) {
     try {
-        const savedUser = JSON.parse(localStorage.getItem('demoUser'));
-
-        if (!savedUser) {
-            return { success: false, message: 'No registered user found. Please register first.' };
-        }
-
-        if (
-            credentials.email === savedUser.email &&
-            credentials.password === savedUser.password
-        ) {
-            this.userId = 1;
-            return { success: true, requires_2fa: false, message: 'Login successful!' };
-        } else {
-            return { success: false, message: 'Invalid email or password.' };
-        }
+        const response = await API.post('login.php', credentials);
+        return response;
     } catch (error) {
-        return { success: false, message: 'Authentication failed. Please try again.' };
+    return { success: false, message: 'Authentication failed. Please try again.' };
     }
 },
     
@@ -244,6 +251,8 @@ const Login = {
     init() {
         const form = document.getElementById('login-form');
         if (!form) return;
+
+        this.checkIfAlreadyLoggedIn();
         
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -273,7 +282,7 @@ const Login = {
                 } else {
                     alert(result.message || 'Login failed. Please try again.');
                     submitBtn.disabled = false;
-                    submitBtn.textContent = 'Login';
+                    submitBtn.innerHTML = 'Login <i class="fas fa-arrow-right"></i>';
                 }
                 
             } else if (this.currentStep === 2) {
@@ -436,3 +445,14 @@ document.addEventListener('DOMContentLoaded', () => {
 window.API = API;
 window.FormValidator = FormValidator;
 window.Session = Session;
+
+// ===== CART MENU TOGGLE =====
+const menuToggle = document.getElementById("cart-menu-toggle");
+const dropdown = document.getElementById("cart-menu-dropdown");
+
+if (menuToggle && dropdown) {
+    menuToggle.addEventListener("click", () => {
+        dropdown.style.display =
+            dropdown.style.display === "none" ? "block" : "none";
+    });
+}

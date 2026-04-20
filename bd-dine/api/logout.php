@@ -32,4 +32,3 @@ try {
     error_log("Logout API Error: " . $e->getMessage());
     echo json_encode(['success' => false, 'message' => 'System error']);
 }
-?>

@@ -132,4 +132,3 @@ try {
     error_log("Booking API Error: " . $e->getMessage());
     echo json_encode(['success' => false, 'message' => 'System error. Please try again.']);
 }
-?>

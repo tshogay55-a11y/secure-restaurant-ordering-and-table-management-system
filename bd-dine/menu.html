@@ -21,6 +21,15 @@
                 <li><a href="login.html" class="nav-link">Login</a></li>
             </ul>
             <button id="theme-toggle" class="theme-toggle"><i class="fas fa-moon"></i></button>
+       <div class="menu-dropdown-wrapper">
+         <button id="cart-menu-toggle" class="theme-toggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        
+        <div id="cart-menu-dropdown" class="cart-menu-dropdown" style="display: none;">
+            <a href="cart.html">View Cart</a>
+            <a href="payment.html">Payment</a>
+        </div>
         </div>
     </nav>
 
@@ -50,7 +59,9 @@
                     <div class="card-content">
                         <h3 class="card-title">Classic Bruschetta</h3>
                         <p class="card-text">Toasted bread with fresh tomatoes, basil, and balsamic glaze</p>
-                        <div class="flex-between"><span class="card-price">$14.00</span></div>
+                        <div class="flex-between">
+                            <span class="card-price">$14.00</span></div>
+                            <button onclick="addToCart('Classic Bruschetta', 14)">Add</button>
                     </div>
                 </div>
                 <div class="card">
@@ -58,7 +69,9 @@
                     <div class="card-content">
                         <h3 class="card-title">Crispy Calamari</h3>
                         <p class="card-text">Lightly fried with aioli and lemon wedge</p>
-                        <div class="flex-between"><span class="card-price">$18.00</span></div>
+                        <div class="flex-between">
+                            <span class="card-price">$18.00</span></div>
+                            <button onclick="addToCart('Crispy Calamari', 18)">Add</button>
                     </div>
                 </div>
                 <div class="card">
@@ -66,7 +79,9 @@
                     <div class="card-content">
                         <h3 class="card-title">Fresh Oysters</h3>
                         <p class="card-text">Half dozen with mignonette sauce (6pcs)</p>
-                        <div class="flex-between"><span class="card-price">$22.00</span></div>
+                        <div class="flex-between">
+                            <span class="card-price">$22.00</span></div>
+                            <button onclick="addToCart('Fresh Oysters', 22)">Add</button>
                     </div>
                 </div>
             </div>
@@ -82,7 +97,9 @@
                     <div class="card-content">
                         <h3 class="card-title">Grilled Atlantic Salmon</h3>
                         <p class="card-text">Fresh salmon with roasted vegetables and lemon butter sauce</p>
-                        <div class="flex-between"><span class="card-price">$42.00</span></div>
+                        <div class="flex-between">
+                            <span class="card-price">$42.00</span></div>
+                            <button onclick="addToCart('Grilled Atlantic Salmon', 42)">Add</button>
                     </div>
                 </div>
                 <div class="card">
@@ -90,7 +107,9 @@
                     <div class="card-content">
                         <h3 class="card-title">Premium Wagyu Steak (200g)</h3>
                         <p class="card-text">Grass-fed wagyu with truffle mash and seasonal greens</p>
-                        <div class="flex-between"><span class="card-price">$65.00</span></div>
+                        <div class="flex-between">
+                            <span class="card-price">$65.00</span></div>
+                            <button onclick="addToCart('Premium Wagyu Steak', 65)">Add</button>
                     </div>
                 </div>
                 <div class="card">
@@ -98,7 +117,9 @@
                     <div class="card-content">
                         <h3 class="card-title">Seafood Linguine</h3>
                         <p class="card-text">Fresh prawns, scallops, and mussels in white wine sauce</p>
-                        <div class="flex-between"><span class="card-price">$38.00</span></div>
+                        <div class="flex-between">
+                            <span class="card-price">$38.00</span></div>
+                            <button onclick="addToCart('Seafood Linguine', 38)">Add</button>
                     </div>
                 </div>
                 <div class="card">
@@ -106,7 +127,9 @@
                     <div class="card-content">
                         <h3 class="card-title">Pan-Seared Duck Breast</h3>
                         <p class="card-text">With orange glaze, roasted root vegetables</p>
-                        <div class="flex-between"><span class="card-price">$48.00</span></div>
+                        <div class="flex-between">
+                            <span class="card-price">$48.00</span></div>
+                            <button onclick="addToCart('Pan-Seared Duck Breast', 48)">Add</button>
                     </div>
                 </div>
                 <div class="card">
@@ -114,7 +137,9 @@
                     <div class="card-content">
                         <h3 class="card-title">Herb-Crusted Lamb Rack</h3>
                         <p class="card-text">With rosemary jus and garlic mash</p>
-                        <div class="flex-between"><span class="card-price">$52.00</span></div>
+                        <div class="flex-between">
+                            <span class="card-price">$52.00</span></div>
+                            <button onclick="addToCart('Herb-Crusted Lamb Rack', 52)">Add</button>
                     </div>
                 </div>
                 <div class="card">
@@ -122,7 +147,9 @@
                     <div class="card-content">
                         <h3 class="card-title">Mushroom Risotto</h3>
                         <p class="card-text">Creamy arborio rice with mixed mushrooms and truffle oil</p>
-                        <div class="flex-between"><span class="card-price">$32.00</span></div>
+                        <div class="flex-between">
+                            <span class="card-price">$32.00</span></div>
+                            <button onclick="addToCart('Mushroom Risotto', 32)">Add</button>
                     </div>
                 </div>
             </div>
@@ -138,7 +165,9 @@
                     <div class="card-content">
                         <h3 class="card-title">Classic Tiramisu</h3>
                         <p class="card-text">Italian dessert with espresso and mascarpone</p>
-                        <div class="flex-between"><span class="card-price">$15.00</span></div>
+                        <div class="flex-between">
+                            <span class="card-price">$15.00</span></div>
+                            <button onclick="addToCart('Classic Tiramisu', 15)">Add</button>
                     </div>
                 </div>
                 <div class="card">
@@ -146,7 +175,9 @@
                     <div class="card-content">
                         <h3 class="card-title">Chocolate Lava Cake</h3>
                         <p class="card-text">Warm chocolate cake with vanilla ice cream</p>
-                        <div class="flex-between"><span class="card-price">$16.00</span></div>
+                        <div class="flex-between">
+                            <span class="card-price">$16.00</span></div>
+                            <button onclick="addToCart('Chocolate Lava Cake', 16)">Add</button>
                     </div>
                 </div>
                 <div class="card">
@@ -154,7 +185,9 @@
                     <div class="card-content">
                         <h3 class="card-title">Berry Panna Cotta</h3>
                         <p class="card-text">Creamy vanilla panna cotta with mixed berries</p>
-                        <div class="flex-between"><span class="card-price">$14.00</span></div>
+                        <div class="flex-between">
+                            <span class="card-price">$14.00</span></div>
+                            <button onclick="addToCart('Berry Panna Cotta', 14)">Add</button>
                     </div>
                 </div>
             </div>
@@ -169,21 +202,25 @@
                     <h4>Red Wine</h4>
                     <p style="color: var(--text-muted);">Glass</p>
                     <span class="card-price">$12-$18</span>
+                    <button onclick="addToCart('Red Wine', 15)">Add</button>
                 </div>
                 <div style="text-align: center; padding: var(--spacing-md); background: var(--bg-secondary); border-radius: var(--radius-md);">
                     <h4>White Wine</h4>
                     <p style="color: var(--text-muted);">Glass</p>
                     <span class="card-price">$12-$16</span>
+                    <button onclick="addToCart('White Wine', 14)">Add</button>
                 </div>
                 <div style="text-align: center; padding: var(--spacing-md); background: var(--bg-secondary); border-radius: var(--radius-md);">
                     <h4>Craft Beer</h4>
                     <p style="color: var(--text-muted);">Bottle</p>
                     <span class="card-price">$10-$14</span>
+                    <button onclick="addToCart('Craft Beer', 12)">Add</button>
                 </div>
                 <div style="text-align: center; padding: var(--spacing-md); background: var(--bg-secondary); border-radius: var(--radius-md);">
                     <h4>Cocktails</h4>
                     <p style="color: var(--text-muted);">Signature</p>
                     <span class="card-price">$16-$22</span>
+                    <button onclick="addToCart('Cocktail', 18)">Add</button>
                 </div>
             </div>
         </div>
@@ -217,5 +254,14 @@
     </footer>
 
     <script src="js/main.js"></script>
+<script>
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+function addToCart(name, price) {
+    cart.push({ name, price });
+    localStorage.setItem("cart", JSON.stringify(cart));
+    alert(name + " added!");
+}
+</script>
 </body>
 </html>

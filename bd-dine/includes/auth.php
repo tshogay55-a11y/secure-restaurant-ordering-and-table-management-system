@@ -101,7 +101,7 @@ class Auth {
     public function authenticateUser($email, $password) {
         try {
             // Get user
-            $query = "SELECT user_id, email, password_hash, phone, is_active FROM users WHERE email = :email";
+            $query = "SELECT user_id, email, password_hash, first_name, last_name, phone, is_active FROM users WHERE email = :email";
             $stmt = $this->db->prepare($query);
             $stmt->bindParam(':email', $email);
             $stmt->execute();
@@ -124,17 +124,36 @@ class Auth {
                 return ['success' => false, 'message' => 'Invalid credentials'];
             }
             
-            // Send 2FA code
-            if ($this->security->send2FACode($user['user_id'], null, $user['phone'])) {
-                return [
-                    'success' => true,
-                    'message' => '2FA code sent to your phone',
-                    'user_id' => $user['user_id'],
-                    'requires_2fa' => true
-                ];
-            }
-            
-            return ['success' => false, 'message' => 'Failed to send verification code'];
+            // Update last login
+        $updateQuery = "UPDATE users SET last_login = NOW() WHERE user_id = :user_id";
+        $updateStmt = $this->db->prepare($updateQuery);
+        $updateStmt->bindParam(':user_id', $user['user_id']);
+        $updateStmt->execute();
+
+        // Create secure session
+        $sessionData = [
+            'user_id' => $user['user_id'],
+            'email' => $user['email'],
+            'first_name' => $user['first_name'],
+            'last_name' => $user['last_name'],
+            'user_type' => 'customer'
+        ];
+
+        $sessionId = $this->security->createSession($user['user_id'], null, $sessionData);
+
+        if ($sessionId) {
+            $this->security->logAudit($user['user_id'], null, 'login_successful', 'users', $user['user_id']);
+
+            return [
+                'success' => true,
+                'message' => 'Login successful',
+                'session_id' => $sessionId,
+                'user_data' => $sessionData,
+                'requires_2fa' => false
+            ];
+        }
+
+        return ['success' => false, 'message' => 'Failed to create session'];
             
         } catch (Exception $e) {
             error_log("User authentication error: " . $e->getMessage());
@@ -148,7 +167,7 @@ class Auth {
      * @param string $code 2FA code
      * @return array ['success' => bool, 'message' => string, 'session_id' => string]
      */
-    public function complete UserLogin($userId, $code) {
+    public function completeUserLogin($userId, $code) {
         try {
             // Verify 2FA code
             if (!$this->security->verify2FACode($userId, null, $code)) {
@@ -345,6 +364,4 @@ class Auth {
         
         return $this->security->validateSession($sessionId);
     }
-}
-
-?>
+        }

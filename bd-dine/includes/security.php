@@ -364,6 +364,4 @@ class Security {
         
         return $_SESSION['csrf_token'];
     }
-}
-
-?>
+    }

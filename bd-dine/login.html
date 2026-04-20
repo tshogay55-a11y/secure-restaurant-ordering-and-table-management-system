@@ -38,7 +38,7 @@
 </head>
 <body>
     <nav class="navbar">
-        <div class="nav-container">
+        <div class="nav-container"> 
             <a href="index.html" class="nav-logo">BD DINE</a>
             
             <ul class="nav-menu">
@@ -57,7 +57,18 @@
     </nav>
 
     <div class="login-container">
-        <div class="login-header">
+         <div id="already-logged-in-box" class="login-status-box" style="display: none;">
+        <h3>You are already signed in</h3>
+        <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+            Your account is already active.
+        </p>
+        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+            <a href="index.html" class="btn btn-primary">Go to Home</a>
+            <a href="booking.html" class="btn btn-secondary">Go to Reservations</a>
+        </div>
+    </div>
+
+    <div class="login-header">
             <h2>Customer Login</h2>
             <p style="color: var(--text-secondary);">Access your account securely</p>
             <span class="security-badge">

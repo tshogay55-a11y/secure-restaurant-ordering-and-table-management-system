@@ -42,4 +42,3 @@ try {
     error_log("2FA Verification API Error: " . $e->getMessage());
     echo json_encode(['success' => false, 'message' => 'System error. Please try again.']);
 }
-?>
