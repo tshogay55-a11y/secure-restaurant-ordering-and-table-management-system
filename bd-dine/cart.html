@@ -117,14 +117,21 @@
             cart.forEach((item, index) => {
                 const li = document.createElement("li");
                 li.className = "cart-item-row";
-               li.innerHTML = `
-                    <span>${item.name} - $${Number(item.price).toFixed(2)}</span>
-                    <button class="btn btn-secondary" style="color: var(--error); border-color: var(--error); font-size: 0.85rem; padding: 0.4rem 0.8rem;" onclick="removeItem(${index})">
+                li.innerHTML = `
+                    <span>
+                        ${item.name} x ${item.quantity || 1}
+                        - $${(Number(item.price) * (item.quantity || 1)).toFixed(2)}
+                    </span>
+
+                    <button class="btn btn-secondary"
+                        style="color: var(--error); border-color: var(--error); font-size: 0.85rem; padding: 0.4rem 0.8rem;"
+                        onclick="removeItem(${index})">
+
                         <i class="fas fa-trash"></i> Remove
                     </button>
                 `;
                 cartItemsPage.appendChild(li);
-                total += Number(item.price);
+                total += Number(item.price) * (item.quantity || 1);
             });
 
             cartTotalPage.textContent = total.toFixed(2);

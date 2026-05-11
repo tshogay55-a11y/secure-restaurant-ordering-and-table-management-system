@@ -70,6 +70,48 @@ try {
         exit();
     }
     
+    // Check if this customer already booked the same date and time
+        $checkUserQuery = "SELECT booking_id 
+                        FROM bookings 
+                        WHERE user_id = :user_id
+                        AND booking_date = :booking_date 
+                        AND booking_time = :booking_time
+                        AND status != 'cancelled'";
+
+        $checkUserStmt = $db->prepare($checkUserQuery);
+        $checkUserStmt->bindParam(':user_id', $userId);
+        $checkUserStmt->bindParam(':booking_date', $bookingDate);
+        $checkUserStmt->bindParam(':booking_time', $data['booking_time']);
+        $checkUserStmt->execute();
+
+        if ($checkUserStmt->rowCount() > 0) {
+            echo json_encode([
+                'success' => false,
+                'message' => 'You have already booked this time slot.'
+            ]);
+            exit();
+        }
+
+        // Check if another customer already booked this slot
+            $checkSlotQuery = "SELECT booking_id 
+                            FROM bookings 
+                            WHERE booking_date = :booking_date 
+                            AND booking_time = :booking_time
+                            AND status != 'cancelled'";
+
+            $checkSlotStmt = $db->prepare($checkSlotQuery);
+            $checkSlotStmt->bindParam(':booking_date', $bookingDate);
+            $checkSlotStmt->bindParam(':booking_time', $data['booking_time']);
+            $checkSlotStmt->execute();
+
+            if ($checkSlotStmt->rowCount() > 0) {
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'This time slot is already booked.'
+                ]);
+                exit();
+            }
+            
     // Find available table
     $query = "SELECT table_id, table_number, capacity 
               FROM restaurant_tables 

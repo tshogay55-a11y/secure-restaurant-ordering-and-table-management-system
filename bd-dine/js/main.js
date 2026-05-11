@@ -433,7 +433,7 @@ window.API = API;
 window.FormValidator = FormValidator;
 window.Session = Session;
 
-// ===== CART MENU TOGGLE =====
+// CART MENU TOGGLE 
 const menuToggle = document.getElementById("cart-menu-toggle");
 const dropdown = document.getElementById("cart-menu-dropdown");
 

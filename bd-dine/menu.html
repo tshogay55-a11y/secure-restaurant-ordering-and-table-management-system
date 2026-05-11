@@ -236,40 +236,83 @@
                 <h2 class="section-title">Beverages</h2>
             </div>
             <div class="grid grid-4 mb-5">
-                <div style="text-align: center; padding: var(--spacing-md); background: var(--bg-secondary); border-radius: var(--radius-md);">
-                    <h4>Red Wine</h4>
-                    <p style="color: var(--text-muted);">Glass</p>
-                    <span class="card-price">$12-$18</span>
-                    <button onclick="addToCart('Red Wine', 15)"class="btn btn-primary" style="margin-top: var(--spacing-xs); width: 100%;">
-                        <i class="fas fa-plus"></i> Add to Cart
-                    </button>
-                </div>
-                <div style="text-align: center; padding: var(--spacing-md); background: var(--bg-secondary); border-radius: var(--radius-md);">
-                    <h4>White Wine</h4>
-                    <p style="color: var(--text-muted);">Glass</p>
-                    <span class="card-price">$12-$16</span>
-                    <button onclick="addToCart('White Wine', 14)" class="btn btn-primary" style="margin-top: var(--spacing-xs); width: 100%;">
-                        <i class="fas fa-plus"></i> Add to Cart
-                    </button>
-                </div>
-                <div style="text-align: center; padding: var(--spacing-md); background: var(--bg-secondary); border-radius: var(--radius-md);">
-                    <h4>Craft Beer</h4>
-                    <p style="color: var(--text-muted);">Bottle</p>
-                    <span class="card-price">$10-$14</span>
-                    <button onclick="addToCart('Craft Beer', 12)" class="btn btn-primary" style="margin-top: var(--spacing-xs); width: 100%;">
-                        <i class="fas fa-plus"></i> Add to Cart
-                    </button>
-                </div>
-                <div style="text-align: center; padding: var(--spacing-md); background: var(--bg-secondary); border-radius: var(--radius-md);">
-                    <h4>Cocktails</h4>
-                    <p style="color: var(--text-muted);">Signature</p>
-                    <span class="card-price">$16-$22</span>
-                    <button onclick="addToCart('Cocktail', 18)" class="btn btn-primary" style="margin-top: var(--spacing-xs); width: 100%;">
-                        <i class="fas fa-plus"></i> Add to Cart
+                <!-- Red Wine -->
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=600&q=80"
+             alt="Red Wine"
+             class="card-image">
+
+        <div class="card-content">
+            <h3 class="card-title">Red Wine</h3>
+            <p class="card-text">Glass</p>
+            <span class="card-price">$12-$18</span>
+
+            <button onclick="addToCart('Red Wine', 15)"
+                    class="btn btn-primary"
+                    style="margin-top: var(--spacing-xs); width: 100%;">
+                <i class="fas fa-plus"></i> Add to Cart
+            </button>
+        </div>
+    </div>
+
+    <!-- White Wine -->
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1558001373-7b93ee48ffa0?w=600&q=80"
+             alt="White Wine"
+             class="card-image">
+
+        <div class="card-content">
+            <h3 class="card-title">White Wine</h3>
+            <p class="card-text">Glass</p>
+            <span class="card-price">$12-$16</span>
+
+            <button onclick="addToCart('White Wine', 14)"
+                    class="btn btn-primary"
+                    style="margin-top: var(--spacing-xs); width: 100%;">
+                <i class="fas fa-plus"></i> Add to Cart
+            </button>
+        </div>
+    </div>
+
+    <!-- Craft Beer -->
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1608270586620-248524c67de9?w=600&q=80"
+             alt="Craft Beer"
+             class="card-image">
+
+        <div class="card-content">
+            <h3 class="card-title">Craft Beer</h3>
+            <p class="card-text">Bottle</p>
+            <span class="card-price">$10-$14</span>
+
+            <button onclick="addToCart('Craft Beer', 12)"
+                    class="btn btn-primary"
+                    style="margin-top: var(--spacing-xs); width: 100%;">
+                <i class="fas fa-plus"></i> Add to Cart
+            </button>
+        </div>
+    </div>
+
+    <!-- Cocktails -->
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=600&q=80"
+             alt="Cocktails"
+             class="card-image">
+
+        <div class="card-content">
+            <h3 class="card-title">Cocktails</h3>
+            <p class="card-text">Signature</p>
+            <span class="card-price">$16-$22</span>
+
+            <button onclick="addToCart('Cocktail', 18)"
+                    class="btn btn-primary"
+                    style="margin-top: var(--spacing-xs); width: 100%;">
+                <i class="fas fa-plus"></i> Add to Cart
                     </button>
                 </div>
             </div>
         </div>
+    
     </section>
 
     <footer class="footer">
@@ -300,20 +343,28 @@
     </footer>
 
     <script src="js/main.js"></script>
+    
     <script>
-function addToCart(name, price) {
+
+    function addToCart(name, price) {
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-    cart.push({
-        name: name,
-        price: Number(price)
-    });
-    
+    const existingIndex = cart.findIndex(item => item.name === name);
+
+    if (existingIndex !== -1) {
+        cart[existingIndex].quantity = (cart[existingIndex].quantity || 1) + 1;
+    } else {
+        cart.push({
+            name: name,
+            price: Number(price),
+            quantity: 1
+        });
+    }
+
     localStorage.setItem("cart", JSON.stringify(cart));
-
     showToast(name + ' added to cart!', 'success');
-
 }
+
 
 </script>
 </body>

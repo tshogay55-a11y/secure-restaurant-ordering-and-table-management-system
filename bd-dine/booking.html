@@ -28,6 +28,19 @@
             background: #8B4513;
             color: white;
         }
+        .time-slot.booked {
+            background: #ddd;
+            color: #888;
+            border-color: #ccc;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .time-slot.booked:hover {
+            background: #ddd;
+            color: #888;
+            border-color: #ccc;
+        }
     </style>
 </head>
 <body>
@@ -157,12 +170,64 @@
     </div>
 
     <script src="js/main.js"></script>
-    <script>
-        function selectTime(element, time) {
-            document.querySelectorAll('.time-slot').forEach(slot => slot.classList.remove('selected'));
-            element.classList.add('selected');
-            document.querySelector('input[name="booking_time"]').value = time + ':00';
+   <script>
+function selectTime(element, time) {
+    if (element.classList.contains('booked')) {
+        return;
+    }
+
+    document.querySelectorAll('.time-slot').forEach(slot => {
+        slot.classList.remove('selected');
+    });
+
+    element.classList.add('selected');
+    document.querySelector('input[name="booking_time"]').value = time + ':00';
+}
+
+document.querySelector('input[name="booking_date"]').addEventListener('change', async function () {
+    const selectedDate = this.value;
+    const timeSlots = document.querySelectorAll('.time-slot');
+
+    timeSlots.forEach(slot => {
+        slot.classList.remove('booked');
+        slot.classList.remove('selected');
+        slot.removeAttribute('data-is-mine');
+
+        if (slot.dataset.originalText) {
+            slot.textContent = slot.dataset.originalText;
+        } else {
+            slot.dataset.originalText = slot.textContent;
         }
-    </script>
+    });
+
+    document.querySelector('input[name="booking_time"]').value = '';
+
+    if (!selectedDate) return;
+
+    const response = await fetch(`api/get-booked-slots.php?date=${selectedDate}`);
+    const result = await response.json();
+
+    if (result.success) {
+        result.booked_slots.forEach(bookedSlot => {
+            const shortTime = bookedSlot.booking_time.substring(0, 5);
+
+            timeSlots.forEach(slot => {
+                const clickValue = slot.getAttribute('onclick');
+
+                if (clickValue && clickValue.includes(shortTime)) {
+                    if (bookedSlot.is_mine) {
+                        // Same user: keep button clickable
+                        slot.classList.remove('booked');
+                    } else {
+                        // Other user: disable the slot
+                        slot.classList.add('booked');
+                        slot.textContent = 'Booked';
+                    }
+                }
+            });
+        });
+    }
+});
+</script>
 </body>
 </html>
