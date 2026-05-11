@@ -129,16 +129,6 @@ class Auth {
         $updateStmt->bindParam(':user_id', $user['user_id']);
         $updateStmt->execute();
 
-        // Create secure session
-        $sessionData = [
-            'user_id' => $user['user_id'],
-            'email' => $user['email'],
-            'first_name' => $user['first_name'],
-            'last_name' => $user['last_name'],
-            'user_type' => 'customer'
-        ];
-
-        $sessionId = $this->security->createSession($user['user_id'], null, $sessionData);
 
         // Send 2FA code to user's email
     if ($this->security->send2FACode($user['user_id'], null, $user['email'])) {

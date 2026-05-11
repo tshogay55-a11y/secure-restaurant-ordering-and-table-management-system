@@ -435,6 +435,10 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.logout-btn').forEach(btn => {
                 btn.style.display = 'inline-flex';
             });
+
+            document.querySelectorAll('.auth-only').forEach(item => {
+                item.style.display = 'inline-block';
+            });
         }
     });
 });

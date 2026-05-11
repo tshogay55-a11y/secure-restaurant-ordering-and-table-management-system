@@ -330,7 +330,7 @@ async function loadCustomers() {
 
             if (data.success) {
                 showToast(`Booking ${status}!`, 'success');
-                setTimeout(() => loadDashboard(), 1000);
+                loadDashboard();
             } else {
                 showToast(data.message || 'Failed to update', 'error');
             }

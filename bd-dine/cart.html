@@ -40,7 +40,7 @@
 </nav>
 
     <!-- Cart Section -->
-    <section class="section cart-section">
+    <section class="section cart-section" style="padding-top: 20px;">
         <div class="container">
             <h1 class="cart-heading">Your Cart</h1>
 
@@ -54,9 +54,12 @@
                 </div>
 
                 <aside class="cart-summary-box">
-                    <h3>Summary</h3>
+                    <h3>Cart Total</h3>
                     <p class="cart-total-text">Total: $<span id="cartTotalPage">0.00</span></p>
                     <a href="payment.html" class="btn btn-primary">Checkout</a>
+                    <a href="menu.html" class="btn btn-secondary" style="margin-top: 1rem; width: 100%;">
+                        Order More
+                    </a>
                 </aside>
             </div>
         </div>
@@ -95,47 +98,82 @@
 
     <script src="js/main.js"></script>
     <script>
-        const cart = JSON.parse(localStorage.getItem("cart")) || [];
-        const cartItemsPage = document.getElementById("cartItemsPage");
-        const cartTotalPage = document.getElementById("cartTotalPage");
-        const emptyCartMessage = document.getElementById("emptyCartMessage");
-        const cartContent = document.getElementById("cartContent");
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-        function removeItem(index) {
+    const cartItemsPage = document.getElementById("cartItemsPage");
+    const cartTotalPage = document.getElementById("cartTotalPage");
+    const emptyCartMessage = document.getElementById("emptyCartMessage");
+    const cartContent = document.getElementById("cartContent");
+
+    function saveCart() {
+        localStorage.setItem("cart", JSON.stringify(cart));
+    }
+
+    function increaseQty(index) {
+        cart[index].quantity = (cart[index].quantity || 1) + 1;
+        saveCart();
+        loadCart();
+    }
+
+    function decreaseQty(index) {
+        cart[index].quantity = (cart[index].quantity || 1) - 1;
+
+        if (cart[index].quantity <= 0) {
             cart.splice(index, 1);
-            localStorage.setItem("cart", JSON.stringify(cart));
-            location.reload();
         }
 
+        saveCart();
+        loadCart();
+    }
+
+    function removeItem(index) {
+        cart.splice(index, 1);
+        saveCart();
+        loadCart();
+    }
+
+    function loadCart() {
         if (cart.length === 0) {
             emptyCartMessage.style.display = "block";
-        } else {
-            cartContent.style.display = "grid";
-            cartItemsPage.innerHTML = "";
-
-            let total = 0;
-            cart.forEach((item, index) => {
-                const li = document.createElement("li");
-                li.className = "cart-item-row";
-                li.innerHTML = `
-                    <span>
-                        ${item.name} x ${item.quantity || 1}
-                        - $${(Number(item.price) * (item.quantity || 1)).toFixed(2)}
-                    </span>
-
-                    <button class="btn btn-secondary"
-                        style="color: var(--error); border-color: var(--error); font-size: 0.85rem; padding: 0.4rem 0.8rem;"
-                        onclick="removeItem(${index})">
-
-                        <i class="fas fa-trash"></i> Remove
-                    </button>
-                `;
-                cartItemsPage.appendChild(li);
-                total += Number(item.price) * (item.quantity || 1);
-            });
-
-            cartTotalPage.textContent = total.toFixed(2);
+            cartContent.style.display = "none";
+            return;
         }
-    </script>
+
+        emptyCartMessage.style.display = "none";
+        cartContent.style.display = "grid";
+        cartItemsPage.innerHTML = "";
+
+        let total = 0;
+
+        cart.forEach((item, index) => {
+            const qty = item.quantity || 1;
+            const itemTotal = Number(item.price) * qty;
+
+            const li = document.createElement("li");
+            li.className = "cart-item-row";
+
+            li.innerHTML = `
+                <span>
+                    ${item.name} - $${itemTotal.toFixed(2)}
+                </span>
+
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <button class="btn btn-secondary" style="padding: 0.3rem 0.7rem;" onclick="decreaseQty(${index})">-</button>
+
+                    <strong>${qty}</strong>
+
+                    <button class="btn btn-secondary" style="padding: 0.3rem 0.7rem;" onclick="increaseQty(${index})">+</button>
+                </div>
+            `;
+
+            cartItemsPage.appendChild(li);
+            total += itemTotal;
+        });
+
+        cartTotalPage.textContent = total.toFixed(2);
+    }
+
+    loadCart();
+</script>
 </body>
 </html>

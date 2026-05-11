@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Payment | BD Dine Restaurant</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="nav-top">
+            <a href="index.html" class="nav-logo">BD DINE</a>
+
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="about.html" class="nav-link">About</a></li>
+                <li class="auth-only"><a href="menu.html" class="nav-link">Menu</a></li>
+                <li class="auth-only"><a href="booking.html" class="nav-link">Reservations</a></li>
+                <li><a href="contact.html" class="nav-link">Contact</a></li>
+                <li><a href="login.html" class="nav-link">Login</a></li>
+            </ul>
+
+            <div class="nav-right-icons">
+                <button id="theme-toggle" class="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="nav-bottom">
+            <a href="#" class="logout-btn">
+                Logout <span class="logout-icon"><i class="fas fa-sign-out-alt"></i></span>
+            </a>
+        </div>
+    </div>
+</nav>
+
+<section class="section" style="padding-top: 40px;">
+    <div class="container">
+        <h1 class="cart-heading">Secure Payment</h1>
+
+        <div class="cart-layout">
+            <div class="cart-items-box">
+                <h3>Payment Details</h3>
+
+                <form id="payment-form">
+                    <div class="form-group">
+                        <label class="form-label">Cardholder Name</label>
+                        <input type="text" class="form-input" required placeholder="Tsendu Chhoewang">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Card Number</label>
+                        <input type="text" class="form-input" required maxlength="19" placeholder="4242 4242 4242 4242">
+                    </div>
+
+                    <div class="grid grid-2">
+                        <div class="form-group">
+                            <label class="form-label">Expiry Date</label>
+                            <input type="text" class="form-input" required placeholder="12/28">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">CVV</label>
+                            <input type="password" class="form-input" required maxlength="4" placeholder="123">
+                        </div>
+                    </div>
+
+                    <div style="background: var(--bg-accent); padding: var(--spacing-sm); border-radius: var(--radius-md); margin-bottom: var(--spacing-md);">
+                        <p style="margin:0; font-size:0.9rem;">
+                            <i class="fas fa-lock"></i>
+                            This is a simulated secure payment for demonstration purposes.
+                        </p>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width:100%;">
+                        <i class="fas fa-lock"></i> Pay Securely
+                    </button>
+                </form>
+            </div>
+
+            <aside class="cart-summary-box">
+                <h3>Order Total</h3>
+                <p class="cart-total-text">Total: $<span id="paymentTotal">0.00</span></p>
+                <a href="cart.html" class="btn btn-secondary" style="margin-top:1rem; width:100%;">Back to Cart</a>
+            </aside>
+        </div>
+    </div>
+</section>
+
+<script src="js/main.js"></script>
+
+<script>
+const cart = JSON.parse(localStorage.getItem("cart")) || [];
+const paymentTotal = document.getElementById("paymentTotal");
+
+let total = 0;
+cart.forEach(item => {
+    total += Number(item.price) * (item.quantity || 1);
+});
+
+paymentTotal.textContent = total.toFixed(2);
+
+if (cart.length === 0) {
+    showToast("Your cart is empty.", "error");
+    setTimeout(() => {
+        window.location.href = "menu.html";
+    }, 1500);
+}
+
+document.getElementById("payment-form").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const button = this.querySelector("button");
+    button.disabled = true;
+    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing Payment...';
+
+    setTimeout(() => {
+        localStorage.removeItem("cart");
+        showToast("Payment successful! Order confirmed.", "success");
+
+        setTimeout(() => {
+            window.location.href = "customer-dashboard.html";
+        }, 1800);
+    }, 1500);
+});
+</script>
+
+</body>
+</html>

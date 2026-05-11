@@ -24,8 +24,8 @@
                 <ul class="nav-menu">
                     <li><a href="index.html" class="nav-link active">Home</a></li>
                     <li><a href="about.html" class="nav-link">About</a></li>
-                    <li><a href="menu.html" class="nav-link auth-only">Menu</a></li>
-                    <li><a href="booking.html" class="nav-link auth-only">Reservations</a></li>
+                    <li class="auth-only"><a href="menu.html" class="nav-link">Menu</a></li>
+                    <li class="auth-only"><a href="booking.html" class="nav-link">Reservations</a></li>
                     <li><a href="contact.html" class="nav-link">Contact</a></li>
                     <li><a href="login.html" class="nav-link">Login</a></li>
                 </ul>
@@ -56,8 +56,15 @@
             <h1>Welcome to BD Dine</h1>
             <p>Experience the finest culinary journey in the heart of Canberra</p>
             <div class="flex gap-3" style="justify-content: center;">
-                <a href="menu.html" class="btn btn-primary">Explore Menu</a>
-                <a href="booking.html" class="btn btn-ghost">Reserve Table</a>
+                <a href="#" class="btn btn-primary" 
+                onclick="handleProtectedLink('menu.html','Please login or register to access the menu.')">
+                Explore Menu
+            </a>
+            
+            <a href="#" class="btn btn-ghost"
+            onclick="handleProtectedLink('booking.html','Please login or register to make a reservation.')">
+            Reserve Table
+        </a>
             </div>
         </div>
     </section>
@@ -97,7 +104,6 @@
                         <p class="card-text">Fresh Atlantic salmon with roasted vegetables and lemon butter sauce</p>
                         <div class="flex-between" style="align-items: center;">
                             <span class="card-price">$42.00</span>
-                            <a href="menu.html" class="btn btn-secondary">View Menu</a>
                         </div>
                     </div>
                 </div>
@@ -109,7 +115,6 @@
                         <p class="card-text">200g grass-fed wagyu with truffle mash and seasonal greens</p>
                         <div class="flex-between" style="align-items: center;">
                             <span class="card-price">$65.00</span>
-                            <a href="menu.html" class="btn btn-secondary">View Menu</a>
                         </div>
                     </div>
                 </div>
@@ -121,7 +126,6 @@
                         <p class="card-text">Fresh prawns, scallops, and mussels in white wine sauce</p>
                         <div class="flex-between" style="align-items: center;">
                             <span class="card-price">$38.00</span>
-                            <a href="menu.html" class="btn btn-secondary">View Menu</a>
                         </div>
                     </div>
                 </div>
@@ -178,8 +182,6 @@
         <div class="container">
             <h2 style="color: white; font-size: 3rem; margin-bottom: var(--spacing-md);">Ready to Experience BD Dine?</h2>
             <p style="color: rgba(255, 255, 255, 0.95); font-size: 1.2rem; margin-bottom: var(--spacing-lg); max-width: 600px; margin-left: auto; margin-right: auto;">Reserve your table today and embark on a culinary journey like no other</p>
-            <a href="booking.html" class="btn btn-ghost" style="font-size: 1.1rem; padding: var(--spacing-md) var(--spacing-xl);">Book Now</a>
-        </div>
     </section>
 
     <!-- Footer -->
@@ -226,6 +228,19 @@
     </footer>
 
     <!-- JavaScript -->
+
+    <script>
+async function handleProtectedLink(page, message) {
+    const result = await Session.check();
+
+    if (result.valid) {
+        window.location.href = page;
+    } else {
+        showToast(message, 'success');
+    }
+}
+
+</script>
     <script src="js/main.js"></script>
 </body>
 </html>

@@ -807,6 +807,7 @@ html {
     color: white;
 }
 
+li.auth-only,
 .auth-only {
     display: none;
 }
