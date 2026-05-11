@@ -1,9 +1,4 @@
 <?php
-/**
- * BD Dine Restaurant - 2FA Verification API
- * Step 2: Verify 2FA code and complete login
- */
-
 define('BD_DINE_SECURE', true);
 
 header('Content-Type: application/json');
@@ -27,15 +22,19 @@ try {
         exit();
     }
     
-    if (!isset($data['user_id']) || empty($data['user_id'])) {
-        echo json_encode(['success' => false, 'message' => 'User ID required']);
-        exit();
-    }
-    
     $database = new Database();
     $auth = new Auth($database);
     
-    $result = $auth->completeUserLogin($data['user_id'], $data['code']);
+    // Check if admin or user
+    if (isset($data['admin_id']) && !empty($data['admin_id'])) {
+        $result = $auth->completeAdminLogin($data['admin_id'], $data['code']);
+    } elseif (isset($data['user_id']) && !empty($data['user_id'])) {
+        $result = $auth->completeUserLogin($data['user_id'], $data['code']);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'User ID or Admin ID required']);
+        exit();
+    }
+    
     echo json_encode($result);
     
 } catch (Exception $e) {

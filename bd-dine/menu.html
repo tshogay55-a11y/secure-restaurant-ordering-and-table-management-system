@@ -11,27 +11,40 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
+            <div class="nav-top"> 
             <a href="index.html" class="nav-logo">BD DINE</a>
             <ul class="nav-menu">
                 <li><a href="index.html" class="nav-link">Home</a></li>
-                <li><a href="menu.html" class="nav-link active">Menu</a></li>
                 <li><a href="about.html" class="nav-link">About</a></li>
+                <li><a href="menu.html" class="nav-link active">Menu</a></li>
                 <li><a href="booking.html" class="nav-link">Reservations</a></li>
                 <li><a href="contact.html" class="nav-link">Contact</a></li>
                 <li><a href="login.html" class="nav-link">Login</a></li>
             </ul>
-            <button id="theme-toggle" class="theme-toggle"><i class="fas fa-moon"></i></button>
-       <div class="menu-dropdown-wrapper">
-         <button id="cart-menu-toggle" class="theme-toggle">
-            <i class="fas fa-bars"></i>
-        </button>
-        
-        <div id="cart-menu-dropdown" class="cart-menu-dropdown" style="display: none;">
-            <a href="#" id="open-cart-link">Cart</a>
-            <a href="#">Payment</a>
+            <div class="nav-right-icons">
+                <div class="menu-dropdown-wrapper">
+                    <button id="cart-menu-toggle" class="theme-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div id="cart-menu-dropdown" class="cart-menu-dropdown" style="display: none;">
+                        <a href="cart.html">View Cart</a>
+                    </div>
+                </div>
+                <button id="theme-toggle" class="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
         </div>
+        <div class="nav-bottom">
+            <a href="logout.php" class="logout-btn">
+                Logout
+                <span class="logout-icon">
+                    <i class="fas fa-sign-out-alt"></i>
+                </span>
+            </a>
         </div>
-    </nav>
+    </div>
+</nav>
 
     <!-- Hero -->
     <section class="hero" style="min-height: 50vh;">
@@ -61,7 +74,10 @@
                         <p class="card-text">Toasted bread with fresh tomatoes, basil, and balsamic glaze</p>
                         <div class="flex-between">
                             <span class="card-price">$14.00</span></div>
-                            <button onclick="addToCart('Classic Bruschetta', 14)">Add</button>
+                            <button onclick="addToCart('Classic Bruschetta', 14)" class="btn btn-primary" style="margin-top: var(--spacing-xs); width: 100%;">
+                                <i class="fas fa-plus"></i> Add to Cart
+                            </button>
+
                     </div>
                 </div>
                 <div class="card">
@@ -71,17 +87,21 @@
                         <p class="card-text">Lightly fried with aioli and lemon wedge</p>
                         <div class="flex-between">
                             <span class="card-price">$18.00</span></div>
-                            <button onclick="addToCart('Crispy Calamari', 18)">Add</button>
+                            <button onclick="addToCart('Crispy Calamari', 18)" class="btn btn-primary" style="margin-top: var(--spacing-xs); width: 100%;">
+                                <i class="fas fa-plus"></i> Add to Cart
+                            </button>
                     </div>
                 </div>
                 <div class="card">
-                    <img src="https://images.unsplash.com/photo-1625943555376-1b7ba65ae3eb?w=600&q=80" alt="Oysters" class="card-image">
+                    <img src="https://images.unsplash.com/photo-1534080564583-6be75777b70a?w=600&q=80" alt="Oysters" class="card-image">
                     <div class="card-content">
                         <h3 class="card-title">Fresh Oysters</h3>
                         <p class="card-text">Half dozen with mignonette sauce (6pcs)</p>
                         <div class="flex-between">
                             <span class="card-price">$22.00</span></div>
-                            <button onclick="addToCart('Fresh Oysters', 22)">Add</button>
+                            <button onclick="addToCart('Fresh Oysters', 22)" class="btn btn-primary" style="margin-top: var(--spacing-xs); width: 100%;">
+                                <i class="fas fa-plus"></i> Add to Cart
+                            </button>
                     </div>
                 </div>
             </div>
@@ -99,7 +119,9 @@
                         <p class="card-text">Fresh salmon with roasted vegetables and lemon butter sauce</p>
                         <div class="flex-between">
                             <span class="card-price">$42.00</span></div>
-                            <button onclick="addToCart('Grilled Atlantic Salmon', 42)">Add</button>
+                            <button onclick="addToCart('Grilled Atlantic Salmon', 42)" class="btn btn-primary" style="margin-top: var(--spacing-xs); width: 100%;">
+                                <i class="fas fa-plus"></i> Add to Cart
+                            </button>
                     </div>
                 </div>
                 <div class="card">
@@ -109,7 +131,9 @@
                         <p class="card-text">Grass-fed wagyu with truffle mash and seasonal greens</p>
                         <div class="flex-between">
                             <span class="card-price">$65.00</span></div>
-                            <button onclick="addToCart('Premium Wagyu Steak', 65)">Add</button>
+                            <button onclick="addToCart('Premium Wagyu Steak', 65)" class="btn btn-primary" style="margin-top: var(--spacing-xs); width: 100%;">
+                                <i class="fas fa-plus"></i> Add to Cart
+                            </button>
                     </div>
                 </div>
                 <div class="card">
@@ -119,7 +143,9 @@
                         <p class="card-text">Fresh prawns, scallops, and mussels in white wine sauce</p>
                         <div class="flex-between">
                             <span class="card-price">$38.00</span></div>
-                            <button onclick="addToCart('Seafood Linguine', 38)">Add</button>
+                            <button onclick="addToCart('Seafood Linguine', 38)" class="btn btn-primary" style="margin-top: var(--spacing-xs); width: 100%;">
+                                <i class="fas fa-plus"></i> Add to Cart
+                            </button>
                     </div>
                 </div>
                 <div class="card">
@@ -129,7 +155,9 @@
                         <p class="card-text">With orange glaze, roasted root vegetables</p>
                         <div class="flex-between">
                             <span class="card-price">$48.00</span></div>
-                            <button onclick="addToCart('Pan-Seared Duck Breast', 48)">Add</button>
+                            <button onclick="addToCart('Pan-Seared Duck Breast', 48)" class="btn btn-primary" style="margin-top: var(--spacing-xs); width: 100%;">
+                                <i class="fas fa-plus"></i> Add to Cart
+                            </button>
                     </div>
                 </div>
                 <div class="card">
@@ -139,7 +167,9 @@
                         <p class="card-text">With rosemary jus and garlic mash</p>
                         <div class="flex-between">
                             <span class="card-price">$52.00</span></div>
-                            <button onclick="addToCart('Herb-Crusted Lamb Rack', 52)">Add</button>
+                            <button onclick="addToCart('Herb-Crusted Lamb Rack', 52)" class="btn btn-primary" style="margin-top: var(--spacing-xs); width: 100%;">
+                                <i class="fas fa-plus"></i> Add to Cart
+                            </button>
                     </div>
                 </div>
                 <div class="card">
@@ -149,7 +179,9 @@
                         <p class="card-text">Creamy arborio rice with mixed mushrooms and truffle oil</p>
                         <div class="flex-between">
                             <span class="card-price">$32.00</span></div>
-                            <button onclick="addToCart('Mushroom Risotto', 32)">Add</button>
+                            <button onclick="addToCart('Mushroom Risotto', 32)" class="btn btn-primary" style="margin-top: var(--spacing-xs); width: 100%;">
+                                <i class="fas fa-plus"></i> Add to Cart
+                            </button>
                     </div>
                 </div>
             </div>
@@ -167,7 +199,9 @@
                         <p class="card-text">Italian dessert with espresso and mascarpone</p>
                         <div class="flex-between">
                             <span class="card-price">$15.00</span></div>
-                            <button onclick="addToCart('Classic Tiramisu', 15)">Add</button>
+                            <button onclick="addToCart('Classic Tiramisu', 15)" class="btn btn-primary" style="margin-top: var(--spacing-xs); width: 100%;">
+                                <i class="fas fa-plus"></i> Add to Cart
+                            </button>
                     </div>
                 </div>
                 <div class="card">
@@ -177,7 +211,9 @@
                         <p class="card-text">Warm chocolate cake with vanilla ice cream</p>
                         <div class="flex-between">
                             <span class="card-price">$16.00</span></div>
-                            <button onclick="addToCart('Chocolate Lava Cake', 16)">Add</button>
+                            <button onclick="addToCart('Chocolate Lava Cake', 16)" class="btn btn-primary" style="margin-top: var(--spacing-xs); width: 100%;">
+                                <i class="fas fa-plus"></i> Add to Cart
+                            </button>
                     </div>
                 </div>
                 <div class="card">
@@ -187,7 +223,9 @@
                         <p class="card-text">Creamy vanilla panna cotta with mixed berries</p>
                         <div class="flex-between">
                             <span class="card-price">$14.00</span></div>
-                            <button onclick="addToCart('Berry Panna Cotta', 14)">Add</button>
+                            <button onclick="addToCart('Berry Panna Cotta', 14)"class="btn btn-primary" style="margin-top: var(--spacing-xs); width: 100%;">
+                                <i class="fas fa-plus"></i> Add to Cart
+                            </button>
                     </div>
                 </div>
             </div>
@@ -202,25 +240,33 @@
                     <h4>Red Wine</h4>
                     <p style="color: var(--text-muted);">Glass</p>
                     <span class="card-price">$12-$18</span>
-                    <button onclick="addToCart('Red Wine', 15)">Add</button>
+                    <button onclick="addToCart('Red Wine', 15)"class="btn btn-primary" style="margin-top: var(--spacing-xs); width: 100%;">
+                        <i class="fas fa-plus"></i> Add to Cart
+                    </button>
                 </div>
                 <div style="text-align: center; padding: var(--spacing-md); background: var(--bg-secondary); border-radius: var(--radius-md);">
                     <h4>White Wine</h4>
                     <p style="color: var(--text-muted);">Glass</p>
                     <span class="card-price">$12-$16</span>
-                    <button onclick="addToCart('White Wine', 14)">Add</button>
+                    <button onclick="addToCart('White Wine', 14)" class="btn btn-primary" style="margin-top: var(--spacing-xs); width: 100%;">
+                        <i class="fas fa-plus"></i> Add to Cart
+                    </button>
                 </div>
                 <div style="text-align: center; padding: var(--spacing-md); background: var(--bg-secondary); border-radius: var(--radius-md);">
                     <h4>Craft Beer</h4>
                     <p style="color: var(--text-muted);">Bottle</p>
                     <span class="card-price">$10-$14</span>
-                    <button onclick="addToCart('Craft Beer', 12)">Add</button>
+                    <button onclick="addToCart('Craft Beer', 12)" class="btn btn-primary" style="margin-top: var(--spacing-xs); width: 100%;">
+                        <i class="fas fa-plus"></i> Add to Cart
+                    </button>
                 </div>
                 <div style="text-align: center; padding: var(--spacing-md); background: var(--bg-secondary); border-radius: var(--radius-md);">
                     <h4>Cocktails</h4>
                     <p style="color: var(--text-muted);">Signature</p>
                     <span class="card-price">$16-$22</span>
-                    <button onclick="addToCart('Cocktail', 18)">Add</button>
+                    <button onclick="addToCart('Cocktail', 18)" class="btn btn-primary" style="margin-top: var(--spacing-xs); width: 100%;">
+                        <i class="fas fa-plus"></i> Add to Cart
+                    </button>
                 </div>
             </div>
         </div>
@@ -254,30 +300,21 @@
     </footer>
 
     <script src="js/main.js"></script>
-<script>
-let cart = [];
-
+    <script>
 function addToCart(name, price) {
-    cart.push({ name, price });
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-    let total = cart.reduce((sum, item) => sum + item.price, 0).toFixed(2);
+    cart.push({
+        name: name,
+        price: Number(price)
+    });
+    
+    localStorage.setItem("cart", JSON.stringify(cart));
 
-    const cartItems = document.getElementById("cartItems");
-    const cartTotal = document.getElementById("cartTotal");
+    showToast(name + ' added to cart!', 'success');
 
-    let li = document.createElement("li");
-    li.textContent = name + " - $" + price;
-    cartItems.appendChild(li);
-
-    cartTotal.textContent = total.toFixed(2);
-
-    alert(name + " added!");
 }
+
 </script>
-<div id="cartBox" style="position:fixed; bottom:20px; right:20px; background:white; padding:10px; border:1px solid #ccc;">
-    <h4>Cart</h4>
-    <ul id="cartItems"></ul>
-    <p><strong>Total: $<span id="cartTotal">0</span></strong></p>
-</div>
 </body>
 </html>

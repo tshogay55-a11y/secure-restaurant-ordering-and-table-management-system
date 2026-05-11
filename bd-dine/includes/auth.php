@@ -140,19 +140,17 @@ class Auth {
 
         $sessionId = $this->security->createSession($user['user_id'], null, $sessionData);
 
-        if ($sessionId) {
-            $this->security->logAudit($user['user_id'], null, 'login_successful', 'users', $user['user_id']);
-
-            return [
-                'success' => true,
-                'message' => 'Login successful',
-                'session_id' => $sessionId,
-                'user_data' => $sessionData,
-                'requires_2fa' => false
-            ];
-        }
-
-        return ['success' => false, 'message' => 'Failed to create session'];
+        // Send 2FA code to user's email
+    if ($this->security->send2FACode($user['user_id'], null, $user['email'])) {
+        return [
+            'success' => true,
+            'message' => '2FA code sent to your email',
+            'user_id' => $user['user_id'],
+            'requires_2fa' => true
+        ];
+    }
+    
+    return ['success' => false, 'message' => 'Failed to send verification code'];
             
         } catch (Exception $e) {
             error_log("User authentication error: " . $e->getMessage());
@@ -253,12 +251,8 @@ class Auth {
                 return ['success' => false, 'message' => 'Invalid credentials'];
             }
             
-            // For admin, we'll use email as phone for 2FA (in production, add phone field to admin_users)
-            // Using a placeholder phone for demonstration
-            $adminPhone = '+61412345678';
-            
-            // Send 2FA code
-            if ($this->security->send2FACode(null, $admin['admin_id'], $adminPhone)) {
+           // Send 2FA code to admin's email
+            if ($this->security->send2FACode(null, $admin['admin_id'], $admin['email'])) {
                 return [
                     'success' => true,
                     'message' => '2FA code sent',

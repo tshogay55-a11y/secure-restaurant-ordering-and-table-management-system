@@ -20,27 +20,74 @@
             border-left: 4px solid var(--accent-primary);
             margin-bottom: var(--spacing-md);
         }
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 9998;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-box {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 12px 40px var(--shadow);
+        }
+
+        .modal-box h3 {
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: var(--spacing-md);
+        }
+        
     </style>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-container">
+   <nav class="navbar">
+    <div class="nav-container">
+        <div class="nav-top">
             <a href="index.html" class="nav-logo">BD DINE</a>
             <ul class="nav-menu">
-                <li><a href="customer-dashboard.html" class="nav-link active">Dashboard</a></li>
-                <li><a href="booking.html" class="nav-link">New Booking</a></li>
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="about.html" class="nav-link">About</a></li>
                 <li><a href="menu.html" class="nav-link">Menu</a></li>
-                <li><a href="#" class="nav-link logout-btn">Logout</a></li>
+                <li><a href="booking.html" class="nav-link">Reservations</a></li>
+                <li><a href="contact.html" class="nav-link">Contact</a></li>
+                <li><a href="customer-dashboard.html" class="nav-link active">Dashboard</a></li>
             </ul>
-            <button id="theme-toggle" class="theme-toggle"><i class="fas fa-moon"></i></button>
+            <div class="nav-right-icons">
+                <button id="theme-toggle" class="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
         </div>
-    </nav>
+        <div class="nav-bottom">
+            <a href="#" class="logout-btn">
+                Logout
+                <span class="logout-icon">
+                    <i class="fas fa-sign-out-alt"></i>
+                </span>
+            </a>
+        </div>
+    </div>
+</nav>
 
     <div class="container" style="padding-top: 120px;">
         <div class="dashboard-header">
             <div class="flex-between" style="align-items: center;">
                 <div>
-                    <h1 style="margin-bottom: var(--spacing-xs);">Welcome Back!</h1>
+                   <h1 style="margin-bottom: var(--spacing-xs);" id="welcome-name">Welcome Back!</h1>
                     <p style="color: var(--text-secondary); margin: 0;">Manage your reservations and preferences</p>
                 </div>
                 <div>
@@ -57,7 +104,7 @@
                     <div style="font-size: 2.5rem; color: var(--accent-primary); margin-bottom: var(--spacing-sm);">
                         <i class="fas fa-calendar-check"></i>
                     </div>
-                    <div style="font-size: 2rem; font-weight: 700; color: var(--accent-primary); font-family: var(--font-heading);">3</div>
+                    <div style="font-size: 2rem; font-weight: 700; color: var(--accent-primary); font-family: var(--font-heading);"class="stat-upcoming">0</div>
                     <p style="color: var(--text-muted); margin: 0;">Upcoming Bookings</p>
                 </div>
             </div>
@@ -66,7 +113,7 @@
                     <div style="font-size: 2.5rem; color: var(--success); margin-bottom: var(--spacing-sm);">
                         <i class="fas fa-utensils"></i>
                     </div>
-                    <div style="font-size: 2rem; font-weight: 700; color: var(--success); font-family: var(--font-heading);">12</div>
+                    <div style="font-size: 2rem; font-weight: 700; color: var(--success); font-family: var(--font-heading);"class="stat-visits">0</div>
                     <p style="color: var(--text-muted); margin: 0;">Total Visits</p>
                 </div>
             </div>
@@ -75,7 +122,7 @@
                     <div style="font-size: 2.5rem; color: var(--warning); margin-bottom: var(--spacing-sm);">
                         <i class="fas fa-star"></i>
                     </div>
-                    <div style="font-size: 2rem; font-weight: 700; color: var(--warning); font-family: var(--font-heading);">VIP</div>
+                    <div style="font-size: 2rem; font-weight: 700; color: var(--warning); font-family: var(--font-heading);"class="stat-status">-</div>
                     <p style="color: var(--text-muted); margin: 0;">Member Status</p>
                 </div>
             </div>
@@ -84,42 +131,15 @@
         <div class="grid grid-2" style="gap: var(--spacing-lg); align-items: start;">
             <div>
                 <h2 class="mb-3">Upcoming Reservations</h2>
-                
-                <div class="booking-card">
-                    <div class="flex-between mb-2">
-                        <h4 style="margin: 0; color: var(--accent-primary);">Tonight at 7:00 PM</h4>
-                        <span style="background: var(--success); color: white; padding: 0.2rem 0.6rem; border-radius: var(--radius-sm); font-size: 0.8rem;">Confirmed</span>
-                    </div>
-                    <p style="margin: 0.5rem 0; color: var(--text-secondary);">
-                        <i class="fas fa-calendar"></i> March 24, 2026 • <i class="fas fa-users"></i> 4 Guests • <i class="fas fa-chair"></i> Table 7
-                    </p>
-                    <div class="flex gap-2 mt-2">
-                        <button class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.4rem 0.8rem;">View Details</button>
-                        <button class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.4rem 0.8rem;">Modify</button>
-                        <button class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.4rem 0.8rem; color: var(--error);">Cancel</button>
-                    </div>
-                </div>
 
-                <div class="booking-card">
-                    <div class="flex-between mb-2">
-                        <h4 style="margin: 0; color: var(--accent-primary);">March 30 at 6:30 PM</h4>
-                        <span style="background: var(--success); color: white; padding: 0.2rem 0.6rem; border-radius: var(--radius-sm); font-size: 0.8rem;">Confirmed</span>
-                    </div>
-                    <p style="margin: 0.5rem 0; color: var(--text-secondary);">
-                        <i class="fas fa-calendar"></i> March 30, 2026 • <i class="fas fa-users"></i> 2 Guests • <i class="fas fa-chair"></i> Table 2
-                    </p>
-                    <div class="flex gap-2 mt-2">
-                        <button class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.4rem 0.8rem;">View Details</button>
-                        <button class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.4rem 0.8rem;">Modify</button>
-                        <button class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.4rem 0.8rem; color: var(--error);">Cancel</button>
-                    </div>
+                <div id="upcoming-bookings-list">
+                    <p style="color: var(--text-muted);">Loading...</p>
                 </div>
-
                 <div class="text-center mt-3">
                     <a href="booking.html" class="btn btn-primary">
                         <i class="fas fa-plus"></i> Make New Reservation
                     </a>
-                </div>
+            </div>
             </div>
 
             <div>
@@ -128,11 +148,11 @@
                     <div class="card-content">
                         <div class="mb-3">
                             <label style="font-weight: 600; color: var(--text-muted); font-size: 0.85rem;">Name</label>
-                            <p style="margin: 0.2rem 0;">John Smith</p>
+                            <p style="margin: 0.2rem 0;" id="user-name">Loading...</p>
                         </div>
                         <div class="mb-3">
                             <label style="font-weight: 600; color: var(--text-muted); font-size: 0.85rem;">Email</label>
-                            <p style="margin: 0.2rem 0;">john.smith@email.com</p>
+                            <p style="margin: 0.2rem 0;" id="user-email">Loading...</p>
                         </div>
                         <div class="mb-3">
                             <label style="font-weight: 600; color: var(--text-muted); font-size: 0.85rem;">Phone</label>
@@ -140,7 +160,7 @@
                         </div>
                         <div class="mb-3">
                             <label style="font-weight: 600; color: var(--text-muted); font-size: 0.85rem;">Member Since</label>
-                            <p style="margin: 0.2rem 0;">January 2024</p>
+                            <p style="margin: 0.2rem 0;" data-field="member-since">Loading...</p>
                         </div>
                         <div class="mb-3">
                             <label style="font-weight: 600; color: var(--text-muted); font-size: 0.85rem;">Security</label>
@@ -202,6 +222,115 @@
         </div>
     </footer>
 
+    <script>
+
+    async function cancelBooking(bookingId) {
+        const overlay = document.createElement('div');
+        overlay.className = 'modal-overlay';
+        overlay.innerHTML = `
+            <div class="modal-box">
+                <h3>Cancel Booking</h3>
+                <p style="color: var(--text-secondary);">Are you sure you want to cancel this booking? This cannot be undone.</p>
+                <div class="modal-buttons">
+                    <button class="btn btn-secondary" id="modal-cancel">Keep Booking</button>
+                    <button class="btn btn-primary" id="modal-confirm" style="background: var(--error);">Yes, Cancel</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(overlay);
+
+        const confirmed = await new Promise(resolve => {
+            document.getElementById('modal-cancel').onclick = () => { overlay.remove(); resolve(false); };
+            document.getElementById('modal-confirm').onclick = () => { overlay.remove(); resolve(true); };
+        });
+
+        if (!confirmed) return;
+
+        try {
+            const response = await fetch('/secure-restaurant-ordering-and-table-management-system/bd-dine/api/cancel-booking.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ booking_id: bookingId })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                showToast('Booking cancelled successfully!', 'success');
+                setTimeout(() => loadDashboard(), 1500);
+            } else {
+                showToast(data.message || 'Failed to cancel booking', 'error');
+            }
+        } catch (error) {
+            showToast('Error cancelling booking', 'error');
+        }
+    }
+
+async function loadDashboard() {
+    try {
+        const response = await fetch('/secure-restaurant-ordering-and-table-management-system/bd-dine/api/dashboard.php');
+        const data = await response.json();
+        
+        if (!data.success) {
+            window.location.href = 'login.html';
+            return;
+        }
+        
+        // Update user info
+        document.getElementById('user-name').textContent = data.user.first_name + ' ' + data.user.last_name;
+        document.getElementById('user-email').textContent = data.user.email;
+        document.getElementById('welcome-name').textContent = 'Welcome Back, ' + data.user.first_name + '!';
+        
+        const memberSinceEl = document.querySelector('[data-field="member-since"]');
+        if (memberSinceEl) memberSinceEl.textContent = data.user.member_since;
+        
+        // Update stats
+        document.querySelector('.stat-upcoming').textContent = data.stats.upcoming_bookings;
+        document.querySelector('.stat-visits').textContent = data.stats.total_visits;
+        document.querySelector('.stat-status').textContent = data.stats.member_status;
+        
+        // Render upcoming bookings
+        const bookingsList = document.getElementById('upcoming-bookings-list');
+        if (data.upcoming_bookings.length === 0) {
+            bookingsList.innerHTML = '<p style="color: var(--text-muted);">No upcoming reservations. <a href="booking.html">Make a booking!</a></p>';
+        } else {
+            bookingsList.innerHTML = data.upcoming_bookings.map(b => `
+                <div class="booking-card">
+                    <div class="flex-between mb-2">
+                        <h4 style="margin: 0; color: var(--accent-primary);">
+                            ${new Date(b.booking_date).toLocaleDateString('en-AU', {weekday:'long', day:'numeric', month:'long'})} 
+                            at ${b.booking_time.slice(0,5)}
+                        </h4>
+                        <span style="background: var(--success); color: white; padding: 0.2rem 0.6rem; border-radius: var(--radius-sm); font-size: 0.8rem;">
+                            ${b.status.charAt(0).toUpperCase() + b.status.slice(1)}
+                        </span>
+                    </div>
+                    <p style="margin: 0.5rem 0; color: var(--text-secondary);">
+                        <i class="fas fa-users"></i> ${b.number_of_guests} Guests • 
+                        <i class="fas fa-chair"></i> Table ${b.table_number}
+                    </p>
+                    <div class="flex gap-2 mt-2">
+                        ${b.status === 'confirmed' ? `
+                            <a href="menu.html?booking_id=${b.booking_id}" class="btn btn-primary" style="font-size: 0.85rem; padding: 0.4rem 0.8rem;">
+                                <i class="fas fa-utensils"></i> Place Order
+                            </a>
+                        ` : ''}
+                        <button class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.4rem 0.8rem; color: var(--error); border-color: var(--error);" 
+                            onclick="cancelBooking(${b.booking_id})">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+    } catch (error) {
+        console.error('Dashboard load error:', error);
+    }
+}
+
+loadDashboard();
+</script>
     <script src="js/main.js"></script>
 </body>
 </html>

@@ -173,23 +173,21 @@ class Security {
             $expiresAt = date('Y-m-d H:i:s', time() + TWO_FACTOR_EXPIRY);
             
             // Store code in database
-            $query = "INSERT INTO two_factor_codes (user_id, admin_id, code, phone, expires_at) 
-                      VALUES (:user_id, :admin_id, :code, :phone, :expires_at)";
-            
+            $query = "INSERT INTO two_factor_codes (user_id, admin_id, code, expires_at) 
+                    VALUES (:user_id, :admin_id, :code, :expires_at)";
+
             $stmt = $this->db->prepare($query);
             $stmt->bindParam(':user_id', $userId);
             $stmt->bindParam(':admin_id', $adminId);
             $stmt->bindParam(':code', $code);
-            $stmt->bindParam(':phone', $phone);
             $stmt->bindParam(':expires_at', $expiresAt);
             
             if (!$stmt->execute()) {
                 return false;
             }
             
-            // Send SMS (simulated - replace with actual SMS API)
-            $this->sendSMS($phone, "Your BD Dine verification code is: $code. Valid for 5 minutes.");
-            
+            // Send email with OTP code
+            $this->sendEmail($phone, $code);
             // Log the 2FA code generation
             $this->logAudit($userId, $adminId, '2fa_code_sent', 'two_factor_codes', null);
             
@@ -263,31 +261,43 @@ class Security {
      * @param string $message Message
      * @return bool Success
      */
-    private function sendSMS($phone, $message) {
-        // In production, integrate with SMS API like Twilio, AWS SNS, etc.
-        // For demonstration, log the SMS
-        error_log("SMS to $phone: $message");
+
+    private function sendEmail($email, $code) {
+        require_once dirname(__DIR__) . '/vendor/autoload.php';
+        require_once dirname(__DIR__) . '/config/mail.php';
+    
+        $mail = new PHPMailer\PHPMailer\PHPMailer(true);
         
-        /*
-        // Example Twilio integration:
-        $curl = curl_init();
-        curl_setopt_array($curl, [
-            CURLOPT_URL => SMS_API_URL,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_POST => true,
-            CURLOPT_POSTFIELDS => http_build_query([
-                'api_key' => SMS_API_KEY,
-                'to' => $phone,
-                'from' => SMS_FROM_NUMBER,
-                'message' => $message
-            ])
-        ]);
-        $response = curl_exec($curl);
-        curl_close($curl);
-        */
+        try {
+            $mail->isSMTP();
+            $mail->Host = MAIL_HOST;
+            $mail->SMTPAuth = true;
+            $mail->Username = MAIL_USERNAME;
+            $mail->Password = MAIL_PASSWORD;
+            $mail->SMTPSecure = MAIL_ENCRYPTION;
+            $mail->Port = MAIL_PORT;
+            
+            $mail->setFrom(MAIL_FROM, MAIL_FROM_NAME);
+            $mail->addAddress($email);
+            
+            $mail->isHTML(true);
+            $mail->Subject = 'BD Dine - Your Verification Code';
+            $mail->Body = "
+            <h2>Your Verification Code</h2>
+            <p>Your BD Dine verification code is:</p>
+            <h1 style='color: #D47318; font-size: 40px; letter-spacing: 10px;'>$code</h1>
+            <p>This code is valid for 5 minutes.</p>
+            <p>If you did not request this code, please ignore this email.</p>
+        ";
         
+        $mail->send();
         return true;
+        
+    } catch (Exception $e) {
+        error_log("Email error: " . $e->getMessage());
+        return false;
     }
+}
     
     /**
      * Log audit trail

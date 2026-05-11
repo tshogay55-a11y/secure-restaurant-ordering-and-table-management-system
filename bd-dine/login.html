@@ -38,21 +38,32 @@
 </head>
 <body>
     <nav class="navbar">
-        <div class="nav-container"> 
+        <div class="nav-container">
+            <div class="nav-top"> 
             <a href="index.html" class="nav-logo">BD DINE</a>
             
             <ul class="nav-menu">
                 <li><a href="index.html" class="nav-link">Home</a></li>
-                <li><a href="menu.html" class="nav-link">Menu</a></li>
                 <li><a href="about.html" class="nav-link">About</a></li>
+                <li><a href="menu.html" class="nav-link">Menu</a></li>
                 <li><a href="booking.html" class="nav-link">Reservations</a></li>
                 <li><a href="contact.html" class="nav-link">Contact</a></li>
                 <li><a href="login.html" class="nav-link active">Login</a></li>
             </ul>
-            
+            <div class="nav-right-icons">
             <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
                 <i class="fas fa-moon"></i>
             </button>
+        </div>
+          </div>
+            <div class="nav-bottom">
+                <a href="logout.php" class="logout-btn">
+                    Logout
+                    <span class="logout-icon">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </span>
+                </a>
+            </div>
         </div>
     </nav>
 
@@ -63,7 +74,8 @@
             Your account is already active.
         </p>
         <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-            <a href="index.html" class="btn btn-primary">Go to Home</a>
+            <a href="customer-dashboard.html" class="btn btn-primary">Go to Dashboard</a>
+            <a href="index.html" class="btn btn-secondary">Go to Home</a>
             <a href="booking.html" class="btn btn-secondary">Go to Reservations</a>
         </div>
     </div>
@@ -114,17 +126,17 @@
                 </button>
                 
                 <p class="text-center mt-2">
-                    <a href="#" onclick="alert('Code resent!'); return false;" style="font-size: 0.9rem;">Resend Code</a>
+                    <a href="#" onclick="showToast('Code resent!', 'info'); return false;" style="font-size: 0.9rem;">Resend Code</a>
                 </p>
             </div>
         </form>
 
-        <div class="text-center mt-3" style="padding-top: var(--spacing-md); border-top: 1px solid var(--border-color);">
+        <div class="text-center mt-3" id="register-link" style="padding-top: var(--spacing-md); border-top: 1px solid var(--border-color);">
             <p style="color: var(--text-secondary);">Don't have an account? <a href="register.html" style="font-weight: 600;">Register Now</a></p>
             <p class="mt-2"><a href="admin-login.html" style="font-size: 0.9rem; color: var(--text-muted);">Admin Login</a></p>
         </div>
 
-        <div class="mt-4 text-center">
+        <div class="mt-4 text-center" id="security-note">
             <p style="font-size: 0.85rem; color: var(--text-muted);">
                 <i class="fas fa-lock"></i> Your session is encrypted and secure
             </p>

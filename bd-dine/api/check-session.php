@@ -25,18 +25,32 @@ try {
     $session = $security->validateSession($sessionId);
     
     if ($session) {
-        echo json_encode([
-            'valid' => true,
-            'user_type' => $session['data']['user_type'] ?? 'unknown',
-            'user_id' => $session['user_id'],
-            'admin_id' => $session['admin_id']
-        ]);
-    } else {
-        echo json_encode(['valid' => false, 'message' => 'Session invalid or expired']);
+    // Get user details from database
+    $userDetails = null;
+    if ($session['user_id']) {
+        $query = "SELECT first_name, last_name, email FROM users WHERE user_id = :user_id";
+        $db = $database->getConnection();
+        $stmt = $db->prepare($query);
+        $stmt->bindParam(':user_id', $session['user_id']);
+        $stmt->execute();
+        $userDetails = $stmt->fetch();
     }
     
+    echo json_encode([
+        'valid' => true,
+        'user_type' => $session['data']['user_type'] ?? 'unknown',
+        'user_id' => $session['user_id'],
+        'admin_id' => $session['admin_id'],
+        'user' => [
+            'first_name' => $userDetails['first_name'] ?? '',
+            'last_name' => $userDetails['last_name'] ?? '',
+            'email' => $userDetails['email'] ?? ''
+        ]
+    ]);
+} else {
+    echo json_encode(['valid' => false, 'message' => 'Session invalid or expired']);
+}
 } catch (Exception $e) {
-    error_log("Session Check API Error: " . $e->getMessage());
-    echo json_encode(['valid' => false, 'message' => 'System error']);
+    echo json_encode(['valid' => false, 'message' => 'Server error']);
 }
 ?>

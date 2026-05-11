@@ -28,7 +28,7 @@
             <p style="color: var(--text-secondary);">Secure authentication required</p>
         </div>
 
-        <form id="login-form">
+        <form id="admin-login-form">
             <div id="step-1" class="login-step active">
                 <div class="form-group">
                     <label class="form-label">Username</label>
@@ -45,25 +45,102 @@
                 </button>
             </div>
 
-            <div id="step-2" class="login-step" style="display: none;">
+            <div id="step-2" class="login-step">
                 <div class="form-group">
                     <label class="form-label">2FA Verification Code</label>
-                    <input type="text" name="code" class="form-input" placeholder="000000" maxlength="6" required>
+                    <input type="text" name="code" class="form-input" placeholder="000000" maxlength="6">
                 </div>
                 <button type="submit" class="btn btn-primary" style="width: 100%;">Verify</button>
             </div>
         </form>
 
         <div class="mt-4 text-center">
-            <p style="font-size: 0.85rem; color: var(--text-muted);">
-                <i class="fas fa-info-circle"></i> Default credentials: admin / Admin@123
-            </p>
             <p class="mt-2">
                 <a href="index.html" style="font-size: 0.9rem;">← Back to Website</a>
             </p>
         </div>
     </div>
+<script>
+// Hide step 2 initially
+document.getElementById('step-2').style.display = 'none';
 
-    <script src="js/main.js"></script>
+let adminId = null;
+
+document.getElementById('admin-login-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const step1 = document.getElementById('step-1');
+    const step2 = document.getElementById('step-2');
+    
+    if (step2.style.display === 'none') {
+        // Step 1: username + password
+        const username = this.username.value;
+        const password = this.password.value;
+        
+        const submitBtn = this.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Authenticating...';
+        
+        try {
+            const response = await fetch('/secure-restaurant-ordering-and-table-management-system/bd-dine/api/admin-login.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success && data.requires_2fa) {
+                adminId = data.admin_id;
+                step1.style.display = 'none';
+                step2.style.display = 'block';
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Verify';
+                showToast('2FA code sent to admin email!', 'info');
+            } else {
+                showToast(data.message || 'Login failed', 'error');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-lock"></i> Secure Login';
+            }
+        } catch (error) {
+            showToast('Connection error', 'error');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fas fa-lock"></i> Secure Login';
+        }
+        
+    } else {
+        // Step 2: verify 2FA
+        const code = this.code.value;
+        
+        const submitBtn = this.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Verifying...';
+        
+        try {
+            const response = await fetch('/secure-restaurant-ordering-and-table-management-system/bd-dine/api/verify-2fa.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ admin_id: adminId, code: code })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                showToast('Login successful!', 'success');
+                setTimeout(() => window.location.href = 'admin-dashboard.html', 1500);
+            } else {
+                showToast(data.message || 'Invalid code', 'error');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Verify';
+            }
+        } catch (error) {
+            showToast('Connection error', 'error');
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Verify';
+        }
+    }
+});
+</script>
+<script src="js/main.js"></script>
 </body>
 </html>

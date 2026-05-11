@@ -129,10 +129,10 @@ const Registration = {
        const data = await response.json();
 
 if (data.success) {
-    alert("Registration successful!");
-    window.location.href = "login.html";
+    showToast('Account created successfully!', 'success');
+    setTimeout(() => window.location.href = "login.html", 2000);
 } else {
-    alert(data.message);
+    showToast(data.message, 'error');
 }
 
 return data;
@@ -147,7 +147,6 @@ return data;
         
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            alert('REGISTER JS RUNNING');
             
             const formData = {
                 email: form.email.value,
@@ -202,14 +201,15 @@ const Login = {
             if (result.valid) {
                 const statusBox = document.getElementById('already-logged-in-box');
                 const form = document.getElementById('login-form');
+                const header = document.querySelector('.login-header');
+                const registerLink = document.getElementById('register-link');
+                const securityNote = document.getElementById('security-note');
 
-                if (statusBox) {
-                    statusBox.style.display = 'block';
-                }
-
-                if (form) {
-                    form.style.display = 'none';
-                }
+                if (statusBox) statusBox.style.display = 'block';
+                if (form) form.style.display = 'none';
+                if (header) header.style.display = 'none';
+                if (registerLink) registerLink.style.display = 'none';
+                if (securityNote) securityNote.style.display = 'none';
             }
         } catch (error) {
             console.error('Session check failed:', error);
@@ -234,7 +234,7 @@ const Login = {
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            if (true) {
+            if (Login.currentStep === 1) {
                 // Step 1: Username/Email + Password
                 const isAdmin = window.location.pathname.includes('admin-login');
                 const credentials = isAdmin
@@ -253,13 +253,48 @@ const Login = {
                 
                 const result = await this.authenticateStep1(credentials);
                 
-                if (result.success) {
-                    alert('Login successful!');
-                    window.location.href = 'index.html';
-                } else {
-                    alert(result.message || 'Login failed. Please try again.');
+                if (result.success && result.requires_2fa) {
+                    // Store user_id for step 2
+                    Login.userId = result.user_id;
+                    Login.currentStep = 2;
+    
+                    // Show step 2, hide step 1
+                    document.getElementById('step-1').classList.remove('active');
+                    document.getElementById('step-2').classList.add('active');
+    
+                    // Update step 2 message
+                    document.querySelector('#step-2 p').textContent = 'We have sent a 6-digit code to your email address.';
+                                        
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = 'Login <i class="fas fa-arrow-right"></i>';
+
+            } else if (result.success && !result.requires_2fa) {
+                showToast('Login successful!', 'success');
+                    setTimeout(() => window.location.href = 'customer-dashboard.html', 1500);
+            } else {
+                showToast(result.message || 'Login failed. Please try again.', 'error');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Login <i class="fas fa-arrow-right"></i>';
+            }
+            } else {
+                // Step 2: Verify 2FA code
+                const code = form.code.value;
+                const submitBtn = form.querySelector('button[type="submit"]');
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Verifying...';
+                
+                const result = await API.post('verify-2fa.php', {
+                    user_id: Login.userId,
+                    code: code
+                });
+                
+                if (result.success) {
+                    showToast('Login successful!', 'success');
+                    setTimeout(() => window.location.href = 'customer-dashboard.html', 1500);
+                } else {
+                    showToast(result.message || 'Invalid code. Please try again.', 'error');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Verify <i class="fas fa-check"></i>';
                 }
             }
         });
@@ -305,12 +340,11 @@ const Booking = {
             const result = await this.submit(bookingData);
             
             if (result.success) {
-                alert('Booking successful! Confirmation sent to your email.');
+                showToast('Booking successful! Confirmation sent to your email.', 'success');
                 form.reset();
             } else {
-                alert(result.message || 'Booking failed. Please try again.');
+                showToast(result.message || 'Booking failed. Please try again.', 'error');
             }
-            
             submitBtn.disabled = false;
             submitBtn.textContent = 'Reserve Table';
         });
@@ -362,22 +396,23 @@ const Session = {
         }
     },
     
-    async logout() {
-        try {
+   async logout() {
+    try {
+        showToast('Logging out...', 'info');
+        setTimeout(async () => {
             await API.post('logout.php', {});
-            window.location.href = 'index.html';
-        } catch (error) {
-            console.error('Logout failed:', error);
-        }
-    },
+            window.location.href = 'login.html';
+        }, 1500);
+    } catch (error) {
+        console.error('Logout failed:', error);
+    }
+},
     
     initLogoutButtons() {
         document.querySelectorAll('.logout-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
-                if (confirm('Are you sure you want to logout?')) {
                     this.logout();
-                }
             });
         });
     }
@@ -407,4 +442,25 @@ if (menuToggle && dropdown) {
         dropdown.style.display =
             dropdown.style.display === "none" ? "block" : "none";
     });
+}
+function showToast(message, type = 'info', duration = 4000) {
+    const existing = document.querySelector('.toast');
+    if (existing) existing.remove();
+
+    const icons = {
+        success: 'fas fa-check-circle',
+        error: 'fas fa-exclamation-circle',
+        info: 'fas fa-info-circle'
+    };
+
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.innerHTML = `<i class="${icons[type]}"></i> ${message}`;
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transition = 'opacity 0.3s';
+        setTimeout(() => toast.remove(), 300);
+    }, duration);
 }
