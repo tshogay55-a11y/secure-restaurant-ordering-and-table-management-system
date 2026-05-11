@@ -199,6 +199,9 @@ const Login = {
         try {
             const result = await API.get('check-session.php');
             if (result.valid) {
+                document.querySelectorAll('.logout-btn').forEach(btn => {
+                    btn.style.display = 'inline-flex';
+                });
                 const statusBox = document.getElementById('already-logged-in-box');
                 const form = document.getElementById('login-form');
                 const header = document.querySelector('.login-header');
@@ -426,6 +429,14 @@ document.addEventListener('DOMContentLoaded', () => {
     Login.init();
     Booking.init();
     Session.initLogoutButtons();
+
+    Session.check().then(result => {
+        if (result.valid) {
+            document.querySelectorAll('.logout-btn').forEach(btn => {
+                btn.style.display = 'inline-flex';
+            });
+        }
+    });
 });
 
 // Export for use in other files
