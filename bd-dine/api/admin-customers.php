@@ -27,23 +27,31 @@ try {
     }
 
     // Get all customers with their booking counts and last login
-    $stmt = $db->prepare("
-        SELECT 
-            u.user_id,
-            u.first_name,
-            u.last_name,
-            u.email,
-            u.created_at,
-            u.last_login,
-            u.is_active,
-            COUNT(b.booking_id) as total_bookings,
-            SUM(CASE WHEN b.status = 'confirmed' THEN 1 ELSE 0 END) as confirmed_bookings,
-            SUM(CASE WHEN b.status = 'cancelled' THEN 1 ELSE 0 END) as cancelled_bookings
-        FROM users u
-        LEFT JOIN bookings b ON u.user_id = b.user_id
-        GROUP BY u.user_id
-        ORDER BY u.created_at DESC
-    ");
+   $stmt = $db->prepare("
+    SELECT 
+        u.user_id,
+        u.first_name,
+        u.last_name,
+        u.email,
+        u.created_at,
+        u.last_login,
+        u.is_active,
+
+        COUNT(DISTINCT b.booking_id) as total_bookings,
+        SUM(CASE WHEN b.status = 'confirmed' THEN 1 ELSE 0 END) as confirmed_bookings,
+        SUM(CASE WHEN b.status = 'cancelled' THEN 1 ELSE 0 END) as cancelled_bookings,
+
+        COUNT(DISTINCT o.order_id) as total_orders,
+        COALESCE(SUM(o.total_amount), 0) as total_spent,
+        MAX(o.payment_status) as payment_status
+
+    FROM users u
+    LEFT JOIN bookings b ON u.user_id = b.user_id
+    LEFT JOIN orders o ON u.user_id = o.user_id
+
+    GROUP BY u.user_id
+    ORDER BY u.created_at DESC
+");
     $stmt->execute();
     $customers = $stmt->fetchAll();
 

@@ -46,26 +46,26 @@
             <div class="cart-items-box">
                 <h3>Payment Details</h3>
 
-                <form id="payment-form">
+                <form id="payment-form" autocomplete="off">
                     <div class="form-group">
                         <label class="form-label">Cardholder Name</label>
-                        <input type="text" class="form-input" required placeholder="Tsendu Chhoewang">
+                        <input type="text" autocomplete="off" class="form-input" required placeholder="Name on Card">
                     </div>
 
                     <div class="form-group">
                         <label class="form-label">Card Number</label>
-                        <input type="text" class="form-input" required maxlength="19" placeholder="4242 4242 4242 4242">
+                        <input type="text" autocomplete="off" class="form-input" required maxlength="19" placeholder="Card Number">
                     </div>
 
                     <div class="grid grid-2">
                         <div class="form-group">
                             <label class="form-label">Expiry Date</label>
-                            <input type="text" class="form-input" required placeholder="12/28">
+                            <input type="text" name="fake-expiry" autocomplete="new-password" class="form-input" required placeholder="MM/YY">
                         </div>
 
                         <div class="form-group">
                             <label class="form-label">CVV</label>
-                            <input type="password" class="form-input" required maxlength="4" placeholder="123">
+                            <input type="password" name="fake-cvv" autocomplete="new-password" class="form-input" required maxlength="4" placeholder="CVV">
                         </div>
                     </div>
 
@@ -118,14 +118,27 @@ document.getElementById("payment-form").addEventListener("submit", function(e) {
     button.disabled = true;
     button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing Payment...';
 
-    setTimeout(() => {
+    setTimeout(async () => {
+    const response = await API.post('process-payment.php', {
+        cart: cart,
+        total_amount: total,
+        payment_method: 'simulated_card'
+    });
+
+    if (response.success) {
         localStorage.removeItem("cart");
-        showToast("Payment successful! Order confirmed.", "success");
+        showToast("Payment successful! Order saved.", "success");
 
         setTimeout(() => {
             window.location.href = "customer-dashboard.html";
         }, 1800);
-    }, 1500);
+    } else {
+        showToast(response.message || "Payment failed.", "error");
+        button.disabled = false;
+        button.innerHTML = '<i class="fas fa-lock"></i> Pay Securely';
+    }
+ }, 1500);
+
 });
 </script>
 
