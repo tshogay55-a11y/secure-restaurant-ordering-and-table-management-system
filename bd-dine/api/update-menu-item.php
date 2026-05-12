@@ -31,7 +31,11 @@ try {
     $data = json_decode(file_get_contents('php://input'), true);
 
     $itemId = $data['item_id'] ?? null;
+    $itemName = $data['item_name'] ?? '';
+    $categoryName = $data['category_name'] ?? '';
     $price = $data['price'] ?? null;
+    $description = $data['description'] ?? '';
+    $imageUrl = $data['image_url'] ?? '';
     $isAvailable = $data['is_available'] ?? null;
 
     if (!$itemId || $price === null || $isAvailable === null) {
@@ -39,20 +43,31 @@ try {
         exit();
     }
 
-    $stmt = $db->prepare("
-        UPDATE menu_items
-        SET price = :price,
-            is_available = :is_available
-        WHERE item_id = :item_id
-    ");
+   $stmt = $db->prepare("
+    UPDATE menu_items
+    SET 
+        item_name = :item_name,
+        price = :price,
+        description = :description,
+        image_url = :image_url,
+        is_available = :is_available
+    WHERE item_id = :item_id
+");
 
-    $stmt->execute([
-        ':price' => $price,
-        ':is_available' => $isAvailable,
-        ':item_id' => $itemId
-    ]);
+$stmt->execute([
+    ':item_name' => $itemName,
+    ':price' => $price,
+    ':description' => $description,
+    ':image_url' => $imageUrl,
+    ':is_available' => $isAvailable,
+    ':item_id' => $itemId
+]);
 
-    echo json_encode(['success' => true, 'message' => 'Menu item updated']);
+echo json_encode([
+    'success' => true,
+    'received' => $data
+]);
+exit();
 
 } catch (Exception $e) {
     error_log('Update Menu Error: ' . $e->getMessage());

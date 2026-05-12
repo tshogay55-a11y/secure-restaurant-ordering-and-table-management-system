@@ -196,50 +196,49 @@
                 </div>
             </div>
              <div class="card mt-4" id="menu-section" style="display:none;">
-                <h3 class="mb-3">Menu Management</h3>
+    <h3 class="mb-3">Menu Management</h3>
 
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Item</th>
-                            <th>Category</th>
-                            <th>Price</th>
-                            <th>Availability</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
+    <div class="grid grid-2" style="align-items:start; gap:2rem;">
 
-                    <tbody id="menu-table-body">
-                        <tr>
-                            <td colspan="5" style="text-align:center;">Loading...</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </main>
-    </div>
+        <div class="card-content">
+            <h4 class="mb-3">Menu Items</h4>
 
-    <div id="edit-menu-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:9999; align-items:center; justify-content:center;">
-    <div style="background:var(--bg-secondary); padding:2rem; border-radius:var(--radius-lg); width:420px; box-shadow:var(--shadow-lg);">
-        <h3 style="margin-bottom:1rem;">Edit Menu Item</h3>
-
-        <input type="hidden" id="edit-item-id">
-
-        <label class="form-label">Price</label>
-        <input type="number" id="edit-item-price" class="form-input" step="0.01" min="0">
-
-        <label class="form-label" style="margin-top:1rem;">Availability</label>
-        <button id="edit-availability-btn" class="btn" style="width:100%; margin-top:0.5rem;">
-            Available
-        </button>
-
-        <div style="display:flex; gap:1rem; margin-top:1.5rem;">
-            <button class="btn btn-primary" style="flex:1;" onclick="saveMenuEdit()">Save</button>
-            <button class="btn btn-secondary" style="flex:1;" onclick="closeMenuModal()">Cancel</button>
+            <div id="admin-menu-grid"></div>
         </div>
+
+        <div class="card-content">
+            <h4 class="mb-3">Edit Menu Item</h4>
+
+            <input type="hidden" id="edit-item-id">
+
+            <label class="form-label">Item Name</label>
+            <input type="text" id="edit-item-name" class="form-input">
+
+            <label class="form-label">Category</label>
+            <input type="text" id="edit-item-category" class="form-input">
+
+            <label class="form-label">Price</label>
+            <input type="number" id="edit-item-price" class="form-input" step="0.01">
+
+            <label class="form-label">Description</label>
+            <textarea id="edit-item-description" class="form-textarea"></textarea>
+
+            <label class="form-label">Image URL</label>
+            <input type="text" id="edit-item-image" class="form-input">
+
+            <button id="edit-availability-btn" class="btn" style="width:100%; margin-top:1rem;">
+                Available
+            </button>
+
+            <button class="btn btn-primary" style="width:100%; margin-top:1rem;" onclick="saveMenuEdit()">
+                Save Changes
+            </button>
+        </div>
+
     </div>
 </div>
-
+        </main>
+</div>
     <script>
 
     const BASE_URL = '/secure-restaurant-ordering-and-table-management-system/bd-dine/api';
@@ -378,69 +377,90 @@ async function loadCustomers() {
         }
     }
 async function loadMenu() {
-
     try {
-
         const response = await fetch(`${BASE_URL}/admin-menu.php`);
         const data = await response.json();
 
         if (!data.success) return;
 
-        const tbody = document.getElementById('menu-table-body');
+        const container = document.getElementById('admin-menu-grid');
 
         if (data.items.length === 0) {
-
-            tbody.innerHTML = `
-                <tr>
-                    <td colspan="4" style="text-align:center;">
-                        No menu items found
-                    </td>
-                </tr>
-            `;
-
+            container.innerHTML = '<p>No menu items found</p>';
             return;
         }
 
-        tbody.innerHTML = data.items.map(item => `
-            <tr>
-                <td>${item.item_name}</td>
-                <td>${item.category_name}</td>
-                <td>$${parseFloat(item.price).toFixed(2)}</td>
-                <td>
-                    <button 
-                        class="action-btn"
-                        style="background:${item.is_available == 1 ? 'var(--success)' : 'var(--error)'};"
-                    >
-                        ${item.is_available == 1 ? 'Available' : 'Unavailable'}
-                    </button>
-                </td>
-                <td>
-                    <button class="action-btn"
-                        style="background:var(--warning);"
-                        onclick="editMenuItem(${item.item_id}, ${item.price}, ${item.is_available})"
-                    >
-                        Edit
-                    </button>
-                </td>
-            </tr>
+        const grouped = {};
+
+        data.items.forEach(item => {
+            if (!grouped[item.category_name]) {
+                grouped[item.category_name] = [];
+            }
+            grouped[item.category_name].push(item);
+        });
+
+        container.innerHTML = Object.keys(grouped).map(category => `
+            <div style="margin-bottom:2rem;">
+                <h4 style="margin-bottom:1rem; color:var(--accent-primary);">${category}</h4>
+
+                <div class="grid grid-3">
+                    ${grouped[category].map(item => `
+                        <div class="card">
+                            <div class="card-content">
+                                <h4>${item.item_name}</h4>
+                                <p style="color:var(--text-muted); font-size:0.9rem;">${item.description}</p>
+
+                                <p style="font-weight:700; color:var(--accent-primary);">
+                                    $${parseFloat(item.price).toFixed(2)}
+                                </p>
+
+                                <button 
+                                    class="action-btn"
+                                    style="background:${item.is_available == 1 ? 'var(--success)' : 'var(--error)'};"
+                                >
+                                    ${item.is_available == 1 ? 'Available' : 'Unavailable'}
+                                </button>
+
+                                <button 
+                                    class="action-btn"
+                                    style="background:var(--warning);"
+                                   onclick="editMenuItem(
+                                            ${item.item_id},
+                                            '${item.item_name}',
+                                            '${item.category_name}',
+                                            ${item.price},
+                                            '${item.description}',
+                                            ${item.is_available},
+                                            '${item.image_url || ''}'
+                                        )"
+                                >
+                                    Edit
+                                </button>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
         `).join('');
 
-    } catch(error) {
-
+    } catch (error) {
         console.error('Menu error:', error);
-
     }
 }
         let selectedAvailability = 1;
 
-function editMenuItem(itemId, price, availability) {
+function editMenuItem(itemId, name, category, price, description, availability, image) {
+
     document.getElementById('edit-item-id').value = itemId;
+    document.getElementById('edit-item-name').value = name;
+    document.getElementById('edit-item-category').value = category;
     document.getElementById('edit-item-price').value = price;
+    document.getElementById('edit-item-description').value = description;
+    document.getElementById('edit-item-image').value = image;
 
     selectedAvailability = Number(availability);
-    updateAvailabilityButton();
 
-    document.getElementById('edit-menu-modal').style.display = 'flex';
+    updateAvailabilityButton();
 }
 
 function updateAvailabilityButton() {
@@ -462,58 +482,45 @@ document.getElementById('edit-availability-btn').onclick = function () {
     updateAvailabilityButton();
 };
 
-function closeMenuModal() {
-    document.getElementById('edit-menu-modal').style.display = 'none';
-}
-
 async function saveMenuEdit() {
+    try {
+        const itemId = document.getElementById('edit-item-id').value;
+        const name = document.getElementById('edit-item-name').value;
+        const price = document.getElementById('edit-item-price').value;
+        const description = document.getElementById('edit-item-description').value;
+        const image = document.getElementById('edit-item-image').value;
 
-    const itemId = document.getElementById('edit-item-id').value;
-    const price = document.getElementById('edit-item-price').value;
+        if (!itemId) {
+            showToast('Please select a menu item to edit', 'error');
+            return;
+        }
 
-    const response = await fetch(`${BASE_URL}/update-menu-item.php`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            item_id: itemId,
-            price: parseFloat(price),
-            is_available: selectedAvailability
-        })
-    });
+        const response = await fetch(`${BASE_URL}/update-menu-item.php`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                item_id: itemId,
+                item_name: name,
+                price: parseFloat(price),
+                description: description,
+                image_url: image,
+                is_available: selectedAvailability
+            })
+        });
 
-    const data = await response.json();
+        const data = await response.json();
 
-    if (data.success) {
-        showToast('Menu item updated!', 'success');
-        closeMenuModal();
-        loadMenu();
-    } else {
-        showToast(data.message || 'Update failed', 'error');
+        if (data.success) {
+            showToast('Menu item updated!', 'success');
+            loadMenu();
+        } else {
+            showToast(data.message || 'Update failed', 'error');
+        }
+
+    } catch (error) {
+        showToast('Error: ' + error.message, 'error');
     }
 }
-
-    async function updateStatus(bookingId, status) {
-        try {
-            const response = await fetch(`${BASE_URL}/update-booking-status.php`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ booking_id: bookingId, status: status })
-            });
-
-            const data = await response.json();
-
-            if (data.success) {
-                showToast(`Booking ${status}!`, 'success');
-                loadDashboard();
-            } else {
-                showToast(data.message || 'Failed to update', 'error');
-            }
-        } catch (error) {
-            showToast('Error updating booking', 'error');
-        }
-    }
 
     loadDashboard();
     
