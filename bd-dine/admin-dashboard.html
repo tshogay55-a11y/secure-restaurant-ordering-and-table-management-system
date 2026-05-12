@@ -120,7 +120,7 @@
                 <li><a href="#" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
                 <li><a href="#" onclick="showSection('bookings')" id="nav-bookings"><i class="fas fa-calendar-check"></i> Bookings</a></li>
                 <li><a href="#" onclick="showSection('customers')" id="nav-customers"><i class="fas fa-users"></i> Customers</a></li>
-                <li><a href="#"><i class="fas fa-utensils"></i> Menu Management</a></li>
+                <li><a href="#" onclick="showSection('menu')" id="nav-menu"><i class="fas fa-utensils"></i> Menu Management</a></li>
                 <li><a href="#"><i class="fas fa-table"></i> Tables</a></li>
                 <li><a href="#" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
@@ -183,10 +183,10 @@
                                 <th>Email</th>
                                 <th>Registered</th>
                                 <th>Last Login</th>
-                                <th>Total Bookings</th>
-                                <th>Confirmed</th>
-                                <th>Cancelled</th>
-                                <th>Status</th>
+                                <th>Bookings</th>
+                                <th>Orders</th>
+                                <th>Total Spent</th>
+                                <th>Payment Status</th>
                             </tr>
                         </thead>
                         <tbody id="customers-table-body">
@@ -194,6 +194,27 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+             <div class="card mt-4" id="menu-section" style="display:none;">
+                <h3 class="mb-3">Menu Management</h3>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Availability</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="menu-table-body">
+                        <tr>
+                            <td colspan="5" style="text-align:center;">Loading...</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </main>
     </div>
@@ -204,17 +225,25 @@
 function showSection(section) {
     document.getElementById('bookings-section').style.display = 'none';
     document.getElementById('customers-section').style.display = 'none';
+    document.getElementById('menu-section').style.display = 'none';
+
     document.getElementById('nav-bookings').classList.remove('active');
     document.getElementById('nav-customers').classList.remove('active');
+    document.getElementById('nav-menu').classList.remove('active');
     
     if (section === 'bookings') {
         document.getElementById('bookings-section').style.display = 'block';
         document.getElementById('nav-bookings').classList.add('active');
+        loadDashboard();
     } else if (section === 'customers') {
         document.getElementById('customers-section').style.display = 'block';
         document.getElementById('nav-customers').classList.add('active');
         loadCustomers();
-    }
+    } else if (section === 'menu') {
+        document.getElementById('menu-section').style.display = 'block';
+        document.getElementById('nav-menu').classList.add('active');
+        loadMenu();
+}
 }
 
 async function loadCustomers() {
@@ -238,12 +267,22 @@ async function loadCustomers() {
                 <td>${new Date(c.created_at).toLocaleDateString('en-AU', {day:'numeric', month:'short', year:'numeric'})}</td>
                 <td>${c.last_login ? new Date(c.last_login).toLocaleString('en-AU') : 'Never'}</td>
                 <td>${c.total_bookings}</td>
-                <td style="color: var(--success);">${c.confirmed_bookings}</td>
-                <td style="color: var(--error);">${c.cancelled_bookings}</td>
+                <td>${c.total_orders}</td>
+                <td>$${parseFloat(c.total_spent || 0).toFixed(2)}</td>
+
                 <td>
-                    <span style="background: ${c.is_active ? 'var(--success)' : 'var(--error)'}; color: white; padding: 0.2rem 0.5rem; border-radius: var(--radius-sm); font-size: 0.8rem;">
-                        ${c.is_active ? 'Active' : 'Inactive'}
-                    </span>
+                    ${
+                        c.total_orders === 0
+                            ? '<span style="color:#6b7280; font-weight:500;">No Payment</span>'
+                            : `<span style="
+                                background: ${c.payment_status === 'completed' ? 'var(--success)' : '#d97706'};
+                                color: white;
+                                padding: 0.2rem 0.5rem;
+                                border-radius: var(--radius-sm);
+                            ">
+                                ${c.payment_status}
+                            </span>`
+                    }
                 </td>
             </tr>
         `).join('');
@@ -317,6 +356,86 @@ async function loadCustomers() {
             console.error('Dashboard error:', error);
         }
     }
+async function loadMenu() {
+
+    try {
+
+        const response = await fetch(`${BASE_URL}/admin-menu.php`);
+        const data = await response.json();
+
+        if (!data.success) return;
+
+        const tbody = document.getElementById('menu-table-body');
+
+        if (data.items.length === 0) {
+
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="4" style="text-align:center;">
+                        No menu items found
+                    </td>
+                </tr>
+            `;
+
+            return;
+        }
+
+        tbody.innerHTML = data.items.map(item => `
+            <tr>
+                <td>${item.item_name}</td>
+                <td>${item.category_name}</td>
+                <td>$${parseFloat(item.price).toFixed(2)}</td>
+                <td>
+                    <button 
+                        class="action-btn"
+                        style="background:${item.is_available == 1 ? 'var(--success)' : 'var(--error)'};"
+                    >
+                        ${item.is_available == 1 ? 'Available' : 'Unavailable'}
+                    </button>
+                </td>
+                <td>
+                    <button class="action-btn"
+                        style="background:var(--warning);"
+                        onclick="editMenuItem(${item.item_id})"
+                    >
+                        Edit
+                    </button>
+                </td>
+            </tr>
+        `).join('');
+
+    } catch(error) {
+
+        console.error('Menu error:', error);
+
+    }
+}
+        async function editMenuItem(itemId) {
+    const newPrice = prompt("Enter new price:");
+    if (newPrice === null || newPrice.trim() === "") return;
+
+    const availableInput = prompt("Available? Type 1 for Available, 0 for Unavailable:");
+    if (availableInput === null) return;
+
+    const response = await fetch(`${BASE_URL}/update-menu-item.php`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            item_id: itemId,
+            price: parseFloat(newPrice),
+            is_available: parseInt(availableInput)
+        })
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+        showToast("Menu item updated!", "success");
+        loadMenu();
+    } else {
+        showToast(data.message || "Update failed", "error");
+    }
+}
 
     async function updateStatus(bookingId, status) {
         try {
@@ -340,6 +459,7 @@ async function loadCustomers() {
     }
 
     loadDashboard();
+    
     </script>
     <script src="js/main.js"></script>
 </body>
