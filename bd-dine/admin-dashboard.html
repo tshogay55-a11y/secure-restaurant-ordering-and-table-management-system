@@ -219,6 +219,27 @@
         </main>
     </div>
 
+    <div id="edit-menu-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:9999; align-items:center; justify-content:center;">
+    <div style="background:var(--bg-secondary); padding:2rem; border-radius:var(--radius-lg); width:420px; box-shadow:var(--shadow-lg);">
+        <h3 style="margin-bottom:1rem;">Edit Menu Item</h3>
+
+        <input type="hidden" id="edit-item-id">
+
+        <label class="form-label">Price</label>
+        <input type="number" id="edit-item-price" class="form-input" step="0.01" min="0">
+
+        <label class="form-label" style="margin-top:1rem;">Availability</label>
+        <button id="edit-availability-btn" class="btn" style="width:100%; margin-top:0.5rem;">
+            Available
+        </button>
+
+        <div style="display:flex; gap:1rem; margin-top:1.5rem;">
+            <button class="btn btn-primary" style="flex:1;" onclick="saveMenuEdit()">Save</button>
+            <button class="btn btn-secondary" style="flex:1;" onclick="closeMenuModal()">Cancel</button>
+        </div>
+    </div>
+</div>
+
     <script>
 
     const BASE_URL = '/secure-restaurant-ordering-and-table-management-system/bd-dine/api';
@@ -396,7 +417,7 @@ async function loadMenu() {
                 <td>
                     <button class="action-btn"
                         style="background:var(--warning);"
-                        onclick="editMenuItem(${item.item_id})"
+                        onclick="editMenuItem(${item.item_id}, ${item.price}, ${item.is_available})"
                     >
                         Edit
                     </button>
@@ -410,30 +431,66 @@ async function loadMenu() {
 
     }
 }
-        async function editMenuItem(itemId) {
-    const newPrice = prompt("Enter new price:");
-    if (newPrice === null || newPrice.trim() === "") return;
+        let selectedAvailability = 1;
 
-    const availableInput = prompt("Available? Type 1 for Available, 0 for Unavailable:");
-    if (availableInput === null) return;
+function editMenuItem(itemId, price, availability) {
+    document.getElementById('edit-item-id').value = itemId;
+    document.getElementById('edit-item-price').value = price;
+
+    selectedAvailability = Number(availability);
+    updateAvailabilityButton();
+
+    document.getElementById('edit-menu-modal').style.display = 'flex';
+}
+
+function updateAvailabilityButton() {
+    const btn = document.getElementById('edit-availability-btn');
+
+    if (selectedAvailability === 1) {
+        btn.textContent = 'Available';
+        btn.style.background = 'var(--success)';
+        btn.style.color = 'white';
+    } else {
+        btn.textContent = 'Unavailable';
+        btn.style.background = 'var(--error)';
+        btn.style.color = 'white';
+    }
+}
+
+document.getElementById('edit-availability-btn').onclick = function () {
+    selectedAvailability = selectedAvailability === 1 ? 0 : 1;
+    updateAvailabilityButton();
+};
+
+function closeMenuModal() {
+    document.getElementById('edit-menu-modal').style.display = 'none';
+}
+
+async function saveMenuEdit() {
+
+    const itemId = document.getElementById('edit-item-id').value;
+    const price = document.getElementById('edit-item-price').value;
 
     const response = await fetch(`${BASE_URL}/update-menu-item.php`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
         body: JSON.stringify({
             item_id: itemId,
-            price: parseFloat(newPrice),
-            is_available: parseInt(availableInput)
+            price: parseFloat(price),
+            is_available: selectedAvailability
         })
     });
 
     const data = await response.json();
 
     if (data.success) {
-        showToast("Menu item updated!", "success");
+        showToast('Menu item updated!', 'success');
+        closeMenuModal();
         loadMenu();
     } else {
-        showToast(data.message || "Update failed", "error");
+        showToast(data.message || 'Update failed', 'error');
     }
 }
 
