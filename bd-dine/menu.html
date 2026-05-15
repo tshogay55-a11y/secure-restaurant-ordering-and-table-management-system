@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-top"> 
@@ -23,12 +22,9 @@
             </ul>
             <div class="nav-right-icons">
                 <div class="menu-dropdown-wrapper">
-                    <button id="cart-menu-toggle" class="theme-toggle">
-                        <i class="fas fa-bars"></i>
-                    </button>
-                    <div id="cart-menu-dropdown" class="cart-menu-dropdown" style="display: none;">
-                        <a href="cart.html">View Cart</a>
-                    </div>
+                    <a href="cart.html" class="theme-toggle" style="display:flex; align-items:center; justify-content:center; text-decoration:none; color:var(--text-primary);">
+                        <i class="fas fa-shopping-cart"></i>
+                    </a>
                 </div>
                 <button id="theme-toggle" class="theme-toggle">
                     <i class="fas fa-moon"></i>
@@ -46,7 +42,6 @@
     </div>
 </nav>
 
-    <!-- Hero -->
     <section class="hero" style="min-height: 50vh;">
         <div class="hero-background">
             <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1920&q=80" alt="Food menu">
@@ -58,261 +53,12 @@
         </div>
     </section>
 
-    <!-- Menu Categories -->
-    <section class="section">
-        <div class="container">
-            <!-- Appetizers -->
-            <div class="section-header">
-                <span class="section-subtitle">Starters</span>
-                <h2 class="section-title">Appetizers</h2>
-            </div>
-            <div class="grid grid-3 mb-5">
-                <div class="card">
-                    <img src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=600&q=80" alt="Bruschetta" class="card-image">
-                    <div class="card-content">
-                        <h3 class="card-title">Classic Bruschetta</h3>
-                        <p class="card-text">Toasted bread with fresh tomatoes, basil, and balsamic glaze</p>
-                        <div class="flex-between">
-                            <span class="card-price">$14.00</span></div>
-                            <button onclick="addToCart('Classic Bruschetta', 14)" class="btn btn-primary" style="margin-top: var(--spacing-xs); width: 100%;">
-                                <i class="fas fa-plus"></i> Add to Cart
-                            </button>
-
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="https://images.unsplash.com/photo-1559847844-5315695dadae?w=600&q=80" alt="Calamari" class="card-image">
-                    <div class="card-content">
-                        <h3 class="card-title">Crispy Calamari</h3>
-                        <p class="card-text">Lightly fried with aioli and lemon wedge</p>
-                        <div class="flex-between">
-                            <span class="card-price">$18.00</span></div>
-                            <button onclick="addToCart('Crispy Calamari', 18)" class="btn btn-primary" style="margin-top: var(--spacing-xs); width: 100%;">
-                                <i class="fas fa-plus"></i> Add to Cart
-                            </button>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="https://images.unsplash.com/photo-1534080564583-6be75777b70a?w=600&q=80" alt="Oysters" class="card-image">
-                    <div class="card-content">
-                        <h3 class="card-title">Fresh Oysters</h3>
-                        <p class="card-text">Half dozen with mignonette sauce (6pcs)</p>
-                        <div class="flex-between">
-                            <span class="card-price">$22.00</span></div>
-                            <button onclick="addToCart('Fresh Oysters', 22)" class="btn btn-primary" style="margin-top: var(--spacing-xs); width: 100%;">
-                                <i class="fas fa-plus"></i> Add to Cart
-                            </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Main Course -->
-            <div class="section-header mt-5">
-                <span class="section-subtitle">Mains</span>
-                <h2 class="section-title">Main Course</h2>
-            </div>
-            <div class="grid grid-3 mb-5">
-                <div class="card">
-                    <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&q=80" alt="Salmon" class="card-image">
-                    <div class="card-content">
-                        <h3 class="card-title">Grilled Atlantic Salmon</h3>
-                        <p class="card-text">Fresh salmon with roasted vegetables and lemon butter sauce</p>
-                        <div class="flex-between">
-                            <span class="card-price">$42.00</span></div>
-                            <button onclick="addToCart('Grilled Atlantic Salmon', 42)" class="btn btn-primary" style="margin-top: var(--spacing-xs); width: 100%;">
-                                <i class="fas fa-plus"></i> Add to Cart
-                            </button>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="https://images.unsplash.com/photo-1600891964092-4316c288032e?w=600&q=80" alt="Wagyu" class="card-image">
-                    <div class="card-content">
-                        <h3 class="card-title">Premium Wagyu Steak (200g)</h3>
-                        <p class="card-text">Grass-fed wagyu with truffle mash and seasonal greens</p>
-                        <div class="flex-between">
-                            <span class="card-price">$65.00</span></div>
-                            <button onclick="addToCart('Premium Wagyu Steak', 65)" class="btn btn-primary" style="margin-top: var(--spacing-xs); width: 100%;">
-                                <i class="fas fa-plus"></i> Add to Cart
-                            </button>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=600&q=80" alt="Pasta" class="card-image">
-                    <div class="card-content">
-                        <h3 class="card-title">Seafood Linguine</h3>
-                        <p class="card-text">Fresh prawns, scallops, and mussels in white wine sauce</p>
-                        <div class="flex-between">
-                            <span class="card-price">$38.00</span></div>
-                            <button onclick="addToCart('Seafood Linguine', 38)" class="btn btn-primary" style="margin-top: var(--spacing-xs); width: 100%;">
-                                <i class="fas fa-plus"></i> Add to Cart
-                            </button>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=600&q=80" alt="Duck" class="card-image">
-                    <div class="card-content">
-                        <h3 class="card-title">Pan-Seared Duck Breast</h3>
-                        <p class="card-text">With orange glaze, roasted root vegetables</p>
-                        <div class="flex-between">
-                            <span class="card-price">$48.00</span></div>
-                            <button onclick="addToCart('Pan-Seared Duck Breast', 48)" class="btn btn-primary" style="margin-top: var(--spacing-xs); width: 100%;">
-                                <i class="fas fa-plus"></i> Add to Cart
-                            </button>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="https://images.unsplash.com/photo-1632778149955-e80f8ceca2e8?w=600&q=80" alt="Lamb" class="card-image">
-                    <div class="card-content">
-                        <h3 class="card-title">Herb-Crusted Lamb Rack</h3>
-                        <p class="card-text">With rosemary jus and garlic mash</p>
-                        <div class="flex-between">
-                            <span class="card-price">$52.00</span></div>
-                            <button onclick="addToCart('Herb-Crusted Lamb Rack', 52)" class="btn btn-primary" style="margin-top: var(--spacing-xs); width: 100%;">
-                                <i class="fas fa-plus"></i> Add to Cart
-                            </button>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?w=600&q=80" alt="Vegetarian" class="card-image">
-                    <div class="card-content">
-                        <h3 class="card-title">Mushroom Risotto</h3>
-                        <p class="card-text">Creamy arborio rice with mixed mushrooms and truffle oil</p>
-                        <div class="flex-between">
-                            <span class="card-price">$32.00</span></div>
-                            <button onclick="addToCart('Mushroom Risotto', 32)" class="btn btn-primary" style="margin-top: var(--spacing-xs); width: 100%;">
-                                <i class="fas fa-plus"></i> Add to Cart
-                            </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Desserts -->
-            <div class="section-header mt-5">
-                <span class="section-subtitle">Sweet Endings</span>
-                <h2 class="section-title">Desserts</h2>
-            </div>
-            <div class="grid grid-3 mb-5">
-                <div class="card">
-                    <img src="https://images.unsplash.com/photo-1587314168485-3236d6710814?w=600&q=80" alt="Tiramisu" class="card-image">
-                    <div class="card-content">
-                        <h3 class="card-title">Classic Tiramisu</h3>
-                        <p class="card-text">Italian dessert with espresso and mascarpone</p>
-                        <div class="flex-between">
-                            <span class="card-price">$15.00</span></div>
-                            <button onclick="addToCart('Classic Tiramisu', 15)" class="btn btn-primary" style="margin-top: var(--spacing-xs); width: 100%;">
-                                <i class="fas fa-plus"></i> Add to Cart
-                            </button>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="https://images.unsplash.com/photo-1624353365286-3f8d62daad51?w=600&q=80" alt="Chocolate Fondant" class="card-image">
-                    <div class="card-content">
-                        <h3 class="card-title">Chocolate Lava Cake</h3>
-                        <p class="card-text">Warm chocolate cake with vanilla ice cream</p>
-                        <div class="flex-between">
-                            <span class="card-price">$16.00</span></div>
-                            <button onclick="addToCart('Chocolate Lava Cake', 16)" class="btn btn-primary" style="margin-top: var(--spacing-xs); width: 100%;">
-                                <i class="fas fa-plus"></i> Add to Cart
-                            </button>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=600&q=80" alt="Panna Cotta" class="card-image">
-                    <div class="card-content">
-                        <h3 class="card-title">Berry Panna Cotta</h3>
-                        <p class="card-text">Creamy vanilla panna cotta with mixed berries</p>
-                        <div class="flex-between">
-                            <span class="card-price">$14.00</span></div>
-                            <button onclick="addToCart('Berry Panna Cotta', 14)"class="btn btn-primary" style="margin-top: var(--spacing-xs); width: 100%;">
-                                <i class="fas fa-plus"></i> Add to Cart
-                            </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Beverages -->
-            <div class="section-header mt-5">
-                <span class="section-subtitle">Drinks</span>
-                <h2 class="section-title">Beverages</h2>
-            </div>
-            <div class="grid grid-4 mb-5">
-                <!-- Red Wine -->
-    <div class="card">
-        <img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=600&q=80"
-             alt="Red Wine"
-             class="card-image">
-
-        <div class="card-content">
-            <h3 class="card-title">Red Wine</h3>
-            <p class="card-text">Glass</p>
-            <span class="card-price">$12-$18</span>
-
-            <button onclick="addToCart('Red Wine', 15)"
-                    class="btn btn-primary"
-                    style="margin-top: var(--spacing-xs); width: 100%;">
-                <i class="fas fa-plus"></i> Add to Cart
-            </button>
-        </div>
-    </div>
-
-    <!-- White Wine -->
-    <div class="card">
-        <img src="https://images.unsplash.com/photo-1558001373-7b93ee48ffa0?w=600&q=80"
-             alt="White Wine"
-             class="card-image">
-
-        <div class="card-content">
-            <h3 class="card-title">White Wine</h3>
-            <p class="card-text">Glass</p>
-            <span class="card-price">$12-$16</span>
-
-            <button onclick="addToCart('White Wine', 14)"
-                    class="btn btn-primary"
-                    style="margin-top: var(--spacing-xs); width: 100%;">
-                <i class="fas fa-plus"></i> Add to Cart
-            </button>
-        </div>
-    </div>
-
-    <!-- Craft Beer -->
-    <div class="card">
-        <img src="https://images.unsplash.com/photo-1608270586620-248524c67de9?w=600&q=80"
-             alt="Craft Beer"
-             class="card-image">
-
-        <div class="card-content">
-            <h3 class="card-title">Craft Beer</h3>
-            <p class="card-text">Bottle</p>
-            <span class="card-price">$10-$14</span>
-
-            <button onclick="addToCart('Craft Beer', 12)"
-                    class="btn btn-primary"
-                    style="margin-top: var(--spacing-xs); width: 100%;">
-                <i class="fas fa-plus"></i> Add to Cart
-            </button>
-        </div>
-    </div>
-
-    <!-- Cocktails -->
-    <div class="card">
-        <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=600&q=80"
-             alt="Cocktails"
-             class="card-image">
-
-        <div class="card-content">
-            <h3 class="card-title">Cocktails</h3>
-            <p class="card-text">Signature</p>
-            <span class="card-price">$16-$22</span>
-
-            <button onclick="addToCart('Cocktail', 18)"
-                    class="btn btn-primary"
-                    style="margin-top: var(--spacing-xs); width: 100%;">
-                <i class="fas fa-plus"></i> Add to Cart
-                    </button>
-                </div>
+    <section class="section" style="padding-top: 0; padding-bottom: 0;">
+        <div class="container" id="menu-container" style="padding-top: 1rem; padding-bottom: 1rem;">
+            <div class="text-center">
+                <p>Loading menu...</p>
             </div>
         </div>
-    
     </section>
 
     <footer class="footer">
@@ -343,29 +89,71 @@
     </footer>
 
     <script src="js/main.js"></script>
-    
+
     <script>
-
     function addToCart(name, price) {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-    const existingIndex = cart.findIndex(item => item.name === name);
-
-    if (existingIndex !== -1) {
-        cart[existingIndex].quantity = (cart[existingIndex].quantity || 1) + 1;
-    } else {
-        cart.push({
-            name: name,
-            price: Number(price),
-            quantity: 1
-        });
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const existingIndex = cart.findIndex(item => item.name === name);
+        if (existingIndex !== -1) {
+            cart[existingIndex].quantity = (cart[existingIndex].quantity || 1) + 1;
+        } else {
+            cart.push({ name: name, price: Number(price), quantity: 1 });
+        }
+        localStorage.setItem("cart", JSON.stringify(cart));
+        showToast(name + ' added to cart!', 'success');
     }
 
-    localStorage.setItem("cart", JSON.stringify(cart));
-    showToast(name + ' added to cart!', 'success');
-}
+    async function loadMenu() {
+        try {
+            const response = await fetch('/secure-restaurant-ordering-and-table-management-system/bd-dine/api/menu-items.php');
+            const data = await response.json();
+            
+            if (!data.success) return;
+            
+            const container = document.getElementById('menu-container');
+            
+            const grouped = {};
+            data.items.forEach(item => {
+                if (!grouped[item.category_name]) {
+                    grouped[item.category_name] = [];
+                }
+                if (item.is_available == 1) {
+                    grouped[item.category_name].push(item);
+                }
+            });
+            
+            container.innerHTML = Object.keys(grouped).map(category => `
+                <div class="section-header mt-2">
+                    <h2 class="section-title">${category}</h2>
+                </div>
+                <div class="grid grid-3 mb-5">
+                    ${grouped[category].map(item => `
+                        <div class="card">
+                            <img src="${item.image_url || 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=80'}" 
+                                 alt="${item.item_name}" class="card-image">
+                            <div class="card-content">
+                                <h3 class="card-title">${item.item_name}</h3>
+                                <p class="card-text">${item.description}</p>
+                                <div class="flex-between">
+                                    <span class="card-price">$${parseFloat(item.price).toFixed(2)}</span>
+                                </div>
+                                <button onclick="addToCart('${item.item_name}', ${item.price})" 
+                                    class="btn btn-primary" style="margin-top: var(--spacing-xs); width: 100%;">
+                                    <i class="fas fa-plus"></i> Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `).join('');
+            
+        } catch (error) {
+            console.error('Menu load error:', error);
+            document.getElementById('menu-container').innerHTML = '<p class="text-center">Failed to load menu. Please try again.</p>';
+        }
+    }
 
-
-</script>
+    loadMenu();
+    </script>
 </body>
 </html>

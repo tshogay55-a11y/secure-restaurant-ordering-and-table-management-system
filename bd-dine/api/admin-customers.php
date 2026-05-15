@@ -35,6 +35,7 @@ try {
         u.email,
         u.created_at,
         u.last_login,
+        u.phone,
         u.is_active,
 
         COUNT(DISTINCT b.booking_id) as total_bookings,

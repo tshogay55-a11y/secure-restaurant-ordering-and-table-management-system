@@ -156,7 +156,7 @@
                         </div>
                         <div class="mb-3">
                             <label style="font-weight: 600; color: var(--text-muted); font-size: 0.85rem;">Phone</label>
-                            <p style="margin: 0.2rem 0;">+61 412 345 678</p>
+                            <p style="margin: 0.2rem 0;" id="user-phone">Not provided</p>
                         </div>
                         <div class="mb-3">
                             <label style="font-weight: 600; color: var(--text-muted); font-size: 0.85rem;">Member Since</label>
@@ -169,7 +169,7 @@
                                 <span style="color: var(--success);"><i class="fas fa-check-circle"></i> Email Verified</span>
                             </p>
                         </div>
-                        <button class="btn btn-secondary" style="width: 100%;">
+                        <button class="btn btn-secondary" style="width: 100%;" onclick="openEditProfile()">
                             <i class="fas fa-edit"></i> Edit Profile
                         </button>
                     </div>
@@ -221,6 +221,25 @@
             <p>&copy; 2024 BD Dine Restaurant. All rights reserved.</p>
         </div>
     </footer>
+    <div id="profile-modal-overlay" style="display:none; position:fixed; inset:0; background:rgba(44,24,16,0.6); z-index:9999; align-items:center; justify-content:center;">
+    <div style="background:var(--bg-primary); border-radius:var(--radius-lg); border:1px solid var(--border-color); padding:1.5rem; width:440px; max-width:90vw;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+            <h4 style="margin:0;">Edit Profile</h4>
+            <button onclick="closeEditProfile()" style="background:none; border:none; font-size:1.5rem; cursor:pointer; color:var(--text-muted); line-height:1;">&times;</button>
+        </div>
+
+        <label class="form-label">First Name</label>
+        <input type="text" id="profile-first-name" class="form-input" style="margin-bottom:1rem;">
+
+        <label class="form-label">Last Name</label>
+        <input type="text" id="profile-last-name" class="form-input" style="margin-bottom:1rem;">
+
+        <label class="form-label">Phone <span style="color:var(--text-muted); font-size:0.85rem;">(optional)</span></label>
+        <input type="tel" id="profile-phone" class="form-input" placeholder="e.g. 0412 345 678" style="margin-bottom:1rem;">
+
+        <button class="btn btn-primary" style="width:100%;" onclick="saveProfile()">Save Changes</button>
+    </div>
+</div>
 
     <script>
 
@@ -277,10 +296,11 @@ async function loadDashboard() {
         }
         
         // Update user info
-        document.getElementById('user-name').textContent = data.user.first_name + ' ' + data.user.last_name;
-        document.getElementById('user-email').textContent = data.user.email;
-        document.getElementById('welcome-name').textContent = 'Welcome Back, ' + data.user.first_name + '!';
-        
+       document.getElementById('user-name').textContent = data.user.first_name + ' ' + data.user.last_name;
+       document.getElementById('user-email').textContent = data.user.email;
+       document.getElementById('user-phone').textContent = data.user.phone || 'Not provided';
+       document.getElementById('welcome-name').textContent = 'Welcome Back, ' + data.user.first_name + '!';
+       window._userData = data.user;
         const memberSinceEl = document.querySelector('[data-field="member-since"]');
         if (memberSinceEl) memberSinceEl.textContent = data.user.member_since;
         
@@ -294,43 +314,130 @@ async function loadDashboard() {
         if (data.upcoming_bookings.length === 0) {
             bookingsList.innerHTML = '<p style="color: var(--text-muted);">No upcoming reservations. <a href="booking.html">Make a booking!</a></p>';
         } else {
-            bookingsList.innerHTML = data.upcoming_bookings.map(b => `
-                <div class="booking-card">
-                    <div class="flex-between mb-2">
-                        <h4 style="margin: 0; color: var(--accent-primary);">
-                            ${new Date(b.booking_date).toLocaleDateString('en-AU', {weekday:'long', day:'numeric', month:'long'})} 
-                            at ${b.booking_time.slice(0,5)}
-                        </h4>
-                        <span style="background: var(--success); color: white; padding: 0.2rem 0.6rem; border-radius: var(--radius-sm); font-size: 0.8rem;">
-                            ${b.status.charAt(0).toUpperCase() + b.status.slice(1)}
-                        </span>
-                    </div>
-                    <p style="margin: 0.5rem 0; color: var(--text-secondary);">
-                        <i class="fas fa-users"></i> ${b.number_of_guests} Guests • 
-                        <i class="fas fa-chair"></i> Table ${b.table_number}
-                    </p>
-                    <div class="flex gap-2 mt-2">
-                        ${b.status === 'confirmed' ? `
-                            <a href="menu.html?booking_id=${b.booking_id}" class="btn btn-primary" style="font-size: 0.85rem; padding: 0.4rem 0.8rem;">
-                                <i class="fas fa-utensils"></i> Place Order
-                            </a>
+            bookingsList.innerHTML = data.upcoming_bookings.map(b => {
+                const isToday = new Date(b.booking_date).toDateString() === new Date().toDateString();
+                const [hours, mins] = b.booking_time.split(':').map(Number);
+                const bookingTime = new Date();
+                bookingTime.setHours(hours, mins, 0);
+                const now = new Date();
+                const diffMins = (bookingTime - now) / 60000;
+                const canCheckIn = isToday && b.status === 'confirmed' && diffMins <= 30 && !b.checked_in;
+
+                return `
+                    <div class="booking-card">
+                        <div class="flex-between mb-2">
+                            <h4 style="margin: 0; color: var(--accent-primary);">
+                                ${new Date(b.booking_date).toLocaleDateString('en-AU', {weekday:'long', day:'numeric', month:'long'})} 
+                                at ${b.booking_time.slice(0,5)}
+                            </h4>
+                            <span style="background: var(--success); color: white; padding: 0.2rem 0.6rem; border-radius: var(--radius-sm); font-size: 0.8rem;">
+                                ${b.status.charAt(0).toUpperCase() + b.status.slice(1)}
+                            </span>
+                        </div>
+                        <p style="margin: 0.5rem 0; color: var(--text-secondary);">
+                            <i class="fas fa-users"></i> ${b.number_of_guests} Guests • 
+                            <i class="fas fa-chair"></i> Table ${b.table_number}
+                        </p>
+                        ${b.checked_in ? `
+                            <p style="margin:0.5rem 0; color:var(--success); font-size:0.85rem;">
+                                <i class="fas fa-check-circle"></i> Checked in
+                            </p>
                         ` : ''}
-                        <button class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.4rem 0.8rem; color: var(--error); border-color: var(--error);" 
-                            onclick="cancelBooking(${b.booking_id})">
-                            <i class="fas fa-times"></i> Cancel
-                        </button>
+                        <div class="flex gap-2 mt-2">
+                            ${b.status === 'confirmed' ? `
+                                <a href="menu.html?booking_id=${b.booking_id}" class="btn btn-primary" style="font-size: 0.85rem; padding: 0.4rem 0.8rem;">
+                                    <i class="fas fa-utensils"></i> Place Order
+                                </a>
+                            ` : ''}
+                            ${canCheckIn ? `
+                                <button class="btn btn-secondary" style="font-size:0.85rem; padding:0.4rem 0.8rem; color:var(--success); border-color:var(--success);"
+                                    onclick="checkIn(${b.booking_id})">
+                                    <i class="fas fa-map-marker-alt"></i> Check In
+                                </button>
+                            ` : ''}
+                            <button class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.4rem 0.8rem; color: var(--error); border-color: var(--error);" 
+                                onclick="cancelBooking(${b.booking_id})">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                        </div>
                     </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
         
     } catch (error) {
         console.error('Dashboard load error:', error);
     }
 }
+function openEditProfile() {
+    const u = window._userData || {};
+    document.getElementById('profile-first-name').value = u.first_name || '';
+    document.getElementById('profile-last-name').value = u.last_name || '';
+    document.getElementById('profile-phone').value = u.phone || '';
+    document.getElementById('profile-modal-overlay').style.display = 'flex';
+}
 
+function closeEditProfile() {
+    document.getElementById('profile-modal-overlay').style.display = 'none';
+}
+
+document.getElementById('profile-modal-overlay').addEventListener('click', function(e) {
+    if (e.target === this) closeEditProfile();
+});
+
+async function saveProfile() {
+    const first_name = document.getElementById('profile-first-name').value.trim();
+    const last_name = document.getElementById('profile-last-name').value.trim();
+    const phone = document.getElementById('profile-phone').value.trim();
+
+    if (!first_name || !last_name) {
+        showToast('First and last name are required', 'error');
+        return;
+    }
+
+    try {
+        const response = await fetch('/secure-restaurant-ordering-and-table-management-system/bd-dine/api/update-profile.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ first_name, last_name, phone })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            showToast('Profile updated!', 'success');
+            closeEditProfile();
+            loadDashboard();
+        } else {
+            showToast(data.message || 'Update failed', 'error');
+        }
+    } catch (error) {
+        showToast('Error updating profile', 'error');
+    }
+}
+async function checkIn(bookingId) {
+    try {
+        const response = await fetch('/secure-restaurant-ordering-and-table-management-system/bd-dine/api/checkin.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ booking_id: bookingId })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            showToast('Checked in successfully! Welcome to BD Dine!', 'success');
+            setTimeout(() => loadDashboard(), 1500);
+        } else {
+            showToast(data.message || 'Check-in failed', 'error');
+        }
+    } catch (error) {
+        showToast('Error checking in', 'error');
+    }
+}
 loadDashboard();
 </script>
     <script src="js/main.js"></script>
+    
 </body>
 </html>

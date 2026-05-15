@@ -107,18 +107,18 @@ try {
     }
 
     // Create payment transaction
-    $transactionReference = 'SIM-' . time() . '-' . $orderId;
-    $encryptedCardData = base64_encode('Test card used. No real card details stored.');
+    $paymentIntentId = $data['payment_intent_id'] ?? ('SIM-' . time() . '-' . $orderId);
+    $encryptedCardData = base64_encode('Stripe payment processed. Intent: ' . $paymentIntentId);
 
     $paymentQuery = "INSERT INTO payment_transactions
         (order_id, amount, currency, payment_gateway, transaction_reference, encrypted_card_data, payment_status)
         VALUES
-        (:order_id, :amount, 'AUD', 'Simulated Stripe Test', :transaction_reference, :encrypted_card_data, 'captured')";
+        (:order_id, :amount, 'AUD', 'Stripe', :transaction_reference, :encrypted_card_data, 'captured')";
 
     $paymentStmt = $db->prepare($paymentQuery);
     $paymentStmt->bindParam(':order_id', $orderId);
     $paymentStmt->bindParam(':amount', $totalAmount);
-    $paymentStmt->bindParam(':transaction_reference', $transactionReference);
+    $paymentStmt->bindParam(':transaction_reference', $paymentIntentId);
     $paymentStmt->bindParam(':encrypted_card_data', $encryptedCardData);
     $paymentStmt->execute();
 
@@ -128,7 +128,7 @@ try {
         'success' => true,
         'message' => 'Payment successful! Order saved.',
         'order_id' => $orderId,
-        'transaction_reference' => $transactionReference
+        'transaction_reference' => $paymentIntentId
     ]);
 
 } catch (Exception $e) {

@@ -333,7 +333,8 @@ const Booking = {
                 booking_date: form.booking_date.value,
                 booking_time: form.booking_time.value,
                 number_of_guests: form.number_of_guests.value,
-                special_requests: form.special_requests.value
+                special_requests: form.special_requests.value,
+                phone: form.phone.value
             };
             
             const submitBtn = form.querySelector('button[type="submit"]');

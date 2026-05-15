@@ -6,6 +6,7 @@
     <title>Secure Payment | BD Dine Restaurant</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://js.stripe.com/v3/"></script>
 </head>
 
 <body>
@@ -13,7 +14,6 @@
     <div class="nav-container">
         <div class="nav-top">
             <a href="index.html" class="nav-logo">BD DINE</a>
-
             <ul class="nav-menu">
                 <li><a href="index.html" class="nav-link">Home</a></li>
                 <li><a href="about.html" class="nav-link">About</a></li>
@@ -22,14 +22,12 @@
                 <li><a href="contact.html" class="nav-link">Contact</a></li>
                 <li><a href="login.html" class="nav-link">Login</a></li>
             </ul>
-
             <div class="nav-right-icons">
                 <button id="theme-toggle" class="theme-toggle">
                     <i class="fas fa-moon"></i>
                 </button>
             </div>
         </div>
-
         <div class="nav-bottom">
             <a href="#" class="logout-btn">
                 Logout <span class="logout-icon"><i class="fas fa-sign-out-alt"></i></span>
@@ -49,34 +47,24 @@
                 <form id="payment-form" autocomplete="off">
                     <div class="form-group">
                         <label class="form-label">Cardholder Name</label>
-                        <input type="text" autocomplete="off" class="form-input" required placeholder="Name on Card">
+                        <input type="text" id="cardholder-name" class="form-input" required placeholder="Name on Card">
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Card Number</label>
-                        <input type="text" autocomplete="off" class="form-input" required maxlength="19" placeholder="Card Number">
-                    </div>
-
-                    <div class="grid grid-2">
-                        <div class="form-group">
-                            <label class="form-label">Expiry Date</label>
-                            <input type="text" name="fake-expiry" autocomplete="new-password" class="form-input" required placeholder="MM/YY">
+                        <label class="form-label">Card Details</label>
+                        <div id="card-element" style="padding: var(--spacing-sm); border: 2px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-primary);">
                         </div>
-
-                        <div class="form-group">
-                            <label class="form-label">CVV</label>
-                            <input type="password" name="fake-cvv" autocomplete="new-password" class="form-input" required maxlength="4" placeholder="CVV">
-                        </div>
+                        <div id="card-errors" style="color: var(--error); font-size: 0.85rem; margin-top: 0.5rem;"></div>
                     </div>
 
                     <div style="background: var(--bg-accent); padding: var(--spacing-sm); border-radius: var(--radius-md); margin-bottom: var(--spacing-md);">
                         <p style="margin:0; font-size:0.9rem;">
                             <i class="fas fa-lock"></i>
-                            This is a simulated secure payment for demonstration purposes.
+                            Secured by Stripe. Your payment is encrypted and secure.
                         </p>
                     </div>
 
-                    <button type="submit" class="btn btn-primary" style="width:100%;">
+                    <button type="submit" id="pay-btn" class="btn btn-primary" style="width:100%;">
                         <i class="fas fa-lock"></i> Pay Securely
                     </button>
                 </form>
@@ -92,8 +80,27 @@
 </section>
 
 <script src="js/main.js"></script>
-
 <script>
+const stripe = Stripe('pk_test_51TXH3RQm0jhlnCnDOhTnjPMDUYOhIOkuD5KVtYkAf5Yl7RUg6eWZ7ijGmbpkYqIA6Qi05WQyIPA7SoI8hptVgCYB00qE6tJLbv');
+const elements = stripe.elements();
+
+const cardElement = elements.create('card', {
+    hidePostalCode: true,
+    style: {
+        base: {
+            fontSize: '16px',
+            color: '#2C1810',
+            '::placeholder': { color: '#8B7355' }
+        }
+    }
+});
+cardElement.mount('#card-element');
+
+cardElement.on('change', function(event) {
+    const errorDiv = document.getElementById('card-errors');
+    errorDiv.textContent = event.error ? event.error.message : '';
+});
+
 const cart = JSON.parse(localStorage.getItem("cart")) || [];
 const paymentTotal = document.getElementById("paymentTotal");
 
@@ -101,46 +108,79 @@ let total = 0;
 cart.forEach(item => {
     total += Number(item.price) * (item.quantity || 1);
 });
-
 paymentTotal.textContent = total.toFixed(2);
 
 if (cart.length === 0) {
     showToast("Your cart is empty.", "error");
-    setTimeout(() => {
-        window.location.href = "menu.html";
-    }, 1500);
+    setTimeout(() => window.location.href = "menu.html", 1500);
 }
 
-document.getElementById("payment-form").addEventListener("submit", function(e) {
+document.getElementById("payment-form").addEventListener("submit", async function(e) {
     e.preventDefault();
 
-    const button = this.querySelector("button");
+    const button = document.getElementById('pay-btn');
     button.disabled = true;
-    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing Payment...';
+    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
 
-    setTimeout(async () => {
-    const response = await API.post('process-payment.php', {
-        cart: cart,
-        total_amount: total,
-        payment_method: 'simulated_card'
-    });
+    try {
+        // Step 1: Create payment intent on server
+        const intentResponse = await API.post('create-payment-intent.php', {
+            total_amount: total
+        });
 
-    if (response.success) {
-        localStorage.removeItem("cart");
-        showToast("Payment successful! Order saved.", "success");
+        if (!intentResponse.success) {
+            showToast(intentResponse.message || 'Payment setup failed', 'error');
+            button.disabled = false;
+            button.innerHTML = '<i class="fas fa-lock"></i> Pay Securely';
+            return;
+        }
 
-        setTimeout(() => {
-            window.location.href = "customer-dashboard.html";
-        }, 1800);
-    } else {
-        showToast(response.message || "Payment failed.", "error");
+        // Step 2: Confirm card payment with Stripe
+        const { paymentIntent, error } = await stripe.confirmCardPayment(
+            intentResponse.client_secret,
+            {
+                payment_method: {
+                    card: cardElement,
+                    billing_details: {
+                        name: document.getElementById('cardholder-name').value
+                    }
+                }
+            }
+        );
+
+        if (error) {
+            document.getElementById('card-errors').textContent = error.message;
+            button.disabled = false;
+            button.innerHTML = '<i class="fas fa-lock"></i> Pay Securely';
+            return;
+        }
+
+        if (paymentIntent.status === 'succeeded') {
+            // Step 3: Save order to database
+            const saveResponse = await API.post('process-payment.php', {
+                cart: cart,
+                total_amount: total,
+                payment_intent_id: paymentIntent.id,
+                payment_method: 'stripe'
+            });
+
+            if (saveResponse.success) {
+                localStorage.removeItem("cart");
+                showToast("Payment successful! Order saved.", "success");
+                setTimeout(() => window.location.href = "customer-dashboard.html", 1800);
+            } else {
+                showToast(saveResponse.message || 'Order save failed', 'error');
+                button.disabled = false;
+                button.innerHTML = '<i class="fas fa-lock"></i> Pay Securely';
+            }
+        }
+
+    } catch (err) {
+        showToast('Payment error: ' + err.message, 'error');
         button.disabled = false;
         button.innerHTML = '<i class="fas fa-lock"></i> Pay Securely';
     }
- }, 1500);
-
 });
 </script>
-
 </body>
 </html>

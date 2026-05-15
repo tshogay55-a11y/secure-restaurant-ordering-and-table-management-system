@@ -89,7 +89,7 @@ class Database {
 
 // Security
 define('ENCRYPTION_KEY', 'your-256-bit-encryption-key-here-change-in-production');
-define('SESSION_LIFETIME', 3600); // 1 hour
+define('SESSION_LIFETIME', 300); // 5 minutes
 define('TWO_FACTOR_EXPIRY', 300); // 5 minutes
 define('MAX_LOGIN_ATTEMPTS', 5);
 define('LOGIN_LOCKOUT_TIME', 900); // 15 minutes

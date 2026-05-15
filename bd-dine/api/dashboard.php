@@ -29,14 +29,14 @@ try {
     $userId = $session['user_id'];
     
     // Get user details
-    $userStmt = $db->prepare("SELECT first_name, last_name, email, created_at FROM users WHERE user_id = :user_id");
+    $userStmt = $db->prepare("SELECT first_name, last_name, email, phone, created_at FROM users WHERE user_id = :user_id");
     $userStmt->bindParam(':user_id', $userId);
     $userStmt->execute();
     $user = $userStmt->fetch();
     
     // Get upcoming bookings
     $upcomingStmt = $db->prepare("
-        SELECT booking_id, booking_date, booking_time, number_of_guests, table_number, status 
+        SELECT booking_id, booking_date, booking_time, number_of_guests, table_number, status, checked_in
         FROM bookings 
         WHERE user_id = :user_id 
         AND booking_date >= CURDATE() 
@@ -65,6 +65,7 @@ try {
             'first_name' => $user['first_name'],
             'last_name' => $user['last_name'],
             'email' => $user['email'],
+            'phone' => $user['phone'] ?? null,
             'member_since' => date('F Y', strtotime($user['created_at']))
         ],
         'stats' => [

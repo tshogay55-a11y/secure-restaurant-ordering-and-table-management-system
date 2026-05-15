@@ -14,7 +14,6 @@ require_once '../config/database.php';
 require_once '../includes/security.php';
 require_once '../includes/encryption.php';
 
-session_start();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode(['success' => false, 'message' => 'Invalid request method']);
@@ -42,10 +41,19 @@ try {
     }
     
     $userId = $session['user_id'];
-    
+
     // Get booking data
     $json = file_get_contents('php://input');
     $data = json_decode($json, true);
+
+    // Update phone if provided
+    $phone = trim($data['phone'] ?? '');
+    if (!empty($phone)) {
+        $phoneStmt = $db->prepare("UPDATE users SET phone = :phone WHERE user_id = :user_id AND (phone IS NULL OR phone = '')");
+        $phoneStmt->bindParam(':phone', $phone);
+        $phoneStmt->bindParam(':user_id', $userId);
+        $phoneStmt->execute();
+    }
     
     // Validate required fields
     $required = ['booking_date', 'booking_time', 'number_of_guests'];

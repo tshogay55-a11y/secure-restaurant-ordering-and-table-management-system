@@ -54,9 +54,9 @@ class Security {
                 setcookie('BD_DINE_SESSION', $sessionId, [
                     'expires' => time() + SESSION_LIFETIME,
                     'path' => '/',
-                    'secure' => true,
+                    'secure' => false,
                     'httponly' => true,
-                    'samesite' => 'Strict'
+                    'samesite' => 'Lax'
                 ]);
                 
                 // Log the session creation
@@ -92,13 +92,6 @@ class Security {
             $session = $stmt->fetch();
             
             if (!$session) {
-                return false;
-            }
-            
-            // Validate IP address
-            $currentIp = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
-            if ($session['ip_address'] !== $currentIp) {
-                $this->invalidateSession($sessionId);
                 return false;
             }
             

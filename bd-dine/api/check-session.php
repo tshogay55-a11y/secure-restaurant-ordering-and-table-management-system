@@ -28,7 +28,7 @@ try {
     // Get user details from database
     $userDetails = null;
     if ($session['user_id']) {
-        $query = "SELECT first_name, last_name, email FROM users WHERE user_id = :user_id";
+        $query = "SELECT first_name, last_name, email, phone FROM users WHERE user_id = :user_id";
         $db = $database->getConnection();
         $stmt = $db->prepare($query);
         $stmt->bindParam(':user_id', $session['user_id']);
@@ -44,7 +44,8 @@ try {
         'user' => [
             'first_name' => $userDetails['first_name'] ?? '',
             'last_name' => $userDetails['last_name'] ?? '',
-            'email' => $userDetails['email'] ?? ''
+            'email' => $userDetails['email'] ?? '',
+            'phone' => $userDetails['phone'] ?? ''
         ]
     ]);
 } else {
