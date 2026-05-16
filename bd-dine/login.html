@@ -9,11 +9,15 @@
     <style>
         .login-container {
             max-width: 500px;
-            margin: 100px auto;
-            padding: var(--spacing-xl);
-            background: var(--bg-secondary);
-            border-radius: var(--radius-lg);
-            box-shadow: 0 12px 40px var(--shadow);
+            margin: 0px auto;
+            padding-top: 30px;
+            padding-bottom: 10px;
+        
+        }
+        .body {
+            overflow-x: hidden;
+            padding: 0 !important;
+            margin: 0 !important;
         }
         .login-header {
             text-align: center;
@@ -67,7 +71,7 @@
         </div>
     </nav>
 
-    <div class="login-container" style="background:transparent; box-shadow:none; margin-top: 10px; margin-bottom: 10px;">
+    <div class="login-container" style="background:transparent; box-shadow:none; padding-left: var(--spacing-xl); padding-right: var(--spacing-xl)">
          <div id="already-logged-in-box" class="login-status-box" style="display: none;">
         <h3>You are already signed in</h3>
         <p style="color: var(--text-secondary); margin-bottom: 1rem;">

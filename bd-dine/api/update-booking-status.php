@@ -17,6 +17,10 @@ function sendBookingEmail($booking, $status) {
     try {
         require_once '../vendor/autoload.php';
         require_once '../config/mail.php';
+
+        if (!defined('MAIL_HOST') || empty(MAIL_HOST) || MAIL_HOST === 'smtp.example.com') {
+            return; // SMTP not configured, skip silently
+        }
         
         $mail = new PHPMailer\PHPMailer\PHPMailer(true);
         $mail->isSMTP();

@@ -46,14 +46,17 @@ try {
     $json = file_get_contents('php://input');
     $data = json_decode($json, true);
 
-    // Update phone if provided
+    // Phone is now mandatory
     $phone = trim($data['phone'] ?? '');
-    if (!empty($phone)) {
-        $phoneStmt = $db->prepare("UPDATE users SET phone = :phone WHERE user_id = :user_id AND (phone IS NULL OR phone = '')");
-        $phoneStmt->bindParam(':phone', $phone);
-        $phoneStmt->bindParam(':user_id', $userId);
-        $phoneStmt->execute();
+    if (empty($phone)) {
+        echo json_encode(['success' => false, 'message' => 'Contact number is required']);
+        exit();
     }
+
+    $phoneStmt = $db->prepare("UPDATE users SET phone = :phone WHERE user_id = :user_id");
+    $phoneStmt->bindParam(':phone', $phone);
+    $phoneStmt->bindParam(':user_id', $userId);
+    $phoneStmt->execute();
     
     // Validate required fields
     $required = ['booking_date', 'booking_time', 'number_of_guests'];
@@ -78,13 +81,34 @@ try {
         exit();
     }
     
+    // Check if user already has a pending booking for this slot
+    $checkPendingQuery = "SELECT booking_id 
+                    FROM bookings 
+                    WHERE user_id = :user_id
+                    AND booking_date = :booking_date 
+                    AND booking_time = :booking_time
+                    AND status = 'pending'";
+
+    $checkPendingStmt = $db->prepare($checkPendingQuery);
+    $checkPendingStmt->bindParam(':user_id', $userId);
+    $checkPendingStmt->bindParam(':booking_date', $bookingDate);
+    $checkPendingStmt->bindParam(':booking_time', $data['booking_time']);
+    $checkPendingStmt->execute();
+
+    if ($checkPendingStmt->rowCount() > 0) {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Reservation request was already sent. Please wait for confirmation.'
+        ]);
+        exit();
+    }
     // Check if this customer already booked the same date and time
         $checkUserQuery = "SELECT booking_id 
                         FROM bookings 
                         WHERE user_id = :user_id
                         AND booking_date = :booking_date 
                         AND booking_time = :booking_time
-                        AND status != 'cancelled'";
+                        AND status != 'confirmed'";
 
         $checkUserStmt = $db->prepare($checkUserQuery);
         $checkUserStmt->bindParam(':user_id', $userId);
@@ -105,7 +129,7 @@ try {
                             FROM bookings 
                             WHERE booking_date = :booking_date 
                             AND booking_time = :booking_time
-                            AND status != 'cancelled'";
+                            AND status != 'confirmed'";
 
             $checkSlotStmt = $db->prepare($checkSlotQuery);
             $checkSlotStmt->bindParam(':booking_date', $bookingDate);

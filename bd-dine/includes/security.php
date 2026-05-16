@@ -99,11 +99,9 @@ class Security {
             $decryptedData = $this->encryption->decrypt($session['session_data']);
             $sessionData = json_decode($decryptedData, true);
             
-            // Update last activity AND extend expiry
-            $newExpiry = date('Y-m-d H:i:s', time() + SESSION_LIFETIME);
-            $updateQuery = "UPDATE secure_sessions SET last_activity = NOW(), expires_at = :expires_at WHERE session_id = :session_id";
+            // Update last activity
+            $updateQuery = "UPDATE secure_sessions SET last_activity = NOW() WHERE session_id = :session_id";
             $updateStmt = $this->db->prepare($updateQuery);
-            $updateStmt->bindParam(':expires_at', $newExpiry);
             $updateStmt->bindParam(':session_id', $sessionId);
             $updateStmt->execute();
             

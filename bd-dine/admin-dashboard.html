@@ -83,6 +83,8 @@
             font-size: 0.8rem;
             color: white;
             font-weight: 600;
+            white-space: nowrap;    
+            display: inline-block;
         }
         .action-btn {
             padding: 0.3rem 0.6rem;
@@ -459,7 +461,8 @@ async function loadBookings() {
             'pending': 'var(--warning)',
             'confirmed': 'var(--success)',
             'cancelled': 'var(--error)',
-            'completed': 'var(--text-muted)'
+            'completed': 'var(--text-muted)',
+            'cancel_requested': 'var(--error)'
         };
 
         tbody.innerHTML = data.bookings.map(b => `
@@ -476,7 +479,7 @@ async function loadBookings() {
                 <td style="font-size:0.85rem; color:var(--text-muted); max-width:150px;">${b.special_requests || '-'}</td>
                 <td>
                     <span class="status-badge" style="background:${statusColors[b.status] || 'var(--text-muted)'};">
-                        ${b.status.charAt(0).toUpperCase() + b.status.slice(1)}
+                        ${b.status === 'cancel_requested' ? '⚠️ Cancel Requested' : b.status.charAt(0).toUpperCase() + b.status.slice(1)}
                     </span>
                 </td>
                 <td>
@@ -490,6 +493,13 @@ async function loadBookings() {
                     ` : b.status === 'confirmed' ? `
                         <button class="action-btn" style="background:var(--text-muted);" onclick="updateStatus(${b.booking_id}, 'completed')">
                             <i class="fas fa-check-double"></i> Complete
+                        </button>
+                    ` : b.status === 'cancel_requested' ? `
+                        <button class="action-btn" style="background:var(--error);" onclick="updateStatus(${b.booking_id}, 'cancelled', 'Cancellation approved')">
+                            <i class="fas fa-check"></i> Approve Cancel
+                        </button>
+                        <button class="action-btn" style="background:var(--success);" onclick="updateStatus(${b.booking_id}, 'confirmed', 'Cancellation rejected — booking restored')">
+                            <i class="fas fa-times"></i> Reject
                         </button>
                     ` : '-'}
                 </td>
@@ -660,7 +670,7 @@ async function saveMenuEdit() {
     }
 }
 
-    async function updateStatus(bookingId, status) {
+    async function updateStatus(bookingId, status, customMessage = null) {
     showToast('Processing...', 'info');
     
     try {
@@ -673,7 +683,7 @@ async function saveMenuEdit() {
         const data = await response.json();
 
         if (data.success) {
-            showToast(`Booking ${status}!`, 'success');
+            showToast(customMessage || `Booking ${status}!`, 'success');
             loadBookings();
         } else {
             showToast(data.message || 'Failed to update', 'error');
@@ -731,6 +741,14 @@ async function loadTables() {
                 `;
             }
 
+            const nextBooking = t.next_booking_date ? `
+                <div style="margin-top:0.75rem; padding-top:0.75rem; border-top:1px solid var(--border-color); font-size:0.75rem; color:var(--text-muted);">
+                    <i class="fas fa-calendar-alt" style="color:var(--accent-primary);"></i>
+                    <strong>Next:</strong> ${new Date(t.next_booking_date).toLocaleDateString('en-AU', {day:'numeric', month:'short'})} 
+                    at ${t.next_booking_time.slice(0,5)} — ${t.next_first_name} ${t.next_last_name}, ${t.next_booking_guests} guests
+                </div>
+            ` : '';
+
             return `
                 <div style="background:var(--bg-secondary); border-radius:var(--radius-md); padding:1rem; border:1px solid var(--border-color); border-top: 3px solid ${statusColor};">
                     <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -743,6 +761,7 @@ async function loadTables() {
                         <i class="fas fa-users"></i> ${t.capacity} seats · ${t.location}
                     </p>
                     ${bookingInfo}
+                    ${nextBooking}
                 </div>
             `;
         }).join('');

@@ -344,7 +344,7 @@ const Booking = {
             const result = await this.submit(bookingData);
             
             if (result.success) {
-                showToast('Booking successful! Confirmation sent to your email.', 'success');
+                showToast("Reservation submitted! You'll be notified once your booking is confirmed.", 'success');
                 form.reset();
             } else {
                 showToast(result.message || 'Booking failed. Please try again.', 'error');

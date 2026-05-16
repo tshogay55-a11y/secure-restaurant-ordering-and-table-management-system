@@ -44,8 +44,8 @@ try {
     
     $bookingId = intval($data['booking_id']);
     
-    // Make sure this booking belongs to this user
-    $checkStmt = $db->prepare("SELECT * FROM bookings WHERE booking_id = :booking_id AND user_id = :user_id AND status != 'cancelled'");
+    // Get booking details
+    $checkStmt = $db->prepare("SELECT * FROM bookings WHERE booking_id = :booking_id AND user_id = :user_id AND status NOT IN ('cancelled', 'completed')");
     $checkStmt->bindParam(':booking_id', $bookingId);
     $checkStmt->bindParam(':user_id', $userId);
     $checkStmt->execute();
@@ -56,16 +56,39 @@ try {
         exit();
     }
     
-    // Cancel the booking
-    $cancelStmt = $db->prepare("UPDATE bookings SET status = 'cancelled' WHERE booking_id = :booking_id AND user_id = :user_id");
-    $cancelStmt->bindParam(':booking_id', $bookingId);
-    $cancelStmt->bindParam(':user_id', $userId);
-    
-    if ($cancelStmt->execute()) {
-        $security->logAudit($userId, null, 'booking_cancelled', 'bookings', $bookingId);
-        echo json_encode(['success' => true, 'message' => 'Booking cancelled successfully']);
+    // Check 24 hour policy
+    $bookingDateTime = strtotime($booking['booking_date'] . ' ' . $booking['booking_time']);
+    $now = time();
+    $hoursUntilBooking = ($bookingDateTime - $now) / 3600;
+
+    if ($hoursUntilBooking < 24) {
+        // Less than 24 hours — request cancellation, notify admin
+        $cancelStmt = $db->prepare("UPDATE bookings SET status = 'cancel_requested' WHERE booking_id = :booking_id AND user_id = :user_id");
+        $cancelStmt->bindParam(':booking_id', $bookingId);
+        $cancelStmt->bindParam(':user_id', $userId);
+        $cancelStmt->execute();
+
+        $security->logAudit($userId, null, 'cancellation_requested', 'bookings', $bookingId);
+
+        echo json_encode([
+            'success' => true,
+            'late_cancellation' => true,
+            'message' => 'Your booking is within 24 hours. A cancellation request has been sent to our team. We will contact you shortly.'
+        ]);
     } else {
-        echo json_encode(['success' => false, 'message' => 'Failed to cancel booking']);
+        // More than 24 hours — cancel immediately
+        $cancelStmt = $db->prepare("UPDATE bookings SET status = 'cancelled' WHERE booking_id = :booking_id AND user_id = :user_id");
+        $cancelStmt->bindParam(':booking_id', $bookingId);
+        $cancelStmt->bindParam(':user_id', $userId);
+        $cancelStmt->execute();
+
+        $security->logAudit($userId, null, 'booking_cancelled', 'bookings', $bookingId);
+
+        echo json_encode([
+            'success' => true,
+            'late_cancellation' => false,
+            'message' => 'Booking cancelled successfully'
+        ]);
     }
 
 } catch (Exception $e) {

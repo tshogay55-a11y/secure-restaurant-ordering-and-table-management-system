@@ -27,26 +27,51 @@ try {
     $userId = $session['user_id'];
 
     $stmt = $db->prepare("
-        SELECT 
-            o.order_id,
-            o.order_date,
-            o.total_amount,
-            o.payment_status,
-            o.order_status,
-            o.payment_method,
-            GROUP_CONCAT(mi.item_name, ' x', oi.quantity SEPARATOR ', ') as items
-        FROM orders o
-        LEFT JOIN order_items oi ON o.order_id = oi.order_id
-        LEFT JOIN menu_items mi ON oi.item_id = mi.item_id
-        WHERE o.user_id = :user_id
-        GROUP BY o.order_id
-        ORDER BY o.order_date DESC
-    ");
-    $stmt->bindParam(':user_id', $userId);
-    $stmt->execute();
-    $orders = $stmt->fetchAll();
+    SELECT 
+        o.order_id,
+        o.order_date,
+        o.total_amount,
+        o.payment_status,
+        o.order_status,
+        mi.item_name,
+        oi.quantity,
+        oi.unit_price,
+        oi.subtotal
+    FROM orders o
+    LEFT JOIN order_items oi ON o.order_id = oi.order_id
+    LEFT JOIN menu_items mi ON oi.item_id = mi.item_id
+    WHERE o.user_id = :user_id
+    ORDER BY o.order_date DESC, o.order_id DESC
+");
+$stmt->bindParam(':user_id', $userId);
+$stmt->execute();
+$rows = $stmt->fetchAll();
 
-    echo json_encode(['success' => true, 'orders' => $orders]);
+// Group by order
+$orders = [];
+foreach ($rows as $row) {
+    $orderId = $row['order_id'];
+    if (!isset($orders[$orderId])) {
+        $orders[$orderId] = [
+            'order_id' => $row['order_id'],
+            'order_date' => $row['order_date'],
+            'total_amount' => $row['total_amount'],
+            'payment_status' => $row['payment_status'],
+            'order_status' => $row['order_status'],
+            'items' => []
+        ];
+    }
+    if ($row['item_name']) {
+        $orders[$orderId]['items'][] = [
+            'name' => $row['item_name'],
+            'quantity' => $row['quantity'],
+            'unit_price' => $row['unit_price'],
+            'subtotal' => $row['subtotal']
+        ];
+    }
+}
+
+echo json_encode(['success' => true, 'orders' => array_values($orders)]);
 
 } catch (Exception $e) {
     error_log("My Orders Error: " . $e->getMessage());
