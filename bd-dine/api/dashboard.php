@@ -55,10 +55,27 @@ try {
 
     // Member status based on visits
     $memberStatus = 'Regular';
-    if ($totalVisits >= 10) $memberStatus = 'VIP';
-    elseif ($totalVisits >= 5) $memberStatus = 'Gold';
-    elseif ($totalVisits >= 2) $memberStatus = 'Silver';
+    if ($totalVisits >= 50) $memberStatus = 'VIP';
+    elseif ($totalVisits >= 25) $memberStatus = 'Gold';
+    elseif ($totalVisits >= 10) $memberStatus = 'Silver';
     
+
+    // Get recent activity
+    $activityStmt = $db->prepare("
+        SELECT 
+            'booking' as type,
+            status,
+            booking_date,
+            number_of_guests,
+            created_at
+        FROM bookings
+        WHERE user_id = :user_id
+        ORDER BY created_at DESC
+        LIMIT 5
+    ");
+    $activityStmt->bindParam(':user_id', $userId);
+    $activityStmt->execute();
+    $recentActivity = $activityStmt->fetchAll();
     echo json_encode([
         'success' => true,
         'user' => [
@@ -73,7 +90,8 @@ try {
             'total_visits' => $totalVisits,
             'member_status' => $memberStatus
         ],
-        'upcoming_bookings' => $upcomingBookings
+        'upcoming_bookings' => $upcomingBookings,
+        'recent_activity' => $recentActivity
     ]);
 
 } catch (Exception $e) {

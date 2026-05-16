@@ -42,13 +42,19 @@ try {
         SUM(CASE WHEN b.status = 'confirmed' THEN 1 ELSE 0 END) as confirmed_bookings,
         SUM(CASE WHEN b.status = 'cancelled' THEN 1 ELSE 0 END) as cancelled_bookings,
 
-        COUNT(DISTINCT o.order_id) as total_orders,
-        COALESCE(SUM(o.total_amount), 0) as total_spent,
-        MAX(o.payment_status) as payment_status
+        COALESCE(o.total_orders, 0) as total_orders,
+        COALESCE(o.total_spent, 0) as total_spent
 
     FROM users u
     LEFT JOIN bookings b ON u.user_id = b.user_id
-    LEFT JOIN orders o ON u.user_id = o.user_id
+    LEFT JOIN (
+        SELECT 
+            user_id,
+            COUNT(order_id) as total_orders,
+            SUM(total_amount) as total_spent
+        FROM orders
+        GROUP BY user_id
+    ) o ON u.user_id = o.user_id
 
     GROUP BY u.user_id
     ORDER BY u.created_at DESC

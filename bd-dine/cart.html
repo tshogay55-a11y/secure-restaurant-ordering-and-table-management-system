@@ -7,6 +7,53 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+<div id="checkout-modal-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:9999; align-items:center; justify-content:center;">
+    <div style="background:var(--bg-primary); border-radius:var(--radius-lg); border:1px solid var(--border-color); width:580px; max-width:90vw; overflow:hidden;">
+        
+        <!-- Header -->
+        <div style="padding:1.25rem 1.5rem; border-bottom:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center;">
+            <h4 style="margin:0;">Before you checkout...</h4>
+            <button onclick="closeCheckoutModal()" style="background:none; border:none; font-size:1.5rem; cursor:pointer; color:var(--text-muted);">&times;</button>
+        </div>
+
+        <!-- Two column body -->
+        <div style="display:grid; grid-template-columns:1fr 1fr; border-bottom:1px solid var(--border-color);">
+            
+            <!-- Left: Reservation -->
+            <div style="padding:1.5rem; border-right:1px solid var(--border-color);">
+                <p style="font-weight:600; margin:0 0 0.75rem;">Do you have a reservation?</p>
+                <div style="display:flex; flex-direction:column; gap:0.5rem;">
+                    <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
+                        <input type="radio" name="has-reservation" value="yes" onchange="toggleReservationInput(this)">
+                        Yes
+                    </label>
+                    <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
+                        <input type="radio" name="has-reservation" value="no" onchange="toggleReservationInput(this)" checked>
+                        No
+                    </label>
+                </div>
+                <div id="booking-id-field" style="display:none; margin-top:1rem;">
+                    <label style="font-size:0.85rem; color:var(--text-muted); font-weight:600;">Booking ID</label>
+                    <input type="text" id="booking-id-input" class="form-input" placeholder="e.g. 12345" style="margin-top:0.3rem;">
+                </div>
+            </div>
+
+            <!-- Right: Table Number -->
+            <div style="padding:1.5rem;">
+                <p style="font-weight:600; margin:0 0 0.75rem;">Table Number</p>
+                <label style="font-size:0.85rem; color:var(--text-muted); font-weight:600;">Enter your table number</label>
+                <input type="number" id="table-number-input" class="form-input" placeholder="e.g. 5" min="1" style="margin-top:0.3rem;">
+            </div>
+        </div>
+
+        <!-- Proceed row -->
+        <div style="padding:1.25rem 1.5rem;">
+            <button class="btn btn-primary" style="width:100%;" onclick="proceedToPayment()">
+                <i class="fas fa-arrow-right"></i> Proceed to Payment
+            </button>
+        </div>
+    </div>
+</div>
 <body>
     <!-- Navigation -->
     <nav class="navbar">
@@ -56,7 +103,7 @@
                 <aside class="cart-summary-box">
                     <h3>Cart Total</h3>
                     <p class="cart-total-text">Total: $<span id="cartTotalPage">0.00</span></p>
-                    <a href="payment.html" class="btn btn-primary">Checkout</a>
+                    <button class="btn btn-primary" onclick="openCheckoutModal()">Checkout</button>
                     <a href="menu.html" class="btn btn-secondary" style="margin-top: 1rem; width: 100%;">
                         Order More
                     </a>
@@ -172,6 +219,50 @@
 
         cartTotalPage.textContent = total.toFixed(2);
     }
+    function openCheckoutModal() {
+    if (cart.length === 0) {
+        showToast('Your cart is empty!', 'error');
+        return;
+    }
+    document.getElementById('checkout-modal-overlay').style.display = 'flex';
+    }
+
+    function closeCheckoutModal() {
+        document.getElementById('checkout-modal-overlay').style.display = 'none';
+    }
+
+    function toggleReservationInput(radio) {
+        const field = document.getElementById('booking-id-field');
+        field.style.display = radio.value === 'yes' ? 'block' : 'none';
+    }
+
+    function proceedToPayment() {
+        const tableNumber = document.getElementById('table-number-input').value.trim();
+        const hasReservation = document.querySelector('input[name="has-reservation"]:checked').value;
+        const bookingId = document.getElementById('booking-id-input').value.trim();
+
+        if (!tableNumber) {
+            showToast('Please enter your table number', 'error');
+            return;
+        }
+
+        // Save to localStorage so payment page can pick it up
+        localStorage.setItem('checkout_table', tableNumber);
+        localStorage.setItem('checkout_has_reservation', hasReservation);
+        if (hasReservation === 'yes' && bookingId) {
+            localStorage.setItem('checkout_booking_id', bookingId);
+        } else {
+            localStorage.removeItem('checkout_booking_id');
+        }
+
+        closeCheckoutModal();
+        window.location.href = 'payment.html';
+    }
+
+    // Close modal on background click
+    document.getElementById('checkout-modal-overlay').addEventListener('click', function(e) {
+        if (e.target === this) closeCheckoutModal();
+    });
 
     loadCart();
 </script>
