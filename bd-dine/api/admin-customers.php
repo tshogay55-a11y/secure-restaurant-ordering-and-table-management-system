@@ -26,43 +26,43 @@ try {
         exit();
     }
 
-    // Get all customers with their booking counts and last login
-   $stmt = $db->prepare("
-    SELECT 
-        u.user_id,
-        u.first_name,
-        u.last_name,
-        u.email,
-        u.created_at,
-        u.last_login,
-        u.phone,
-        u.is_active,
-
-        COUNT(DISTINCT b.booking_id) as total_bookings,
-        SUM(CASE WHEN b.status = 'confirmed' THEN 1 ELSE 0 END) as confirmed_bookings,
-        SUM(CASE WHEN b.status = 'cancelled' THEN 1 ELSE 0 END) as cancelled_bookings,
-
-        COALESCE(o.total_orders, 0) as total_orders,
-        COALESCE(o.total_spent, 0) as total_spent
-
-    FROM users u
-    LEFT JOIN bookings b ON u.user_id = b.user_id
-    LEFT JOIN (
+    $stmt = $db->prepare("
         SELECT 
-            user_id,
-            COUNT(order_id) as total_orders,
-            SUM(total_amount) as total_spent
-        FROM orders
-        GROUP BY user_id
-    ) o ON u.user_id = o.user_id
+            u.user_id,
+            u.first_name,
+            u.last_name,
+            u.email,
+            u.created_at,
+            u.last_login,
+            u.phone,
+            u.is_active,
+            u.failed_login_attempts,
+            u.locked_at,
 
-    GROUP BY u.user_id
-    ORDER BY u.created_at DESC
-");
+            COUNT(DISTINCT b.booking_id) as total_bookings,
+            SUM(CASE WHEN b.status = 'completed' THEN 1 ELSE 0 END) as completed_bookings,
+            SUM(CASE WHEN b.status = 'cancelled' THEN 1 ELSE 0 END) as cancelled_bookings,
+
+            COALESCE(o.total_orders, 0) as total_orders,
+            COALESCE(o.total_spent, 0) as total_spent
+
+        FROM users u
+        LEFT JOIN bookings b ON u.user_id = b.user_id
+        LEFT JOIN (
+            SELECT 
+                user_id,
+                COUNT(order_id) as total_orders,
+                SUM(total_amount) as total_spent
+            FROM orders
+            GROUP BY user_id
+        ) o ON u.user_id = o.user_id
+
+        GROUP BY u.user_id
+        ORDER BY u.created_at DESC
+    ");
     $stmt->execute();
     $customers = $stmt->fetchAll();
 
-    // Get login/logout activity from audit log
     $activityStmt = $db->prepare("
         SELECT a.user_id, a.action, a.created_at, a.ip_address
         FROM audit_log a

@@ -29,7 +29,6 @@
             align-items: center;
             justify-content: center;
         }
-
         .modal-box {
             background: var(--bg-secondary);
             border-radius: var(--radius-lg);
@@ -39,55 +38,50 @@
             text-align: center;
             box-shadow: 0 12px 40px var(--shadow);
         }
-
         .modal-box h3 {
             margin-bottom: var(--spacing-sm);
         }
-
         .modal-buttons {
             display: flex;
             gap: 12px;
             justify-content: center;
             margin-top: var(--spacing-md);
         }
-        
     </style>
 </head>
 <body>
-   <nav class="navbar">
-    <div class="nav-container">
-        <div class="nav-top">
-            <a href="index.html" class="nav-logo">BD DINE</a>
-            <ul class="nav-menu">
-                <li><a href="index.html" class="nav-link">Home</a></li>
-                <li><a href="about.html" class="nav-link">About</a></li>
-                <li><a href="menu.html" class="nav-link">Menu</a></li>
-                <li><a href="booking.html" class="nav-link">Reservations</a></li>
-                <li><a href="contact.html" class="nav-link">Contact</a></li>
-                <li><a href="customer-dashboard.html" class="nav-link active">Dashboard</a></li>
-            </ul>
-            <div class="nav-right-icons">
-                <button id="theme-toggle" class="theme-toggle">
-                    <i class="fas fa-moon"></i>
-                </button>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-top">
+                <a href="index.html" class="nav-logo">BD DINE</a>
+                <ul class="nav-menu">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="about.html" class="nav-link">About</a></li>
+                    <li><a href="menu.html" class="nav-link">Menu</a></li>
+                    <li><a href="booking.html" class="nav-link">Reservations</a></li>
+                    <li><a href="contact.html" class="nav-link">Contact</a></li>
+                    <li><a href="customer-dashboard.html" class="nav-link active">Dashboard</a></li>
+                </ul>
+                <div class="nav-right-icons">
+                    <button id="theme-toggle" class="theme-toggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="nav-bottom">
+                <a href="#" class="logout-btn">
+                    Logout
+                    <span class="logout-icon"><i class="fas fa-sign-out-alt"></i></span>
+                </a>
             </div>
         </div>
-        <div class="nav-bottom">
-            <a href="#" class="logout-btn">
-                Logout
-                <span class="logout-icon">
-                    <i class="fas fa-sign-out-alt"></i>
-                </span>
-            </a>
-        </div>
-    </div>
-</nav>
+    </nav>
 
     <div class="container" style="padding-top: 30px;">
         <div class="dashboard-header">
             <div class="flex-between" style="align-items: center;">
                 <div>
-                   <h1 style="margin-bottom: var(--spacing-xs);" id="welcome-name">Welcome Back!</h1>
+                    <h1 style="margin-bottom: var(--spacing-xs);" id="welcome-name">Welcome Back!</h1>
                     <p style="color: var(--text-secondary); margin: 0;">Manage your reservations and preferences</p>
                 </div>
                 <div>
@@ -104,7 +98,7 @@
                     <div style="font-size: 2.5rem; color: var(--accent-primary); margin-bottom: var(--spacing-sm);">
                         <i class="fas fa-calendar-check"></i>
                     </div>
-                    <div style="font-size: 2rem; font-weight: 700; color: var(--accent-primary); font-family: var(--font-heading);"class="stat-upcoming">0</div>
+                    <div style="font-size: 2rem; font-weight: 700; color: var(--accent-primary); font-family: var(--font-heading);" class="stat-upcoming">0</div>
                     <p style="color: var(--text-muted); margin: 0;">Upcoming Bookings</p>
                 </div>
             </div>
@@ -113,7 +107,7 @@
                     <div style="font-size: 2.5rem; color: var(--success); margin-bottom: var(--spacing-sm);">
                         <i class="fas fa-utensils"></i>
                     </div>
-                    <div style="font-size: 2rem; font-weight: 700; color: var(--success); font-family: var(--font-heading);"class="stat-visits">0</div>
+                    <div style="font-size: 2rem; font-weight: 700; color: var(--success); font-family: var(--font-heading);" class="stat-visits">0</div>
                     <p style="color: var(--text-muted); margin: 0;">Total Visits</p>
                 </div>
             </div>
@@ -122,21 +116,22 @@
                     <div style="font-size: 2.5rem; color: var(--warning); margin-bottom: var(--spacing-sm);">
                         <i class="fas fa-star"></i>
                     </div>
-                    <div style="font-size: 2rem; font-weight: 700; color: var(--warning); font-family: var(--font-heading);"class="stat-status">-</div>
+                    <div style="font-size: 2rem; font-weight: 700; color: var(--warning); font-family: var(--font-heading);" class="stat-status">-</div>
                     <p style="color: var(--text-muted); margin: 0;">Member Status</p>
                 </div>
             </div>
         </div>
+
         <div class="mb-4">
             <h2 class="mb-3">My Orders</h2>
-                <div id="orders-list">
-                    <p style="color: var(--text-muted);">Loading...</p>
-                </div>
+            <div id="orders-list">
+                <p style="color: var(--text-muted);">Loading...</p>
             </div>
+        </div>
+
         <div class="grid grid-2" style="gap: var(--spacing-lg); align-items: start;">
             <div>
                 <h2 class="mb-3">Upcoming Reservations</h2>
-
                 <div id="upcoming-bookings-list">
                     <p style="color: var(--text-muted);">Loading...</p>
                 </div>
@@ -144,7 +139,7 @@
                     <a href="booking.html" class="btn btn-primary">
                         <i class="fas fa-plus"></i> Make New Reservation
                     </a>
-            </div>
+                </div>
             </div>
 
             <div>
@@ -176,6 +171,9 @@
                         </div>
                         <button class="btn btn-secondary" style="width: 100%;" onclick="openEditProfile()">
                             <i class="fas fa-edit"></i> Edit Profile
+                        </button>
+                        <button class="btn btn-secondary" style="width: 100%; margin-top:0.75rem;" onclick="openChangePasswordModal()">
+                            <i class="fas fa-key"></i> Change Password
                         </button>
                     </div>
                 </div>
@@ -218,28 +216,42 @@
             <p>&copy; 2024 BD Dine Restaurant. All rights reserved.</p>
         </div>
     </footer>
+
+    <!-- Edit Profile Modal -->
     <div id="profile-modal-overlay" style="display:none; position:fixed; inset:0; background:rgba(44,24,16,0.6); z-index:9999; align-items:center; justify-content:center;">
-    <div style="background:var(--bg-primary); border-radius:var(--radius-lg); border:1px solid var(--border-color); padding:1.5rem; width:440px; max-width:90vw;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
-            <h4 style="margin:0;">Edit Profile</h4>
-            <button onclick="closeEditProfile()" style="background:none; border:none; font-size:1.5rem; cursor:pointer; color:var(--text-muted); line-height:1;">&times;</button>
+        <div style="background:var(--bg-primary); border-radius:var(--radius-lg); border:1px solid var(--border-color); padding:1.5rem; width:440px; max-width:90vw;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+                <h4 style="margin:0;">Edit Profile</h4>
+                <button onclick="closeEditProfile()" style="background:none; border:none; font-size:1.5rem; cursor:pointer; color:var(--text-muted); line-height:1;">&times;</button>
+            </div>
+            <label class="form-label">First Name</label>
+            <input type="text" id="profile-first-name" class="form-input" style="margin-bottom:1rem;">
+            <label class="form-label">Last Name</label>
+            <input type="text" id="profile-last-name" class="form-input" style="margin-bottom:1rem;">
+            <label class="form-label">Phone <span style="color:var(--text-muted); font-size:0.85rem;">(optional)</span></label>
+            <input type="tel" id="profile-phone" class="form-input" placeholder="e.g. 0412 345 678" style="margin-bottom:1rem;">
+            <button class="btn btn-primary" style="width:100%;" onclick="saveProfile()">Save Changes</button>
         </div>
-
-        <label class="form-label">First Name</label>
-        <input type="text" id="profile-first-name" class="form-input" style="margin-bottom:1rem;">
-
-        <label class="form-label">Last Name</label>
-        <input type="text" id="profile-last-name" class="form-input" style="margin-bottom:1rem;">
-
-        <label class="form-label">Phone <span style="color:var(--text-muted); font-size:0.85rem;">(optional)</span></label>
-        <input type="tel" id="profile-phone" class="form-input" placeholder="e.g. 0412 345 678" style="margin-bottom:1rem;">
-
-        <button class="btn btn-primary" style="width:100%;" onclick="saveProfile()">Save Changes</button>
     </div>
-</div>
+
+    <!-- Change Password Modal -->
+    <div id="change-password-modal" style="display:none; position:fixed; inset:0; background:rgba(44,24,16,0.6); z-index:9999; align-items:center; justify-content:center;">
+        <div style="background:var(--bg-primary); border-radius:var(--radius-lg); border:1px solid var(--border-color); padding:1.5rem; width:440px; max-width:90vw;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+                <h4 style="margin:0;">Change Password</h4>
+                <button onclick="closeChangePasswordModal()" style="background:none; border:none; font-size:1.5rem; cursor:pointer; color:var(--text-muted); line-height:1;">&times;</button>
+            </div>
+            <label class="form-label">Current Password</label>
+            <input type="password" id="current-password" class="form-input" style="margin-bottom:1rem;">
+            <label class="form-label">New Password</label>
+            <input type="password" id="new-password" class="form-input" style="margin-bottom:1rem;">
+            <label class="form-label">Confirm New Password</label>
+            <input type="password" id="confirm-password" class="form-input" style="margin-bottom:1.5rem;">
+            <button class="btn btn-primary" style="width:100%;" onclick="changePassword()">Update Password</button>
+        </div>
+    </div>
 
     <script>
-
     async function cancelBooking(bookingId) {
         const overlay = document.createElement('div');
         overlay.className = 'modal-overlay';
@@ -268,9 +280,7 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ booking_id: bookingId })
             });
-            
             const data = await response.json();
-            
             if (data.success) {
                 if (data.late_cancellation) {
                     showToast(data.message, 'info');
@@ -286,280 +296,311 @@
         }
     }
 
-async function loadDashboard() {
-    try {
-        const response = await fetch('/secure-restaurant-ordering-and-table-management-system/bd-dine/api/dashboard.php');
-        const data = await response.json();
-        
-        if (!data.success) {
-            window.location.href = 'login.html';
-            return;
-        }
-        
-        // Update user info
-       document.getElementById('user-name').textContent = data.user.first_name + ' ' + data.user.last_name;
-       document.getElementById('user-email').textContent = data.user.email;
-       document.getElementById('user-phone').textContent = data.user.phone || 'Not provided';
-       document.getElementById('welcome-name').textContent = 'Welcome Back, ' + data.user.first_name + '!';
-       window._userData = data.user;
-        const memberSinceEl = document.querySelector('[data-field="member-since"]');
-        if (memberSinceEl) memberSinceEl.textContent = data.user.member_since;
-        
-        // Update stats
-        document.querySelector('.stat-upcoming').textContent = data.stats.upcoming_bookings;
-        document.querySelector('.stat-visits').textContent = data.stats.total_visits;
-        document.querySelector('.stat-status').textContent = data.stats.member_status;
-        
-        // Render upcoming bookings
-        const bookingsList = document.getElementById('upcoming-bookings-list');
-        if (data.upcoming_bookings.length === 0) {
-            bookingsList.innerHTML = '<p style="color: var(--text-muted);">No upcoming reservations. <a href="booking.html">Make a booking!</a></p>';
-        } else {
-            bookingsList.innerHTML = data.upcoming_bookings.map(b => {
-                const isToday = new Date(b.booking_date).toDateString() === new Date().toDateString();
-                const [hours, mins] = b.booking_time.split(':').map(Number);
-                const bookingTime = new Date();
-                bookingTime.setHours(hours, mins, 0);
-                const now = new Date();
-                const diffMins = (bookingTime - now) / 60000;
-                const canCheckIn = isToday && b.status === 'confirmed' && diffMins <= 30 && !b.checked_in;
+    async function loadDashboard() {
+        try {
+            const response = await fetch('/secure-restaurant-ordering-and-table-management-system/bd-dine/api/dashboard.php');
+            const data = await response.json();
 
-                return `
-                    <div class="booking-card">
-                        <div class="flex-between mb-2">
-                            <h4 style="margin: 0; color: var(--accent-primary);">
-                                ${new Date(b.booking_date).toLocaleDateString('en-AU', {weekday:'long', day:'numeric', month:'long'})} 
-                                at ${b.booking_time.slice(0,5)}
-                            </h4>
-                            <span style="background: ${
-                                b.status === 'confirmed' ? 'var(--success)' :
-                                b.status === 'cancel_requested' ? 'var(--warning)' :
-                                'var(--text-muted)'
-                            }; color: white; padding: 0.2rem 0.6rem; border-radius: var(--radius-sm); font-size: 0.8rem; white-space: nowrap;">
-                                ${b.status === 'cancel_requested' ? '⚠️ Pending Cancellation' : b.status.charAt(0).toUpperCase() + b.status.slice(1)}
-                            </span>
-                        </div>
-                        <p style="margin: 0.5rem 0; color: var(--text-secondary);">
-                            <i class="fas fa-users"></i> ${b.number_of_guests} Guests • 
-                            <i class="fas fa-chair"></i> Table ${b.table_number}
-                        </p>
-                        ${b.checked_in ? `
-                            <p style="margin:0.5rem 0; color:var(--success); font-size:0.85rem;">
-                                <i class="fas fa-check-circle"></i> Checked in
+            if (!data.success) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            document.getElementById('user-name').textContent = data.user.first_name + ' ' + data.user.last_name;
+            document.getElementById('user-email').textContent = data.user.email;
+            document.getElementById('user-phone').textContent = data.user.phone || 'Not provided';
+            document.getElementById('welcome-name').textContent = 'Welcome Back, ' + data.user.first_name + '!';
+            window._userData = data.user;
+            const memberSinceEl = document.querySelector('[data-field="member-since"]');
+            if (memberSinceEl) memberSinceEl.textContent = data.user.member_since;
+
+            document.querySelector('.stat-upcoming').textContent = data.stats.upcoming_bookings;
+            document.querySelector('.stat-visits').textContent = data.stats.total_visits;
+            document.querySelector('.stat-status').textContent = data.stats.member_status;
+
+            const bookingsList = document.getElementById('upcoming-bookings-list');
+            if (data.upcoming_bookings.length === 0) {
+                bookingsList.innerHTML = '<p style="color: var(--text-muted);">No upcoming reservations. <a href="booking.html">Make a booking!</a></p>';
+            } else {
+                bookingsList.innerHTML = data.upcoming_bookings.map(b => {
+                    const isToday = new Date(b.booking_date).toDateString() === new Date().toDateString();
+                    const [hours, mins] = b.booking_time.split(':').map(Number);
+                    const bookingTime = new Date();
+                    bookingTime.setHours(hours, mins, 0);
+                    const now = new Date();
+                    const diffMins = (bookingTime - now) / 60000;
+                    const canCheckIn = isToday && b.status === 'confirmed' && diffMins <= 30 && !b.checked_in;
+
+                    return `
+                        <div class="booking-card">
+                            <div class="flex-between mb-2">
+                                <h4 style="margin: 0; color: var(--accent-primary);">
+                                    ${new Date(b.booking_date).toLocaleDateString('en-AU', {weekday:'long', day:'numeric', month:'long'})}
+                                    at ${b.booking_time.slice(0,5)}
+                                </h4>
+                                <span style="background: ${
+                                    b.status === 'confirmed' ? 'var(--success)' :
+                                    b.status === 'cancel_requested' ? 'var(--warning)' :
+                                    'var(--text-muted)'
+                                }; color: white; padding: 0.2rem 0.6rem; border-radius: var(--radius-sm); font-size: 0.8rem; white-space: nowrap;">
+                                    ${b.status === 'cancel_requested' ? '⚠️ Pending Cancellation' : b.status.charAt(0).toUpperCase() + b.status.slice(1)}
+                                </span>
+                            </div>
+                            <p style="margin: 0.5rem 0; color: var(--text-secondary);">
+                                <i class="fas fa-users"></i> ${b.number_of_guests} Guests •
+                                <i class="fas fa-chair"></i> Table ${b.table_number}
                             </p>
-                        ` : ''}
-                        <div class="flex gap-2 mt-2">
-                            ${b.status === 'confirmed' ? `
-                                <a href="menu.html?booking_id=${b.booking_id}" class="btn btn-primary" style="font-size: 0.85rem; padding: 0.4rem 0.8rem;">
-                                    <i class="fas fa-utensils"></i> Place Order
-                                </a>
+                            ${b.checked_in ? `
+                                <p style="margin:0.5rem 0; color:var(--success); font-size:0.85rem;">
+                                    <i class="fas fa-check-circle"></i> Checked in
+                                </p>
                             ` : ''}
-                            ${canCheckIn ? `
-                                <button class="btn btn-secondary" style="font-size:0.85rem; padding:0.4rem 0.8rem; color:var(--success); border-color:var(--success);"
-                                    onclick="checkIn(${b.booking_id})">
-                                    <i class="fas fa-map-marker-alt"></i> Check In
-                                </button>
-                            ` : ''}
-                            ${b.checked_in && b.status === 'confirmed' ? `
-                                <button class="btn btn-secondary" style="font-size:0.85rem; padding:0.4rem 0.8rem; color:var(--accent-primary); border-color:var(--accent-primary);"
-                                    onclick="checkOut(${b.booking_id})">
-                                    <i class="fas fa-sign-out-alt"></i> Check Out
-                                </button>
-                            ` : ''}
-                            ${b.status === 'cancel_requested' ? `
-                        <span style="font-size:0.85rem; padding:0.4rem 0.8rem; color:var(--warning); border:1px solid var(--warning); border-radius:var(--radius-sm);">
-                            <i class="fas fa-clock"></i> Cancellation Requested
-                        </span>
-                    ` : `
-                        <button class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.4rem 0.8rem; color: var(--error); border-color: var(--error);" 
-                            onclick="cancelBooking(${b.booking_id})">
-                            <i class="fas fa-times"></i> Cancel
-                        </button>
-                    `}
+                            <div class="flex gap-2 mt-2">
+                                ${b.status === 'confirmed' ? `
+                                    <a href="menu.html?booking_id=${b.booking_id}" class="btn btn-primary" style="font-size: 0.85rem; padding: 0.4rem 0.8rem;">
+                                        <i class="fas fa-utensils"></i> Place Order
+                                    </a>
+                                ` : ''}
+                                ${canCheckIn ? `
+                                    <button class="btn btn-secondary" style="font-size:0.85rem; padding:0.4rem 0.8rem; color:var(--success); border-color:var(--success);"
+                                        onclick="checkIn(${b.booking_id})">
+                                        <i class="fas fa-map-marker-alt"></i> Check In
+                                    </button>
+                                ` : ''}
+                                ${b.checked_in && b.status === 'confirmed' ? `
+                                    <button class="btn btn-secondary" style="font-size:0.85rem; padding:0.4rem 0.8rem; color:var(--accent-primary); border-color:var(--accent-primary);"
+                                        onclick="checkOut(${b.booking_id})">
+                                        <i class="fas fa-sign-out-alt"></i> Check Out
+                                    </button>
+                                ` : ''}
+                                ${b.status === 'cancel_requested' ? `
+                                    <span style="font-size:0.85rem; padding:0.4rem 0.8rem; color:var(--warning); border:1px solid var(--warning); border-radius:var(--radius-sm);">
+                                        <i class="fas fa-clock"></i> Cancellation Requested
+                                    </span>
+                                ` : `
+                                    <button class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.4rem 0.8rem; color: var(--error); border-color: var(--error);"
+                                        onclick="cancelBooking(${b.booking_id})">
+                                        <i class="fas fa-times"></i> Cancel
+                                    </button>
+                                `}
+                            </div>
                         </div>
-                    </div>
-                `;
-            }).join('');
+                    `;
+                }).join('');
+            }
+
+            const activityList = document.getElementById('recent-activity-list');
+            if (data.recent_activity && data.recent_activity.length > 0) {
+                activityList.innerHTML = data.recent_activity.map((a, i) => {
+                    const isLast = i === data.recent_activity.length - 1;
+                    let icon, color, label;
+                    if (a.status === 'completed') {
+                        icon = 'fa-utensils'; color = 'var(--warning)';
+                        label = `Visited restaurant for ${a.number_of_guests} guests`;
+                    } else if (a.status === 'cancelled') {
+                        icon = 'fa-times-circle'; color = 'var(--error)';
+                        label = `Cancelled booking for ${a.number_of_guests} guests`;
+                    } else if (a.status === 'confirmed') {
+                        icon = 'fa-calendar-check'; color = 'var(--success)';
+                        label = `Booking confirmed for ${a.number_of_guests} guests`;
+                    } else if (a.status === 'cancel_requested') {
+                        icon = 'fa-clock'; color = 'var(--warning)';
+                        label = `Cancellation requested for ${a.number_of_guests} guests`;
+                    } else {
+                        icon = 'fa-calendar-plus'; color = 'var(--accent-primary)';
+                        label = `Booked table for ${a.number_of_guests} guests`;
+                    }
+                    const created = new Date(a.created_at);
+                    const now = new Date();
+                    const diffDays = Math.floor((now - created) / (1000 * 60 * 60 * 24));
+                    const timeAgo = diffDays === 0 ? 'Today' : diffDays === 1 ? 'Yesterday' : `${diffDays} days ago`;
+                    return `
+                        <p style="margin: 0.5rem 0; padding-bottom: 0.5rem; ${!isLast ? 'border-bottom: 1px solid var(--border-color);' : ''}">
+                            <i class="fas ${icon}" style="color: ${color};"></i> ${label} - ${timeAgo}
+                        </p>
+                    `;
+                }).join('');
+            } else {
+                activityList.innerHTML = '<p style="color: var(--text-muted);">No recent activity yet.</p>';
+            }
+
+        } catch (error) {
+            console.error('Dashboard load error:', error);
         }
-    // Render recent activity
-        const activityList = document.getElementById('recent-activity-list');
-        if (data.recent_activity && data.recent_activity.length > 0) {
-            activityList.innerHTML = data.recent_activity.map((a, i) => {
-                const isLast = i === data.recent_activity.length - 1;
-
-                // Icon and label based on status
-                let icon, color, label;
-                if (a.status === 'completed') {
-                    icon = 'fa-utensils'; color = 'var(--warning)';
-                    label = `Visited restaurant for ${a.number_of_guests} guests`;
-                } else if (a.status === 'cancelled') {
-                    icon = 'fa-times-circle'; color = 'var(--error)';
-                    label = `Cancelled booking for ${a.number_of_guests} guests`;
-                } else if (a.status === 'confirmed') {
-                    icon = 'fa-calendar-check'; color = 'var(--success)';
-                    label = `Booking confirmed for ${a.number_of_guests} guests`;
-                } else if (a.status === 'cancel_requested') {
-                    icon = 'fa-clock'; color = 'var(--warning)';
-                    label = `Cancellation requested for ${a.number_of_guests} guests`;
-                } else {
-                    icon = 'fa-calendar-plus'; color = 'var(--accent-primary)';
-                    label = `Booked table for ${a.number_of_guests} guests`;
-                }
-
-                // Time ago
-                const created = new Date(a.created_at);
-                const now = new Date();
-                const diffMs = now - created;
-                const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-                const timeAgo = diffDays === 0 ? 'Today' 
-                    : diffDays === 1 ? 'Yesterday' 
-                    : `${diffDays} days ago`;
-
-                return `
-                    <p style="margin: 0.5rem 0; padding-bottom: 0.5rem; ${!isLast ? 'border-bottom: 1px solid var(--border-color);' : ''}">
-                        <i class="fas ${icon}" style="color: ${color};"></i> ${label} - ${timeAgo}
-                    </p>
-                `;
-            }).join('');
-        } else {
-            activityList.innerHTML = '<p style="color: var(--text-muted);">No recent activity yet.</p>';
-        }    
-    } catch (error) {
-        console.error('Dashboard load error:', error);
-    }
-}
-function openEditProfile() {
-    const u = window._userData || {};
-    document.getElementById('profile-first-name').value = u.first_name || '';
-    document.getElementById('profile-last-name').value = u.last_name || '';
-    document.getElementById('profile-phone').value = u.phone || '';
-    document.getElementById('profile-modal-overlay').style.display = 'flex';
-}
-
-function closeEditProfile() {
-    document.getElementById('profile-modal-overlay').style.display = 'none';
-}
-
-document.getElementById('profile-modal-overlay').addEventListener('click', function(e) {
-    if (e.target === this) closeEditProfile();
-});
-
-async function saveProfile() {
-    const first_name = document.getElementById('profile-first-name').value.trim();
-    const last_name = document.getElementById('profile-last-name').value.trim();
-    const phone = document.getElementById('profile-phone').value.trim();
-
-    if (!first_name || !last_name) {
-        showToast('First and last name are required', 'error');
-        return;
     }
 
-    try {
-        const response = await fetch('/secure-restaurant-ordering-and-table-management-system/bd-dine/api/update-profile.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ first_name, last_name, phone })
-        });
-
-        const data = await response.json();
-
-        if (data.success) {
-            showToast('Profile updated!', 'success');
-            closeEditProfile();
-            loadDashboard();
-        } else {
-            showToast(data.message || 'Update failed', 'error');
-        }
-    } catch (error) {
-        showToast('Error updating profile', 'error');
+    function openEditProfile() {
+        const u = window._userData || {};
+        document.getElementById('profile-first-name').value = u.first_name || '';
+        document.getElementById('profile-last-name').value = u.last_name || '';
+        document.getElementById('profile-phone').value = u.phone || '';
+        document.getElementById('profile-modal-overlay').style.display = 'flex';
     }
-}
-async function checkIn(bookingId) {
-    try {
-        const response = await fetch('/secure-restaurant-ordering-and-table-management-system/bd-dine/api/checkin.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ booking_id: bookingId })
-        });
 
-        const data = await response.json();
-
-        if (data.success) {
-            showToast('Checked in successfully! Welcome to BD Dine!', 'success');
-            setTimeout(() => loadDashboard(), 1500);
-        } else {
-            showToast(data.message || 'Check-in failed', 'error');
-        }
-    } catch (error) {
-        showToast('Error checking in', 'error');
+    function closeEditProfile() {
+        document.getElementById('profile-modal-overlay').style.display = 'none';
     }
-}
-async function loadOrders() {
-    try {
-        const response = await fetch('/secure-restaurant-ordering-and-table-management-system/bd-dine/api/my-orders.php');
-        const data = await response.json();
 
-        const ordersList = document.getElementById('orders-list');
+    document.getElementById('profile-modal-overlay').addEventListener('click', function(e) {
+        if (e.target === this) closeEditProfile();
+    });
 
-        if (!data.success || data.orders.length === 0) {
-            ordersList.innerHTML = '<p style="color: var(--text-muted);">No orders yet. <a href="menu.html">Browse our menu!</a></p>';
+    async function saveProfile() {
+        const first_name = document.getElementById('profile-first-name').value.trim();
+        const last_name = document.getElementById('profile-last-name').value.trim();
+        const phone = document.getElementById('profile-phone').value.trim();
+        if (!first_name || !last_name) {
+            showToast('First and last name are required', 'error');
             return;
         }
-
-        ordersList.innerHTML = data.orders.map((o, index) => `
-            <div class="booking-card">
-                <div class="flex-between mb-2">
-                    <h4 style="margin:0; color:var(--accent-primary);">
-                        Order #${index + 1}
-                    </h4>
-                    <span style="background:var(--success); color:white; padding:0.2rem 0.6rem; border-radius:var(--radius-sm); font-size:0.8rem;">
-                        ${o.payment_status === 'completed' ? 'Paid' : o.payment_status.charAt(0).toUpperCase() + o.payment_status.slice(1)}
-                    </span>
-                </div>
-                <p style="margin:0.3rem 0; color:var(--text-secondary); font-size:0.9rem;">
-                    <i class="fas fa-calendar"></i> ${new Date(o.order_date).toLocaleString('en-AU', {day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'})}
-                </p>
-                <div style="margin:0.5rem 0; font-size:0.9rem; color:var(--text-secondary);">
-                    ${o.items.map(item => `
-                        <div style="display:flex; justify-content:space-between; padding:0.2rem 0; border-bottom:1px solid var(--border-color);">
-                            <span><i class="fas fa-utensils"></i> ${item.name} x${item.quantity}</span>
-                            <span>$${parseFloat(item.subtotal).toFixed(2)}</span>
-                        </div>
-                    `).join('')}
-                </div>
-                <p style="margin:0.5rem 0 0; font-weight:700; color:var(--accent-primary);">
-                    Total: $${parseFloat(o.total_amount).toFixed(2)}
-                </p>
-            </div>
-        `).join('');
-    } catch (error) {
-        console.error('Orders load error:', error);
-    }
-}
-loadDashboard();
-loadOrders();
-async function checkOut(bookingId) {
-    try {
-        const response = await fetch('/secure-restaurant-ordering-and-table-management-system/bd-dine/api/checkout.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ booking_id: bookingId })
-        });
-
-        const data = await response.json();
-
-        if (data.success) {
-            showToast('Thank you for dining with us! See you again soon!', 'success');
-            setTimeout(() => loadDashboard(), 1500);
-        } else {
-            showToast(data.message || 'Check-out failed', 'error');
+        try {
+            const response = await fetch('/secure-restaurant-ordering-and-table-management-system/bd-dine/api/update-profile.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ first_name, last_name, phone })
+            });
+            const data = await response.json();
+            if (data.success) {
+                showToast('Profile updated!', 'success');
+                closeEditProfile();
+                loadDashboard();
+            } else {
+                showToast(data.message || 'Update failed', 'error');
+            }
+        } catch (error) {
+            showToast('Error updating profile', 'error');
         }
-    } catch (error) {
-        showToast('Error checking out', 'error');
     }
-}
-</script>
+
+    function openChangePasswordModal() {
+        document.getElementById('change-password-modal').style.display = 'flex';
+    }
+
+    function closeChangePasswordModal() {
+        document.getElementById('change-password-modal').style.display = 'none';
+        document.getElementById('current-password').value = '';
+        document.getElementById('new-password').value = '';
+        document.getElementById('confirm-password').value = '';
+    }
+
+    document.getElementById('change-password-modal').addEventListener('click', function(e) {
+        if (e.target === this) closeChangePasswordModal();
+    });
+
+    async function changePassword() {
+        const currentPassword = document.getElementById('current-password').value;
+        const newPassword = document.getElementById('new-password').value;
+        const confirmPassword = document.getElementById('confirm-password').value;
+
+        if (!currentPassword || !newPassword || !confirmPassword) {
+            showToast('Please fill in all fields', 'error');
+            return;
+        }
+        if (newPassword !== confirmPassword) {
+            showToast('New passwords do not match', 'error');
+            return;
+        }
+        if (newPassword.length < 8) {
+            showToast('Password must be at least 8 characters', 'error');
+            return;
+        }
+        try {
+            const response = await fetch('/secure-restaurant-ordering-and-table-management-system/bd-dine/api/change-password.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ current_password: currentPassword, new_password: newPassword })
+            });
+            const data = await response.json();
+            if (data.success) {
+                showToast('Password updated successfully!', 'success');
+                closeChangePasswordModal();
+            } else {
+                showToast(data.message || 'Failed to update password', 'error');
+            }
+        } catch (error) {
+            showToast('Error updating password', 'error');
+        }
+    }
+
+    async function checkIn(bookingId) {
+        try {
+            const response = await fetch('/secure-restaurant-ordering-and-table-management-system/bd-dine/api/checkin.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ booking_id: bookingId })
+            });
+            const data = await response.json();
+            if (data.success) {
+                showToast('Checked in successfully! Welcome to BD Dine!', 'success');
+                setTimeout(() => loadDashboard(), 1500);
+            } else {
+                showToast(data.message || 'Check-in failed', 'error');
+            }
+        } catch (error) {
+            showToast('Error checking in', 'error');
+        }
+    }
+
+    async function checkOut(bookingId) {
+        try {
+            const response = await fetch('/secure-restaurant-ordering-and-table-management-system/bd-dine/api/checkout.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ booking_id: bookingId })
+            });
+            const data = await response.json();
+            if (data.success) {
+                showToast('Thank you for dining with us! See you again soon!', 'success');
+                setTimeout(() => loadDashboard(), 1500);
+            } else {
+                showToast(data.message || 'Check-out failed', 'error');
+            }
+        } catch (error) {
+            showToast('Error checking out', 'error');
+        }
+    }
+
+    async function loadOrders() {
+        try {
+            const response = await fetch('/secure-restaurant-ordering-and-table-management-system/bd-dine/api/my-orders.php');
+            const data = await response.json();
+            const ordersList = document.getElementById('orders-list');
+            if (!data.success || data.orders.length === 0) {
+                ordersList.innerHTML = '<p style="color: var(--text-muted);">No orders yet. <a href="menu.html">Browse our menu!</a></p>';
+                return;
+            }
+            ordersList.innerHTML = data.orders.map((o, index) => `
+                <div class="booking-card">
+                    <div class="flex-between mb-2">
+                        <h4 style="margin:0; color:var(--accent-primary);">Order #${index + 1}</h4>
+                        <span style="background:var(--success); color:white; padding:0.2rem 0.6rem; border-radius:var(--radius-sm); font-size:0.8rem;">
+                            ${o.payment_status === 'completed' ? 'Paid' : o.payment_status.charAt(0).toUpperCase() + o.payment_status.slice(1)}
+                        </span>
+                    </div>
+                    <p style="margin:0.3rem 0; color:var(--text-secondary); font-size:0.9rem;">
+                        <i class="fas fa-calendar"></i> ${new Date(o.order_date).toLocaleString('en-AU', {day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'})}
+                    </p>
+                    <div style="margin:0.5rem 0; font-size:0.9rem; color:var(--text-secondary);">
+                        ${o.items.map(item => `
+                            <div style="display:flex; justify-content:space-between; padding:0.2rem 0; border-bottom:1px solid var(--border-color);">
+                                <span><i class="fas fa-utensils"></i> ${item.name} x${item.quantity}</span>
+                                <span>$${parseFloat(item.subtotal).toFixed(2)}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <p style="margin:0.5rem 0 0; font-weight:700; color:var(--accent-primary);">
+                        Total: $${parseFloat(o.total_amount).toFixed(2)}
+                    </p>
+                </div>
+            `).join('');
+        } catch (error) {
+            console.error('Orders load error:', error);
+        }
+    }
+
+    loadDashboard();
+    loadOrders();
+    </script>
     <script src="js/main.js"></script>
-    
 </body>
 </html>

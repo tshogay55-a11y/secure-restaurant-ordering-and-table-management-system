@@ -7,119 +7,56 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<div id="checkout-modal-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:9999; align-items:center; justify-content:center;">
-    <div style="background:var(--bg-primary); border-radius:var(--radius-lg); border:1px solid var(--border-color); width:580px; max-width:90vw; overflow:hidden;">
-        
-        <!-- Header -->
-        <div style="padding:1.25rem 1.5rem; border-bottom:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center;">
-            <h4 style="margin:0;">Before you checkout...</h4>
-            <button onclick="closeCheckoutModal()" style="background:none; border:none; font-size:1.5rem; cursor:pointer; color:var(--text-muted);">&times;</button>
-        </div>
 
-        <!-- Two column body -->
-        <div style="display:grid; grid-template-columns:1fr 1fr; border-bottom:1px solid var(--border-color);">
-            
-            <!-- Left: Reservation -->
-            <div style="padding:1.5rem; border-right:1px solid var(--border-color);">
-                <p style="font-weight:600; margin:0 0 0.75rem;">Do you have a reservation?</p>
-                <div style="display:flex; flex-direction:column; gap:0.5rem;">
-                    <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
-                        <input type="radio" name="has-reservation" value="yes" onchange="toggleReservationInput(this)">
-                        Yes
-                    </label>
-                    <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
-                        <input type="radio" name="has-reservation" value="no" onchange="toggleReservationInput(this)" checked>
-                        No
-                    </label>
-                </div>
-                <div id="booking-id-field" style="display:none; margin-top:1rem;">
-                    <label style="font-size:0.85rem; color:var(--text-muted); font-weight:600;">Booking ID</label>
-                    <input type="text" id="booking-id-input" class="form-input" placeholder="e.g. 12345" style="margin-top:0.3rem;">
-                </div>
-            </div>
-
-            <!-- Right: Table Number -->
-            <div style="padding:1.5rem;">
-                <p style="font-weight:600; margin:0 0 0.75rem;">Table Number</p>
-                <label style="font-size:0.85rem; color:var(--text-muted); font-weight:600;">Enter your table number</label>
-                <input type="number" id="table-number-input" class="form-input" placeholder="e.g. 5" min="1" style="margin-top:0.3rem;">
-            </div>
-        </div>
-
-        <!-- Proceed row -->
-        <div style="padding:1.25rem 1.5rem;">
-            <button class="btn btn-primary" style="width:100%;" onclick="proceedToPayment()">
-                <i class="fas fa-arrow-right"></i> Proceed to Payment
-            </button>
-        </div>
-    </div>
-</div>
 <body>
-    <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-top">
-            <a href="index.html" class="nav-logo">BD DINE</a>
-            <ul class="nav-menu">
-                <li><a href="index.html" class="nav-link">Home</a></li>
-                <li><a href="about.html" class="nav-link">About</a></li>
-                <li><a href="menu.html" class="nav-link auth-only">Menu</a></li>
-                <li><a href="booking.html" class="nav-link auth-only">Reservations</a></li>
-                <li><a href="contact.html" class="nav-link">Contact</a></li>
-                <li><a href="login.html" class="nav-link">Login</a></li>
-            </ul>
-
-            <div class="nav-right-icons">
-                <button id="theme-toggle" class="theme-toggle">
-                    <i class="fas fa-moon"></i>
-                </button>
+                <a href="index.html" class="nav-logo">BD DINE</a>
+                <ul class="nav-menu">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="about.html" class="nav-link">About</a></li>
+                    <li><a href="menu.html" class="nav-link auth-only">Menu</a></li>
+                    <li><a href="booking.html" class="nav-link auth-only">Reservations</a></li>
+                    <li><a href="contact.html" class="nav-link">Contact</a></li>
+                    <li><a href="login.html" class="nav-link">Login</a></li>
+                </ul>
+                <div class="nav-right-icons">
+                    <button id="theme-toggle" class="theme-toggle"><i class="fas fa-moon"></i></button>
+                </div>
+            </div>
+            <div class="nav-bottom">
+                <a href="#" class="logout-btn">Logout <span class="logout-icon"><i class="fas fa-sign-out-alt"></i></span></a>
             </div>
         </div>
-        <div class="nav-bottom">
-            <a href="#" class="logout-btn">
-                Logout
-                <span class="logout-icon">
-                    <i class="fas fa-sign-out-alt"></i>
-                </span>
-            </a>
-        </div>
-    </div>
-</nav>
+    </nav>
 
-    <!-- Cart Section -->
     <section class="section cart-section" style="padding-top: 20px;">
         <div class="container">
             <h1 class="cart-heading">Your Cart</h1>
-
             <div id="emptyCartMessage" class="cart-empty-box" style="display:none;">
                 Your cart is empty. Browse our collection
             </div>
-
             <div id="cartContent" class="cart-layout" style="display:none;">
                 <div class="cart-items-box">
                     <ul id="cartItemsPage" class="cart-items-list"></ul>
                 </div>
-
                 <aside class="cart-summary-box">
                     <h3>Cart Total</h3>
                     <p class="cart-total-text">Total: $<span id="cartTotalPage">0.00</span></p>
                     <button class="btn btn-primary" onclick="openCheckoutModal()">Checkout</button>
-                    <a href="menu.html" class="btn btn-secondary" style="margin-top: 1rem; width: 100%;">
-                        Order More
-                    </a>
+                    <a href="menu.html" class="btn btn-secondary" style="margin-top: 1rem; width: 100%;">Order More</a>
                 </aside>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-section">
                 <h4>BD Dine Restaurant</h4>
                 <p>Experience the finest culinary journey in Canberra.</p>
             </div>
-
             <div class="footer-section">
                 <h4>Quick Links</h4>
                 <ul class="footer-links">
@@ -128,7 +65,6 @@
                     <li><a href="booking.html">Reservations</a></li>
                 </ul>
             </div>
-
             <div class="footer-section">
                 <h4>Contact Info</h4>
                 <ul class="footer-links">
@@ -137,15 +73,92 @@
                 </ul>
             </div>
         </div>
-
         <div class="footer-bottom">
             <p>&copy; 2024 BD Dine Restaurant. All rights reserved.</p>
         </div>
     </footer>
 
+    <!-- Checkout Modal -->
+    <div id="checkout-modal-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:9999; align-items:center; justify-content:center;">
+        <div style="background:var(--bg-primary); border-radius:var(--radius-lg); border:1px solid var(--border-color); width:580px; max-width:90vw; overflow:hidden;">
+            
+            <!-- Header -->
+            <div style="padding:1.25rem 1.5rem; border-bottom:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center;">
+                <h4 style="margin:0;">Before you checkout...</h4>
+                <button onclick="closeCheckoutModal()" style="background:none; border:none; font-size:1.5rem; cursor:pointer; color:var(--text-muted);">&times;</button>
+            </div>
+
+            <!-- Two column body -->
+            <div style="display:grid; grid-template-columns:1fr 1fr; border-bottom:1px solid var(--border-color);">
+                
+                <!-- Left: Reservation -->
+                <div style="padding:1.5rem; border-right:1px solid var(--border-color);">
+                    <p style="font-weight:600; margin:0 0 0.75rem;">Do you have a reservation?</p>
+                    <div style="display:flex; flex-direction:column; gap:0.5rem;">
+                        <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
+                            <input type="radio" name="has-reservation" value="yes" onchange="toggleReservationInput(this)"> Yes
+                        </label>
+                        <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
+                            <input type="radio" name="has-reservation" value="no" onchange="toggleReservationInput(this)" checked> No
+                        </label>
+                    </div>
+
+                    <!-- Yes: auto-fetch booking -->
+                    <div id="booking-found-field" style="display:none; margin-top:1rem;">
+                        <div id="booking-loading" style="color:var(--text-muted); font-size:0.85rem;">
+                            <i class="fas fa-spinner fa-spin"></i> Looking up your booking...
+                        </div>
+                        <div id="booking-found" style="display:none; background:var(--bg-accent); border-radius:var(--radius-sm); padding:0.75rem; font-size:0.85rem;">
+                            <p style="margin:0; color:var(--success); font-weight:600;"><i class="fas fa-check-circle"></i> Booking Found!</p>
+                            <p style="margin:0.3rem 0 0;" id="booking-found-details"></p>
+                        </div>
+                        <div id="booking-not-found" style="display:none; background:var(--bg-accent); border-radius:var(--radius-sm); padding:0.75rem; font-size:0.85rem;">
+                            <p style="margin:0; color:var(--error);"><i class="fas fa-times-circle"></i> No booking found for today.</p>
+                            <p style="margin:0.3rem 0 0; color:var(--text-muted);">Please select your table from the right to continue.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Table Number -->
+                <div style="padding:1.5rem;">
+                    <p style="font-weight:600; margin:0 0 0.75rem;">Table Number</p>
+                    
+                    <!-- Shown when Yes + booking found -->
+                    <div id="table-auto-filled" style="display:none;">
+                        <p style="font-size:0.85rem; color:var(--text-muted); font-weight:600;">Your table</p>
+                        <div style="background:var(--bg-accent); border-radius:var(--radius-sm); padding:0.75rem; margin-top:0.3rem;">
+                            <p style="margin:0; font-size:1.1rem; font-weight:700; color:var(--accent-primary);" id="auto-table-display">-</p>
+                        </div>
+                    </div>
+
+                    <!-- Shown when No — dropdown -->
+                    <div id="table-dropdown-field">
+                        <label style="font-size:0.85rem; color:var(--text-muted); font-weight:600;">Select your table</label>
+                        <select id="table-number-input" class="form-input" style="margin-top:0.3rem;">
+                            <option value="">Loading tables...</option>
+                        </select>
+                        <p id="no-tables-msg" style="display:none; font-size:0.85rem; color:var(--error); margin-top:0.5rem;">
+                            <i class="fas fa-exclamation-circle"></i> No tables available. Please speak to staff.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Proceed row -->
+            <div style="padding:1.25rem 1.5rem;">
+                <button class="btn btn-primary" style="width:100%;" onclick="proceedToPayment()">
+                    <i class="fas fa-arrow-right"></i> Proceed to Payment
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script src="js/main.js"></script>
     <script>
+    const BASE_API = '/secure-restaurant-ordering-and-table-management-system/bd-dine/api';
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    let autoBookingId = null;
+    let autoTableNumber = null;
 
     const cartItemsPage = document.getElementById("cartItemsPage");
     const cartTotalPage = document.getElementById("cartTotalPage");
@@ -158,25 +171,18 @@
 
     function increaseQty(index) {
         cart[index].quantity = (cart[index].quantity || 1) + 1;
-        saveCart();
-        loadCart();
+        saveCart(); loadCart();
     }
 
     function decreaseQty(index) {
         cart[index].quantity = (cart[index].quantity || 1) - 1;
-
-        if (cart[index].quantity <= 0) {
-            cart.splice(index, 1);
-        }
-
-        saveCart();
-        loadCart();
+        if (cart[index].quantity <= 0) cart.splice(index, 1);
+        saveCart(); loadCart();
     }
 
     function removeItem(index) {
         cart.splice(index, 1);
-        saveCart();
-        loadCart();
+        saveCart(); loadCart();
     }
 
     function loadCart() {
@@ -185,86 +191,188 @@
             cartContent.style.display = "none";
             return;
         }
-
         emptyCartMessage.style.display = "none";
         cartContent.style.display = "grid";
         cartItemsPage.innerHTML = "";
-
         let total = 0;
-
         cart.forEach((item, index) => {
             const qty = item.quantity || 1;
             const itemTotal = Number(item.price) * qty;
-
             const li = document.createElement("li");
             li.className = "cart-item-row";
-
             li.innerHTML = `
-                <span>
-                    ${item.name} - $${itemTotal.toFixed(2)}
-                </span>
-
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <button class="btn btn-secondary" style="padding: 0.3rem 0.7rem;" onclick="decreaseQty(${index})">-</button>
-
+                <span>${item.name} - $${itemTotal.toFixed(2)}</span>
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <button class="btn btn-secondary" style="padding:0.3rem 0.7rem;" onclick="decreaseQty(${index})">-</button>
                     <strong>${qty}</strong>
-
-                    <button class="btn btn-secondary" style="padding: 0.3rem 0.7rem;" onclick="increaseQty(${index})">+</button>
+                    <button class="btn btn-secondary" style="padding:0.3rem 0.7rem;" onclick="increaseQty(${index})">+</button>
                 </div>
             `;
-
             cartItemsPage.appendChild(li);
             total += itemTotal;
         });
-
         cartTotalPage.textContent = total.toFixed(2);
     }
-    function openCheckoutModal() {
-    if (cart.length === 0) {
-        showToast('Your cart is empty!', 'error');
-        return;
+
+    async function loadAvailableTables() {
+        const select = document.getElementById('table-number-input');
+        const noTablesMsg = document.getElementById('no-tables-msg');
+        select.innerHTML = '<option value="">Loading...</option>';
+        try {
+            const response = await fetch(`${BASE_API}/get-available-tables.php`);
+            const data = await response.json();
+            if (!data.success || data.tables.length === 0) {
+                select.innerHTML = '<option value="">No tables available</option>';
+                noTablesMsg.style.display = 'block';
+                return;
+            }
+            noTablesMsg.style.display = 'none';
+            select.innerHTML = '<option value="">Select a table...</option>' +
+                data.tables.map(t => `
+                    <option value="${t.table_number}">Table ${t.table_number} — ${t.capacity} seats (${t.location})</option>
+                `).join('');
+        } catch (error) {
+            select.innerHTML = '<option value="">Error loading tables</option>';
+        }
     }
-    document.getElementById('checkout-modal-overlay').style.display = 'flex';
+
+    async function fetchTodayBooking() {
+        const loadingEl = document.getElementById('booking-loading');
+        const foundEl = document.getElementById('booking-found');
+        const notFoundEl = document.getElementById('booking-not-found');
+        const autoTableDisplay = document.getElementById('auto-table-display');
+        const tableAutoFilled = document.getElementById('table-auto-filled');
+        const tableDropdown = document.getElementById('table-dropdown-field');
+
+        notFoundEl.style.display = 'block';
+        tableAutoFilled.style.display = 'none';
+        tableDropdown.style.display = 'block';
+        loadAvailableTables();
+
+        try {
+            const response = await fetch(`${BASE_API}/dashboard.php`);
+            const data = await response.json();
+
+            loadingEl.style.display = 'none';
+
+            if (!data.success || !data.upcoming_bookings || data.upcoming_bookings.length === 0) {
+                notFoundEl.style.display = 'block';
+                tableAutoFilled.style.display = 'none';
+                tableDropdown.style.display = 'block';
+                loadAvailableTables();
+                return;
+            }
+
+            // Find today's confirmed booking
+            const today = new Date().toISOString().split('T')[0];
+            const todayBooking = data.upcoming_bookings.find(b =>
+                b.booking_date === today && b.status === 'confirmed'
+            );
+
+            if (todayBooking) {
+                autoBookingId = todayBooking.booking_id;
+                autoTableNumber = todayBooking.table_number;
+
+                document.getElementById('booking-found-details').textContent =
+                    `Table ${todayBooking.table_number} at ${todayBooking.booking_time.slice(0,5)} — ${todayBooking.number_of_guests} guests`;
+
+                foundEl.style.display = 'block';
+                autoTableDisplay.textContent = `Table ${todayBooking.table_number}`;
+                tableAutoFilled.style.display = 'block';
+                tableDropdown.style.display = 'none';
+            } else {
+                notFoundEl.style.display = 'block';
+                tableAutoFilled.style.display = 'none';
+                tableDropdown.style.display = 'block';
+                loadAvailableTables();
+            }
+
+        } catch (error) {
+            loadingEl.style.display = 'none';
+            notFoundEl.style.display = 'block';
+            tableAutoFilled.style.display = 'none';
+            tableDropdown.style.display = 'block';
+            loadAvailableTables();
+        }
+    }
+
+    async function toggleReservationInput(radio) {
+        const bookingFoundField = document.getElementById('booking-found-field');
+        const tableAutoFilled = document.getElementById('table-auto-filled');
+        const tableDropdown = document.getElementById('table-dropdown-field');
+
+        if (radio.value === 'yes') {
+            bookingFoundField.style.display = 'block';
+            tableAutoFilled.style.display = 'none';
+            tableDropdown.style.display = 'none';
+            await fetchTodayBooking();
+        } else {
+            bookingFoundField.style.display = 'none';
+            tableAutoFilled.style.display = 'none';
+            tableDropdown.style.display = 'block';
+            autoBookingId = null;
+            autoTableNumber = null;
+            loadAvailableTables();
+        }
+    }
+
+    function openCheckoutModal() {
+        if (cart.length === 0) { showToast('Your cart is empty!', 'error'); return; }
+        // Reset to default No state
+        document.querySelectorAll('input[name="has-reservation"]').forEach(r => r.checked = false);
+        document.querySelector('input[name="has-reservation"][value="no"]').checked = true;
+        document.getElementById('booking-found-field').style.display = 'none';
+        document.getElementById('table-auto-filled').style.display = 'none';
+        document.getElementById('table-dropdown-field').style.display = 'block';
+        autoBookingId = null;
+        autoTableNumber = null;
+        loadAvailableTables();
+        document.getElementById('checkout-modal-overlay').style.display = 'flex';
     }
 
     function closeCheckoutModal() {
         document.getElementById('checkout-modal-overlay').style.display = 'none';
     }
 
-    function toggleReservationInput(radio) {
-        const field = document.getElementById('booking-id-field');
-        field.style.display = radio.value === 'yes' ? 'block' : 'none';
-    }
-
     function proceedToPayment() {
-        const tableNumber = document.getElementById('table-number-input').value.trim();
         const hasReservation = document.querySelector('input[name="has-reservation"]:checked').value;
-        const bookingId = document.getElementById('booking-id-input').value.trim();
+        let tableNumber = null;
+        let bookingId = null;
 
-        if (!tableNumber) {
-            showToast('Please enter your table number', 'error');
-            return;
+        if (hasReservation === 'yes') {
+            if (!autoTableNumber) {
+                showToast('No booking found for today. Please select No.', 'error');
+                return;
+            }
+            tableNumber = autoTableNumber;
+            bookingId = autoBookingId;
+        } else {
+            tableNumber = document.getElementById('table-number-input').value.trim();
+            if (!tableNumber) {
+                showToast('Please select a table', 'error');
+                return;
+            }
         }
 
-        // Save to localStorage so payment page can pick it up
         localStorage.setItem('checkout_table', tableNumber);
         localStorage.setItem('checkout_has_reservation', hasReservation);
-        if (hasReservation === 'yes' && bookingId) {
+        if (bookingId) {
             localStorage.setItem('checkout_booking_id', bookingId);
         } else {
             localStorage.removeItem('checkout_booking_id');
         }
+        localStorage.removeItem('checkout_booking_name');
+        localStorage.removeItem('checkout_booking_phone');
 
         closeCheckoutModal();
         window.location.href = 'payment.html';
     }
 
-    // Close modal on background click
     document.getElementById('checkout-modal-overlay').addEventListener('click', function(e) {
         if (e.target === this) closeCheckoutModal();
     });
 
     loadCart();
-</script>
+    </script>
 </body>
 </html>

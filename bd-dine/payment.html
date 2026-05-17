@@ -158,15 +158,27 @@ document.getElementById("payment-form").addEventListener("submit", async functio
 
         if (paymentIntent.status === 'succeeded') {
             // Step 3: Save order to database
+            const tableNumber = localStorage.getItem('checkout_table') || 0;
+            const bookingId = localStorage.getItem('checkout_booking_id') || null;
+            const reservationName = localStorage.getItem('checkout_booking_name') || null;
+            const reservationPhone = localStorage.getItem('checkout_booking_phone') || null;
+            
             const saveResponse = await API.post('process-payment.php', {
                 cart: cart,
                 total_amount: total,
                 payment_intent_id: paymentIntent.id,
-                payment_method: 'stripe'
+                payment_method: 'stripe',
+                table_number: tableNumber,   
+                booking_id: bookingId,
+                reservation_name: reservationName,   
+                reservation_phone: reservationPhone    
             });
 
             if (saveResponse.success) {
                 localStorage.removeItem("cart");
+                localStorage.removeItem("checkout_table");
+                localStorage.removeItem("checkout_booking_id"); 
+                localStorage.removeItem("checkout_has_reservation"); 
                 showToast("Payment successful! Order saved.", "success");
                 setTimeout(() => window.location.href = "customer-dashboard.html", 1800);
             } else {

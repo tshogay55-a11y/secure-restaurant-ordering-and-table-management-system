@@ -22,14 +22,8 @@ class Auth {
         $this->security = new Security($database);
     }
     
-    /**
-     * Register new user
-     * @param array $userData User data
-     * @return array ['success' => bool, 'message' => string, 'user_id' => int]
-     */
     public function registerUser($userData) {
         try {
-            // Validate input
             if (!Encryption::validateEmail($userData['email'])) {
                 return ['success' => false, 'message' => 'Invalid email address'];
             }
@@ -39,7 +33,6 @@ class Auth {
                 return ['success' => false, 'message' => $passwordValidation['message']];
             }
             
-            // Check if email already exists
             $checkQuery = "SELECT user_id FROM users WHERE email = :email";
             $checkStmt = $this->db->prepare($checkQuery);
             $checkStmt->bindParam(':email', $userData['email']);
@@ -49,13 +42,9 @@ class Auth {
                 return ['success' => false, 'message' => 'Email already registered'];
             }
             
-            // Hash password
             $passwordHash = Encryption::hashPassword($userData['password']);
-            
-            // Generate encryption key for user
             $encryptionKey = Encryption::generateToken(32);
             
-            // Insert user
             $query = "INSERT INTO users (email, password_hash, first_name, last_name, encryption_key) 
                       VALUES (:email, :password_hash, :first_name, :last_name, :encryption_key)";
             
@@ -68,8 +57,6 @@ class Auth {
             
             if ($stmt->execute()) {
                 $userId = $this->db->lastInsertId();
-                
-                // Log registration
                 try {
                     $this->security->logAudit($userId, null, 'user_registered', 'users', $userId);
                 } catch (Exception $e) {
@@ -79,7 +66,6 @@ class Auth {
                     'success' => true,
                     'message' => 'Registration successful',
                     'user_id' => $userId
-                    
                 ];
             }
             
@@ -91,16 +77,9 @@ class Auth {
         }
     }
     
-    /**
-     * Authenticate user (step 1 - password)
-     * @param string $email Email
-     * @param string $password Password
-     * @return array ['success' => bool, 'message' => string, 'user_id' => int, 'requires_2fa' => bool]
-     */
     public function authenticateUser($email, $password) {
         try {
-            // Get user
-            $query = "SELECT user_id, email, password_hash, first_name, last_name, is_active FROM users WHERE email = :email";
+            $query = "SELECT user_id, email, password_hash, first_name, last_name, is_active, failed_login_attempts, locked_at FROM users WHERE email = :email";
             $stmt = $this->db->prepare($query);
             $stmt->bindParam(':email', $email);
             $stmt->execute();
@@ -116,31 +95,65 @@ class Auth {
             if (!$user['is_active']) {
                 return ['success' => false, 'message' => 'Account is inactive. Please contact support.'];
             }
+
+            // Check if account is locked — distinguish between auto-lock and admin-lock
+            if ($user['locked_at']) {
+                if ($user['failed_login_attempts'] >= 5) {
+                    // Auto-locked due to too many failed attempts
+                    return ['success' => false, 'message' => 'Your account has been locked due to too many failed login attempts. Please contact us at (02) 6234 5678.'];
+                } else {
+                    // Manually locked by admin
+                    return ['success' => false, 'message' => 'Your account has been locked. Please contact us at (02) 6234 5678 for assistance.'];
+                }
+            }
             
             // Verify password
             if (!Encryption::verifyPassword($password, $user['password_hash'])) {
-                $this->security->logAudit($user['user_id'], null, 'login_failed_wrong_password', 'users', $user['user_id']);
-                return ['success' => false, 'message' => 'Invalid credentials'];
+                $attempts = $user['failed_login_attempts'] + 1;
+                
+                if ($attempts >= 5) {
+                    $lockStmt = $this->db->prepare("UPDATE users SET failed_login_attempts = :attempts, locked_at = NOW() WHERE user_id = :user_id");
+                    $lockStmt->bindParam(':attempts', $attempts);
+                    $lockStmt->bindParam(':user_id', $user['user_id']);
+                    $lockStmt->execute();
+
+                    $this->sendLockEmail($user['email'], $user['first_name']);
+                    $this->security->logAudit($user['user_id'], null, 'account_locked', 'users', $user['user_id']);
+                    return ['success' => false, 'message' => 'Your account has been locked after 5 failed attempts. Please check your email.'];
+                } else {
+                    $updateStmt = $this->db->prepare("UPDATE users SET failed_login_attempts = :attempts WHERE user_id = :user_id");
+                    $updateStmt->bindParam(':attempts', $attempts);
+                    $updateStmt->bindParam(':user_id', $user['user_id']);
+                    $updateStmt->execute();
+
+                    $remaining = 5 - $attempts;
+                    $this->security->logAudit($user['user_id'], null, 'login_failed_wrong_password', 'users', $user['user_id']);
+                    return ['success' => false, 'message' => "Invalid credentials. $remaining attempt(s) remaining before lockout."];
+                }
             }
             
+            // Reset failed attempts on successful login
+            $resetStmt = $this->db->prepare("UPDATE users SET failed_login_attempts = 0, locked_at = NULL WHERE user_id = :user_id");
+            $resetStmt->bindParam(':user_id', $user['user_id']);
+            $resetStmt->execute();
+
             // Update last login
-        $updateQuery = "UPDATE users SET last_login = NOW() WHERE user_id = :user_id";
-        $updateStmt = $this->db->prepare($updateQuery);
-        $updateStmt->bindParam(':user_id', $user['user_id']);
-        $updateStmt->execute();
+            $updateQuery = "UPDATE users SET last_login = NOW() WHERE user_id = :user_id";
+            $updateStmt = $this->db->prepare($updateQuery);
+            $updateStmt->bindParam(':user_id', $user['user_id']);
+            $updateStmt->execute();
 
-
-        // Send 2FA code to user's email
-    if ($this->security->send2FACode($user['user_id'], null, $user['email'])) {
-        return [
-            'success' => true,
-            'message' => '2FA code sent to your email',
-            'user_id' => $user['user_id'],
-            'requires_2fa' => true
-        ];
-    }
-    
-    return ['success' => false, 'message' => 'Failed to send verification code'];
+            // Send 2FA code
+            if ($this->security->send2FACode($user['user_id'], null, $user['email'])) {
+                return [
+                    'success' => true,
+                    'message' => '2FA code sent to your email',
+                    'user_id' => $user['user_id'],
+                    'requires_2fa' => true
+                ];
+            }
+            
+            return ['success' => false, 'message' => 'Failed to send verification code'];
             
         } catch (Exception $e) {
             error_log("User authentication error: " . $e->getMessage());
@@ -148,20 +161,12 @@ class Auth {
         }
     }
     
-    /**
-     * Complete user login with 2FA (step 2)
-     * @param int $userId User ID
-     * @param string $code 2FA code
-     * @return array ['success' => bool, 'message' => string, 'session_id' => string]
-     */
     public function completeUserLogin($userId, $code) {
         try {
-            // Verify 2FA code
             if (!$this->security->verify2FACode($userId, null, $code)) {
                 return ['success' => false, 'message' => 'Invalid or expired verification code'];
             }
             
-            // Get user data
             $query = "SELECT user_id, email, first_name, last_name FROM users WHERE user_id = :user_id";
             $stmt = $this->db->prepare($query);
             $stmt->bindParam(':user_id', $userId);
@@ -173,13 +178,11 @@ class Auth {
                 return ['success' => false, 'message' => 'User not found'];
             }
             
-            // Update last login
             $updateQuery = "UPDATE users SET last_login = NOW() WHERE user_id = :user_id";
             $updateStmt = $this->db->prepare($updateQuery);
             $updateStmt->bindParam(':user_id', $userId);
             $updateStmt->execute();
             
-            // Create secure session
             $sessionData = [
                 'user_id' => $user['user_id'],
                 'email' => $user['email'],
@@ -192,7 +195,6 @@ class Auth {
             
             if ($sessionId) {
                 $this->security->logAudit($userId, null, 'login_successful', 'users', $userId);
-                
                 return [
                     'success' => true,
                     'message' => 'Login successful',
@@ -209,15 +211,8 @@ class Auth {
         }
     }
     
-    /**
-     * Authenticate admin (step 1 - password)
-     * @param string $username Username
-     * @param string $password Password
-     * @return array ['success' => bool, 'message' => string, 'admin_id' => int, 'requires_2fa' => bool]
-     */
     public function authenticateAdmin($username, $password) {
         try {
-            // Get admin
             $query = "SELECT admin_id, username, password_hash, email, is_active FROM admin_users WHERE username = :username";
             $stmt = $this->db->prepare($query);
             $stmt->bindParam(':username', $username);
@@ -230,18 +225,15 @@ class Auth {
                 return ['success' => false, 'message' => 'Invalid credentials'];
             }
             
-            // Check if account is active
             if (!$admin['is_active']) {
                 return ['success' => false, 'message' => 'Account is inactive. Please contact system administrator.'];
             }
             
-            // Verify password
             if (!Encryption::verifyPassword($password, $admin['password_hash'])) {
                 $this->security->logAudit(null, $admin['admin_id'], 'admin_login_failed_wrong_password', 'admin_users', $admin['admin_id']);
                 return ['success' => false, 'message' => 'Invalid credentials'];
             }
             
-           // Send 2FA code to admin's email
             if ($this->security->send2FACode(null, $admin['admin_id'], $admin['email'])) {
                 return [
                     'success' => true,
@@ -259,20 +251,12 @@ class Auth {
         }
     }
     
-    /**
-     * Complete admin login with 2FA (step 2)
-     * @param int $adminId Admin ID
-     * @param string $code 2FA code
-     * @return array ['success' => bool, 'message' => string, 'session_id' => string]
-     */
     public function completeAdminLogin($adminId, $code) {
         try {
-            // Verify 2FA code
             if (!$this->security->verify2FACode(null, $adminId, $code)) {
                 return ['success' => false, 'message' => 'Invalid or expired verification code'];
             }
             
-            // Get admin data
             $query = "SELECT admin_id, username, email, full_name, role FROM admin_users WHERE admin_id = :admin_id";
             $stmt = $this->db->prepare($query);
             $stmt->bindParam(':admin_id', $adminId);
@@ -284,13 +268,11 @@ class Auth {
                 return ['success' => false, 'message' => 'Admin not found'];
             }
             
-            // Update last login
             $updateQuery = "UPDATE admin_users SET last_login = NOW() WHERE admin_id = :admin_id";
             $updateStmt = $this->db->prepare($updateQuery);
             $updateStmt->bindParam(':admin_id', $adminId);
             $updateStmt->execute();
             
-            // Create secure session
             $sessionData = [
                 'admin_id' => $admin['admin_id'],
                 'username' => $admin['username'],
@@ -304,7 +286,6 @@ class Auth {
             
             if ($sessionId) {
                 $this->security->logAudit(null, $adminId, 'admin_login_successful', 'admin_users', $adminId);
-                
                 return [
                     'success' => true,
                     'message' => 'Login successful',
@@ -321,11 +302,6 @@ class Auth {
         }
     }
     
-    /**
-     * Logout user or admin
-     * @param string $sessionId Session ID
-     * @return bool Success
-     */
     public function logout($sessionId) {
         if ($this->security->invalidateSession($sessionId)) {
             setcookie('BD_DINE_SESSION', '', time() - 3600, '/');
@@ -334,19 +310,44 @@ class Auth {
         return false;
     }
     
-    /**
-     * Get current user from session
-     * @return array|false User/Admin data or false
-     */
     public function getCurrentUser() {
         $sessionId = $_COOKIE['BD_DINE_SESSION'] ?? null;
-        
         if (!$sessionId) {
             return false;
         }
-        
         return $this->security->validateSession($sessionId);
     }
-}
 
+    private function sendLockEmail($email, $firstName) {
+        try {
+            require_once '../vendor/autoload.php';
+            require_once '../config/mail.php';
+
+            if (!defined('MAIL_HOST') || empty(MAIL_HOST) || MAIL_HOST === 'smtp.example.com') return;
+
+            $mail = new PHPMailer\PHPMailer\PHPMailer(true);
+            $mail->isSMTP();
+            $mail->Host = MAIL_HOST;
+            $mail->SMTPAuth = true;
+            $mail->Username = MAIL_USERNAME;
+            $mail->Password = MAIL_PASSWORD;
+            $mail->SMTPSecure = MAIL_ENCRYPTION;
+            $mail->Port = MAIL_PORT;
+            $mail->setFrom(MAIL_FROM, MAIL_FROM_NAME);
+            $mail->addAddress($email);
+            $mail->isHTML(true);
+            $mail->Subject = 'BD Dine - Account Locked';
+            $mail->Body = "
+                <h2>Account Locked</h2>
+                <p>Dear {$firstName},</p>
+                <p>Your account has been <strong style='color:red;'>locked</strong> due to 5 consecutive failed login attempts.</p>
+                <p>Please contact us at (02) 6234 5678 or email info@bddine.com.au to unlock your account.</p>
+                <p>BD Dine Restaurant</p>
+            ";
+            $mail->send();
+        } catch (Exception $e) {
+            error_log("Lock email error: " . $e->getMessage());
+        }
+    }
+}
 ?>

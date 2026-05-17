@@ -41,6 +41,10 @@ try {
     $cart = $data['cart'] ?? [];
     $totalAmount = floatval($data['total_amount'] ?? 0);
     $paymentMethod = $data['payment_method'] ?? 'simulated_card';
+    $tableNumber = intval($data['table_number'] ?? 0);
+    $bookingId = intval($data['booking_id'] ?? 0) ?: null;
+    $reservationName = $data['reservation_name'] ?? null;
+    $reservationPhone = $data['reservation_phone'] ?? null;
 
     if (empty($cart) || $totalAmount <= 0) {
         echo json_encode(['success' => false, 'message' => 'Cart is empty']);
@@ -51,17 +55,21 @@ try {
 
     // Create order
     $orderQuery = "INSERT INTO orders 
-        (user_id, total_amount, encrypted_payment_data, payment_method, payment_status, order_status, delivery_type)
+        (user_id, booking_id, table_number, reservation_name, reservation_phone, total_amount, encrypted_payment_data, payment_method, payment_status, order_status, delivery_type)
         VALUES 
-        (:user_id, :total_amount, :encrypted_payment_data, :payment_method, 'completed', 'processing', 'dine_in')";
+        (:user_id, :booking_id, :table_number, :reservation_name, :reservation_phone, :total_amount, :encrypted_payment_data, :payment_method, 'completed', 'completed', 'dine_in')";
 
     $encryptedPaymentData = base64_encode('Simulated secure payment - no real card stored');
 
     $orderStmt = $db->prepare($orderQuery);
     $orderStmt->bindParam(':user_id', $userId);
+    $orderStmt->bindParam(':table_number', $tableNumber);
+    $orderStmt->bindParam(':booking_id', $bookingId);
     $orderStmt->bindParam(':total_amount', $totalAmount);
     $orderStmt->bindParam(':encrypted_payment_data', $encryptedPaymentData);
     $orderStmt->bindParam(':payment_method', $paymentMethod);
+    $orderStmt->bindParam(':reservation_name', $reservationName);
+    $orderStmt->bindParam(':reservation_phone', $reservationPhone);
     $orderStmt->execute();
 
     $orderId = $db->lastInsertId();
@@ -77,15 +85,12 @@ try {
             continue;
         }
 
-        // Find menu item id by name
         $findItemQuery = "SELECT item_id FROM menu_items WHERE item_name = :item_name LIMIT 1";
         $findItemStmt = $db->prepare($findItemQuery);
         $findItemStmt->bindParam(':item_name', $itemName);
         $findItemStmt->execute();
         $menuItem = $findItemStmt->fetch();
 
-        // If item does not exist in menu_items, skip order_items insert
-        // Order itself and payment transaction will still be saved.
         if (!$menuItem) {
             continue;
         }
