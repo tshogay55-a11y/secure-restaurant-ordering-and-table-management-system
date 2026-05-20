@@ -196,28 +196,15 @@ const Login = {
     adminId: null,
     
     async checkIfAlreadyLoggedIn() {
-        try {
-            const result = await API.get('check-session.php');
-            if (result.valid) {
-                document.querySelectorAll('.logout-btn').forEach(btn => {
-                    btn.style.display = 'inline-flex';
-                });
-                const statusBox = document.getElementById('already-logged-in-box');
-                const form = document.getElementById('login-form');
-                const header = document.querySelector('.login-header');
-                const registerLink = document.getElementById('register-link');
-                const securityNote = document.getElementById('security-note');
-
-                if (statusBox) statusBox.style.display = 'block';
-                if (form) form.style.display = 'none';
-                if (header) header.style.display = 'none';
-                if (registerLink) registerLink.style.display = 'none';
-                if (securityNote) securityNote.style.display = 'none';
-            }
-        } catch (error) {
-            console.error('Session check failed:', error);
+    try {
+        const result = await API.get('check-session.php');
+        if (result.valid) {
+            window.location.replace('customer-dashboard.html');
         }
-    },
+    } catch (error) {
+        console.error('Session check failed:', error);
+    }
+},
 
     async authenticateStep1(credentials) {
     try {
@@ -334,7 +321,8 @@ const Booking = {
                 booking_time: form.booking_time.value,
                 number_of_guests: form.number_of_guests.value,
                 special_requests: form.special_requests.value,
-                phone: form.phone.value
+                phone: form.phone.value,
+                csrf_token: document.getElementById('csrf_token').value
             };
             
             const submitBtn = form.querySelector('button[type="submit"]');
@@ -439,6 +427,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             document.querySelectorAll('.auth-only').forEach(item => {
                 item.style.display = 'inline-block';
+            });
+
+            document.querySelectorAll('.nav-menu a[href="login.html"]').forEach(link => {
+            link.textContent = 'Dashboard';
+            link.href = 'customer-dashboard.html';
             });
         }
     });

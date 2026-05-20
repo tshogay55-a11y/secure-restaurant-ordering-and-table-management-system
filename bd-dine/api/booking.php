@@ -41,10 +41,19 @@ try {
     }
     
     $userId = $session['user_id'];
-
+    
     // Get booking data
     $json = file_get_contents('php://input');
     $data = json_decode($json, true);
+
+    // Validate CSRF token
+    $csrfToken = $data['csrf_token'] ?? '';
+    $expectedToken = hash_hmac('sha256', $sessionId, 'bd_dine_csrf_secret');
+
+    if (empty($csrfToken) || !hash_equals($expectedToken, $csrfToken)) {
+        echo json_encode(['success' => false, 'message' => 'Invalid request - CSRF token mismatch']);
+        exit();
+        }
 
     // Phone is now mandatory
     $phone = trim($data['phone'] ?? '');
