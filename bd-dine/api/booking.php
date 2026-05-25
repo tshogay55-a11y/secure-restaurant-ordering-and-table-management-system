@@ -117,7 +117,7 @@ try {
                         WHERE user_id = :user_id
                         AND booking_date = :booking_date 
                         AND booking_time = :booking_time
-                        AND status != 'confirmed'";
+                        AND status = 'confirmed'";
 
         $checkUserStmt = $db->prepare($checkUserQuery);
         $checkUserStmt->bindParam(':user_id', $userId);
@@ -138,7 +138,7 @@ try {
                             FROM bookings 
                             WHERE booking_date = :booking_date 
                             AND booking_time = :booking_time
-                            AND status != 'confirmed'";
+                            AND status = 'confirmed'";
 
             $checkSlotStmt = $db->prepare($checkSlotQuery);
             $checkSlotStmt->bindParam(':booking_date', $bookingDate);

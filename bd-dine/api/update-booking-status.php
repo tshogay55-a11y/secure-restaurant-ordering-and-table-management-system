@@ -172,7 +172,7 @@ try {
         
         if ($booking) {
             sendBookingEmail($booking, $data['status'], $previousStatus);
-        }
+    }
         
         echo json_encode(['success' => true, 'message' => 'Booking status updated']);
     } else {
