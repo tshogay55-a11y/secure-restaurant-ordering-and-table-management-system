@@ -30,6 +30,7 @@ function sendBookingEmail($booking, $status, $previousStatus = null) {
         $mail->Password = MAIL_PASSWORD;
         $mail->SMTPSecure = MAIL_ENCRYPTION;
         $mail->Port = MAIL_PORT;
+        $mail->Timeout = 10;
         
         $mail->setFrom(MAIL_FROM, MAIL_FROM_NAME);
         $mail->addAddress($booking['email']);
